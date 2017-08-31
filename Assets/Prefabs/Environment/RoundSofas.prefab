@@ -21,6 +21,7 @@ GameObject:
   - component: {fileID: 4896810670110230}
   - component: {fileID: 33178556313494190}
   - component: {fileID: 23017095488984954}
+  - component: {fileID: 65978459390429974}
   m_Layer: 0
   m_Name: Table
   m_TagString: Untagged
@@ -38,6 +39,7 @@ GameObject:
   - component: {fileID: 4366128541906262}
   - component: {fileID: 33887612719228326}
   - component: {fileID: 23823968449017186}
+  - component: {fileID: 64028258043193268}
   m_Layer: 0
   m_Name: CupThing
   m_TagString: Untagged
@@ -55,6 +57,7 @@ GameObject:
   - component: {fileID: 4186349714382150}
   - component: {fileID: 33116746166273626}
   - component: {fileID: 23529814265163000}
+  - component: {fileID: 64187932751270374}
   m_Layer: 0
   m_Name: CircleBench
   m_TagString: Untagged
@@ -163,7 +166,6 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23529814265163000
 MeshRenderer:
@@ -195,7 +197,6 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!23 &23823968449017186
 MeshRenderer:
@@ -227,7 +228,6 @@ MeshRenderer:
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
-  m_SortingLayer: 0
   m_SortingOrder: 0
 --- !u!33 &33116746166273626
 MeshFilter:
@@ -250,6 +250,46 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1298546668041512}
   m_Mesh: {fileID: 4300004, guid: abde33ef91b257442a64f70a2b24b96b, type: 3}
+--- !u!64 &64028258043193268
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1298546668041512}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300004, guid: abde33ef91b257442a64f70a2b24b96b, type: 3}
+--- !u!64 &64187932751270374
+MeshCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1385543838488562}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 4300000, guid: abde33ef91b257442a64f70a2b24b96b, type: 3}
+--- !u!65 &65978459390429974
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1209273909424580}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5460098, y: 0.8027205, z: 1.1133993}
+  m_Center: {x: -0.000000017272683, y: 0, z: -2.619842e-10}
 --- !u!95 &95138043831563906
 Animator:
   serializedVersion: 3

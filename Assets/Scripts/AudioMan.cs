@@ -15,7 +15,7 @@ public class AudioMan : MonoBehaviour {
     void Start () {
         timeBetweenBeets = 60f / BPM;
         GetComponent<AudioSource>().Play();
-        if (OnBeat != null) OnBeat();
+        //if (OnBeat != null) OnBeat();
     }
 	
 	// Update is called once per frame
