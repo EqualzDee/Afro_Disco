@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 //using NUnit.Framework;
 using UnityEngine;
@@ -13,14 +14,31 @@ public class MoveChecker
     //Constructa (man it's been a while since I've seen one of those in unity)
     public MoveChecker()
     {
-        //Test crowd surf
+        //Crowd surf
+        //Rot 1 permutations
         Moves.Add(new string[]
         {
             ".D.",
             "DDD",
-
+        });
+        
+        Moves.Add(new string[]
+        {
+            "DD.",
+            "DDD",
         });
 
+        Moves.Add(new string[]
+        {
+            "DDD",
+            "DDD",
+        });
+
+        Moves.Add(new string[]
+        {
+            ".DD",
+            "DDD",
+        });
     }
 
     /// <summary>
@@ -30,12 +48,11 @@ public class MoveChecker
     /// <returns></returns>
     public List<Vector2> CheckForMoves(Dictionary<Vector2, Dancer> board, int boardW, int boardH)
     {
-        string[] Rows = ToStringArray(board, boardW, boardH);
+        string[] Rows = ToStringArray(board, boardW, boardH); //Convert to string array
         List<Vector2> MovesFound = new List<Vector2>();
-
         for (int i = 0; i < Moves.Count; i++)
         {
-            Vector2 returnVec = CheckMove(Rows, Moves[i]);
+            Vector2 returnVec = CheckMove(Rows, Moves[i]);    //Loop through all moves to check them
             if (!(returnVec.x < 0)) //we got a valid move!
             {
                 MovesFound.Add(returnVec);
@@ -52,33 +69,64 @@ public class MoveChecker
     /// <returns>Returns the X and Y of a found move</returns>
     private Vector2 CheckMove(string[] Rows, string[] Move)
     {
-        int moveHeight = Move.Length;        
+        int moveHeight = Move.Length;
+        int moveWidth = Move[0].Length;
         int rowsRight = 0;
         Vector2 moveStart = Vector2.zero - Vector2.one; //treat as negative value
 
+        bool moveFound = false;
+
         for (int i = 0; i < Rows.Length; i++) //loop rows
         {
-
-            int moveStartX = Rows[i].IndexOf(Move[rowsRight]); //Check if move in row
-
-            if (moveStartX != -1) //We found a row!
+            if (moveStart.x < 0) //If we don't have a lock on a move
             {
-                if (moveStart.x < 0) //if return is null
+                //find all moveStarts in current row
+                List<int> PotentialStarts = new List<int>();
+                int counter = 0;
+                int offset = 0;
+                while (true)
                 {
-                    moveStart = new Vector2(moveStartX, i); //stored in XY, not array format
+                    int startX = Rows[i].IndexOf(Move[rowsRight], offset);
+                    if (startX != -1)
+                    {
+                        PotentialStarts.Add(startX); //Check if start of move is in row
+                        offset = startX + 1;
+                    }
+                    else
+                    {
+                        break;
+                    }
                 }
 
-                rowsRight++;
-                if (rowsRight == moveHeight) 
+                //Now check out those potential starts to see if they're the move
+                foreach (int start in PotentialStarts)
                 {
-                    //If rows found is the same as rows in move get outta here
-                    break;
+                    moveStart = new Vector2(start, i); //stored in XY, not array format
+
+                    while (true) //WE'VE GOT A LOCK
+                    {
+                        //Now only check for move in a substring
+                        //Also iterate up the list
+                        //Also this wastes one loop cycle here but eh
+                        var substring = Rows[i + rowsRight].Substring((int) moveStart.x, moveWidth);
+                        if (substring.Contains(Move[rowsRight]))
+                        {
+                            rowsRight++;
+                            if (rowsRight == moveHeight) //we got the move!
+                            {
+                                moveFound = true;
+                                break;
+                            }
+                        }
+                        else //Lock failed! No move here
+                        {
+                            rowsRight = 0;
+                            moveStart = Vector2.zero - Vector2.one;
+                            break;
+                        }
+                    }
+                    if (moveFound) break;
                 }
-            }
-            else //if not found reset everything
-            {
-                rowsRight = 0;
-                moveStart = Vector2.zero - Vector2.one;
             }
         }
 
