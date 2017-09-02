@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 //using NUnit.Framework;
 using UnityEngine;
 
@@ -21,24 +22,7 @@ public class MoveChecker
             ".D.",
             "DDD",
         });
-        
-        Moves.Add(new string[]
-        {
-            "DD.",
-            "DDD",
-        });
-
-        Moves.Add(new string[]
-        {
-            "DDD",
-            "DDD",
-        });
-
-        Moves.Add(new string[]
-        {
-            ".DD",
-            "DDD",
-        });
+       
     }
 
     /// <summary>
@@ -82,7 +66,17 @@ public class MoveChecker
             {
                 //find all moveStarts in current row
                 List<int> PotentialStarts = new List<int>();
-                int counter = 0;
+
+                //Regex time
+                List<int> PotentialStartsRegex = new List<int>();
+                string reg = ConvertMoveToRegex(Rows[i]);
+                Match m = Regex.Match(reg, Move[rowsRight]);
+                while (m.Success)
+                {                    
+                    PotentialStartsRegex.Add(m.Index);
+                    m = m.NextMatch();
+                }
+
                 int offset = 0;
                 while (true)
                 {
@@ -98,8 +92,11 @@ public class MoveChecker
                     }
                 }
 
+                //debug - compare loops
+                Debug.Assert(PotentialStarts.Count == PotentialStartsRegex.Count);
+
                 //Now check out those potential starts to see if they're the move
-                foreach (int start in PotentialStarts)
+                foreach (int start in PotentialStartsRegex)
                 {
                     moveStart = new Vector2(start, i); //stored in XY, not array format
 
@@ -109,6 +106,7 @@ public class MoveChecker
                         //Also iterate up the list
                         //Also this wastes one loop cycle here but eh
                         var substring = Rows[i + rowsRight].Substring((int) moveStart.x, moveWidth);
+                        //var match = Regex.Match(substring, "\\w");
                         if (substring.Contains(Move[rowsRight]))
                         {
                             rowsRight++;
@@ -158,6 +156,22 @@ public class MoveChecker
             stringBoard[i] = row;
         }
         return stringBoard;
+    }
+
+    private string ConvertMoveToRegex(string s)
+    {
+        string SReturn = s;
+        int lineCount = 0;
+        while (lineCount < s.Length)
+        {
+            int index = s.IndexOf(".", lineCount);
+            if (index != -1)
+            {
+                SReturn = SReturn.Insert(index, "\\");
+                lineCount = index;
+            }
+        }
+        return SReturn;
     }
        
 }
