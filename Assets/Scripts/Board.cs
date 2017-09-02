@@ -45,6 +45,8 @@ public class Board : MonoBehaviour
     private Dancer _dancerSelected;
     Dictionary<Vector2, GameObject> _validPositions = new Dictionary<Vector2,GameObject>(); //Grid postions
 
+    private MoveChecker CheckyBoy = new MoveChecker();
+
     private bool speedUp; //true when either team has less than 3 dancers
 
     void Start ()
@@ -130,7 +132,8 @@ public class Board : MonoBehaviour
         }
         else if(_dancerSelected) //Deselect
         {
-            Debug.Log(MoveChecker.CheckForMoves(_Dancers));
+            //Checky moves!
+            MoveCheck();
 
             _dancerSelected.DeSelect();
             ResetTileCol();
@@ -310,7 +313,21 @@ public class Board : MonoBehaviour
     /// </summary>
     void MoveCheck()
     {
-        
+        //Only get dancers of the current player
+        Dictionary<Vector2, Dancer> playerMaskedDancers = new Dictionary<Vector2, Dancer>();
+        foreach (KeyValuePair<Vector2, Dancer> d in _Dancers)
+        {
+            if (d.Value.Player == Player1)
+                playerMaskedDancers.Add(d.Key,d.Value);
+        }
+
+        List<Vector2> moveStartList = CheckyBoy.CheckForMoves(playerMaskedDancers,BoardW,BoardH);
+
+        //Printy valid moves
+        foreach (Vector2 v in moveStartList)
+        {
+            Debug.Log(v);
+        }
     }
 
     /// <summary>
