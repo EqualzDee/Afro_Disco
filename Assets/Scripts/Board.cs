@@ -49,6 +49,10 @@ public class Board : MonoBehaviour
 
     private bool speedUp; //true when either team has less than 3 dancers
 
+    //Paint layers: Colors here won't be overridden;
+    private Dictionary<Vector2, Color> SelectedPaint = new Dictionary<Vector2, Color>();
+    private Dictionary<Vector2, Color> MovePaint = new Dictionary<Vector2, Color>();
+
     void Start ()
     {
         //Make board
@@ -114,8 +118,10 @@ public class Board : MonoBehaviour
 
                     if (!_dancerSelected || !_dancerSelected.canMove) return;
                     
+                    //Select and paint selected tiles
                     _dancerSelected.Select();
                     ShowValidTiles(_dancerSelected);
+                    PaintLayer(SelectedPaint);
                 }
             }
             else //Dancer is selected
@@ -136,9 +142,10 @@ public class Board : MonoBehaviour
             MoveCheck();
 
             _dancerSelected.DeSelect();
-            ResetTileCol();
+            //ResetTileCol();
             _dancerSelected = null;
             _validPositions.Clear();
+            SelectedPaint.Clear();
         }
     }
 
@@ -202,10 +209,13 @@ public class Board : MonoBehaviour
             {
                 //Change tile col
                 var t = Tiles[(int) check.y, (int) check.x]; //The valid tile
-                t.GetComponent<MeshRenderer>().material.SetColor("_Color", i == 0 ? Color.blue : SelectedColor);
+                Color c = i == 0 ? Color.blue : SelectedColor;
+                //t.GetComponent<MeshRenderer>().material.SetColor("_Color", c);
+                if(!SelectedPaint.ContainsKey(check))
+                    SelectedPaint.Add(check, c); //Paint color
 
                 //Add to dict if not already
-                if(!_validPositions.ContainsKey(check))
+                if (!_validPositions.ContainsKey(check))
                     _validPositions.Add(check,t);
             }
             else if(i > 0) //if newpos is not start position
@@ -313,6 +323,7 @@ public class Board : MonoBehaviour
     /// </summary>
     void MoveCheck()
     {
+        MovePaint.Clear();
         //Only get dancers of the current player
         Dictionary<Vector2, Dancer> playerMaskedDancers = new Dictionary<Vector2, Dancer>();
         foreach (KeyValuePair<Vector2, Dancer> d in _Dancers)
@@ -321,22 +332,36 @@ public class Board : MonoBehaviour
                 playerMaskedDancers.Add(d.Key,d.Value);
         }
 
-        List<Vector2> moveStartList = CheckyBoy.CheckForMoves(playerMaskedDancers,BoardW,BoardH);
+        Dictionary<Vector2, string[]> moveStartList = CheckyBoy.CheckForMoves(playerMaskedDancers,BoardW,BoardH);
 
-        //Printy valid moves
-        foreach (Vector2 v in moveStartList)
-        {
-            Debug.Log(v);
+        //Glow valid moves
+        foreach (KeyValuePair<Vector2, string[]> move in moveStartList)
+        {    
+            Debug.Log(move.Key);
+            GlowDancer(move.Key, move.Value);
         }
+
+        PaintLayer(MovePaint);
     }
 
     /// <summary>
     /// Indicates that a group of dancers are ready to perform a move
     /// </summary>
     /// <param name="d"></param>
-    void GlowDancers(Dancer d)
+    void GlowDancer(Vector2 pos, string[] m)
     {
-        
+        for (int i = 0; i < m.Length; i++)
+        {
+            for (int j = 0; j < m[i].Length; j++)
+            {
+                if (m[i][j] == 'D' || m[i][j] == 'A')
+                {
+                    var offset = new Vector2(j, i);
+                    if(!MovePaint.ContainsKey(pos + offset))
+                        MovePaint.Add(pos + offset, Color.red);   
+                }
+            }
+        }
     }
 
     /// <summary>
@@ -374,8 +399,17 @@ public class Board : MonoBehaviour
         }
     }
 
+    private void PaintLayer(Dictionary<Vector2,Color> d)
+    {
+        foreach (KeyValuePair<Vector2, Color> paint in d)
+        {
+            var tile = Tiles[(int)paint.Key.y, (int)paint.Key.x];
+            tile.GetComponent<MeshRenderer>().material.SetColor("_Color", paint.Value);
+        }
+    }
+
     /// <summary>
-    /// WIP
+    /// Called on the beat to change the tile color all flashy like
     /// </summary>
     private void ChangeFloorCol()
     {
@@ -397,14 +431,20 @@ public class Board : MonoBehaviour
         List<Material> tilesOn = new List<Material>();
         List<Material> tilesOff = new List<Material>();
 
+        //Paint floor tiles
         for (int i = 0; i < BoardW; i++)
         {
             for(int j = 0; j < BoardH; j++)
             {
-                if (_tileCounter % 2 == (_oddEven ? 0 : 1))
-                    tilesOn.Add(Tiles[j, i].GetComponent<MeshRenderer>().material);
-                if (_tileCounter % 2 == (_oddEven ? 1 : 0))
-                    tilesOff.Add(Tiles[j, i].GetComponent<MeshRenderer>().material);
+                var indexVec = new Vector2(i, j);
+                if (!(SelectedPaint.ContainsKey(indexVec) ||
+                    MovePaint.ContainsKey(indexVec)))
+                {
+                    if (_tileCounter % 2 == (_oddEven ? 0 : 1))
+                        tilesOn.Add(Tiles[j, i].GetComponent<MeshRenderer>().material);
+                    if (_tileCounter % 2 == (_oddEven ? 1 : 0))
+                        tilesOff.Add(Tiles[j, i].GetComponent<MeshRenderer>().material);
+                }
                 _tileCounter++;
             }
         }
@@ -418,6 +458,9 @@ public class Board : MonoBehaviour
 
         StartCoroutine(ColChange(Color.white, colorssss[colCounter], tilesOn, colLerptime));
 
+        //Paint layers over the top
+        PaintLayer(SelectedPaint);
+        PaintLayer(MovePaint);
 
         flashThisTurn = false;
     }
@@ -447,6 +490,14 @@ public class Board : MonoBehaviour
         return _Dancers.FirstOrDefault(x => x.Value == d).Key;
     }
 
+    /// <summary>
+    /// Coroutine to change color
+    /// </summary>
+    /// <param name="start"></param>
+    /// <param name="end"></param>
+    /// <param name="Tiles"></param>
+    /// <param name="time"></param>
+    /// <returns></returns>
     private IEnumerator ColChange(Color start, Color end, List<Material> Tiles, float time)
     {
         float elapsedTime = 0;

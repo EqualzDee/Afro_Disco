@@ -15,14 +15,62 @@ public class MoveChecker
     //Constructa (man it's been a while since I've seen one of those in unity)
     public MoveChecker()
     {
+        //MOVES GO HERE
+        //. will match anything (ie empty space)
+        //D will match any dancer
+        //A will match main dancer(todo)
+
         //Crowd surf
-        //Rot 1 permutations
         Moves.Add(new string[]
         {
             ".D.",
             "DDD",
         });
-       
+
+        Moves.Add(new string[]
+        {
+            "D..",
+            "DDD",
+            "D..",
+        });
+
+        Moves.Add(new string[]
+       {
+            "..D",
+            "DDD",
+            "..D",
+       });
+
+        Moves.Add(new string[]
+      {
+            "DDD",
+            ".D.",
+      });
+
+        //Conga 2
+        Moves.Add(new string[]
+      {
+            "D",
+            "D",
+      });
+
+        Moves.Add(new string[]
+    {
+            "DD",
+    });
+
+        //Conga 3
+        Moves.Add(new string[]
+      {
+            "D",
+            "D",
+            "D"
+      });
+
+        Moves.Add(new string[]
+    {
+            "DDD",
+    });
     }
 
     /// <summary>
@@ -30,18 +78,23 @@ public class MoveChecker
     /// </summary>
     /// <param name="board"></param>
     /// <returns></returns>
-    public List<Vector2> CheckForMoves(Dictionary<Vector2, Dancer> board, int boardW, int boardH)
+    public Dictionary<Vector2, string[]> CheckForMoves(Dictionary<Vector2, Dancer> board, int boardW, int boardH)
     {
         string[] Rows = ToStringArray(board, boardW, boardH); //Convert to string array
-        List<Vector2> MovesFound = new List<Vector2>();
+        Dictionary<Vector2, string[]> MovesFound = new Dictionary<Vector2, string[]>();
+
+        //Loop through all moves to check them
         for (int i = 0; i < Moves.Count; i++)
         {
-            Vector2 returnVec = CheckMove(Rows, Moves[i]);    //Loop through all moves to check them
+            Vector2 returnVec = CheckMove(Rows, Moves[i]);    
             if (!(returnVec.x < 0)) //we got a valid move!
             {
-                MovesFound.Add(returnVec);
+                if(!MovesFound.ContainsKey(returnVec)) //possibly missing moves
+                    MovesFound.Add(returnVec,Moves[i]);
             }
         }
+
+
         return MovesFound;
     }
 
@@ -56,7 +109,7 @@ public class MoveChecker
         int moveHeight = Move.Length;
         int moveWidth = Move[0].Length;
         int rowsRight = 0;
-        Vector2 moveStart = Vector2.zero - Vector2.one; //treat as negative value
+        Vector2 moveStart = Vector2.zero - Vector2.one; //Negative if not found
 
         bool moveFound = false;
 
@@ -67,9 +120,10 @@ public class MoveChecker
                 //find all moveStarts in current row
                 List<int> PotentialStarts = new List<int>();
 
-                //Regex time
+                //Find all potential starts in row with regex
                 List<int> PotentialStartsRegex = new List<int>();
-                string reg = ConvertMoveToRegex(Rows[i]);
+                //string reg = ConvertMoveToRegex(Rows[i]);
+                string reg = Rows[i];
                 Match m = Regex.Match(reg, Move[rowsRight]);
                 while (m.Success)
                 {                    
@@ -77,23 +131,25 @@ public class MoveChecker
                     m = m.NextMatch();
                 }
 
-                int offset = 0;
-                while (true)
-                {
-                    int startX = Rows[i].IndexOf(Move[rowsRight], offset);
-                    if (startX != -1)
-                    {
-                        PotentialStarts.Add(startX); //Check if start of move is in row
-                        offset = startX + 1;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
+                //Find all potential starts in a row, old method
+                //Actually this won't work because it's looking for an exact match
+                //int offset = 0;
+                //while (true)
+                //{
+                //    int startX = Rows[i].IndexOf(Move[rowsRight], offset);
+                //    if (startX != -1)
+                //    {
+                //        PotentialStarts.Add(startX); //Check if start of move is in row
+                //        offset = startX + 1;
+                //    }
+                //    else
+                //    {
+                //        break;
+                //    }
+                //}
 
                 //debug - compare loops
-                Debug.Assert(PotentialStarts.Count == PotentialStartsRegex.Count);
+                //Debug.Assert(PotentialStarts.Count == PotentialStartsRegex.Count);
 
                 //Now check out those potential starts to see if they're the move
                 foreach (int start in PotentialStartsRegex)
@@ -106,8 +162,10 @@ public class MoveChecker
                         //Also iterate up the list
                         //Also this wastes one loop cycle here but eh
                         var substring = Rows[i + rowsRight].Substring((int) moveStart.x, moveWidth);
-                        //var match = Regex.Match(substring, "\\w");
-                        if (substring.Contains(Move[rowsRight]))
+                        Match m2 = Regex.Match(substring, Move[rowsRight]);
+                        var match = m2.Success; 
+                        //var match = substring.Contains(Move[rowsRight]); //old match
+                        if (match)
                         {
                             rowsRight++;
                             if (rowsRight == moveHeight) //we got the move!
