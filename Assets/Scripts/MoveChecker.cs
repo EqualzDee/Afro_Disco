@@ -63,7 +63,7 @@ public class MoveChecker
     {
             "DDD",
     });
-        Moves.Add(new Move("Conga Line Lv.3", Color.green, c3));
+        Moves.Add(new Move("Conga Line Lv.3", Color.green, c3, 2));
 
 
         //Conga 2
@@ -78,7 +78,7 @@ public class MoveChecker
     {
             "DD",
     });
-        Moves.Add(new Move("Conga Line Lv.2", Color.green, c2));
+        Moves.Add(new Move("Conga Line Lv.2", Color.green, c2, 1));
 
     }
 
@@ -103,9 +103,11 @@ public class MoveChecker
                 foreach(Vector2 vec in MovesInRow)
                 {
                     //now make a copy of each move and set the origin where we found it
-                    var returnMove = new Move(Moves[i]); 
-                    returnMove.SetFound(vec,j);
-                    MovesFound.Add(returnMove);
+                    var found = new Move(Moves[i]); 
+                    found.SetFound(vec,j);
+                    MovesFound.Add(found);
+
+                    //todo move filter here
                 }
             }
         }
@@ -114,7 +116,7 @@ public class MoveChecker
     }
 
     /// <summary>
-    /// 
+    /// WHERE THE FUCKING MAGIC HAPPENS
     /// </summary>
     /// <param name="Rows"></param>
     /// <param name="Move"></param>
@@ -160,7 +162,7 @@ public class MoveChecker
                         Match m2 = Regex.Match(substring, Move[rowsRight]);
                         var match = m2.Success; 
                         
-                        if (match && i + 1 < Rows.Length) //if match is in bounds
+                        if (match && rowsRight + i + 1 < Rows.Length) //if match is in bounds
                         {
                             rowsRight++;
                             if (rowsRight == moveHeight) //We got a move!

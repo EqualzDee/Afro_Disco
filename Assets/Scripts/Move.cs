@@ -15,13 +15,24 @@ public class Move
     //Instance variables
     public Vector2 origin { get; private set; }
     private int foundMoveindex;
+    public int Priority { get; private set; }
 
-
+    //Normal constructor
     public Move(string name, Color col, List<string[]> paterns)
     {
         Patterns = new List<string[]>(paterns); //Copy pasta list
         Color = col;
         MoveName = name;
+    }
+
+
+    //Priority constructor
+    public Move(string name, Color col, List<string[]> paterns, int priority)
+    {
+        Patterns = new List<string[]>(paterns); //Copy pasta list
+        Color = col;
+        MoveName = name;
+        Priority = priority;
     }
 
     //constructor for copying the object
@@ -32,6 +43,11 @@ public class Move
         MoveName = string.Copy(m.MoveName);
     }
 
+    /// <summary>
+    /// Call to give this move an origin and specific pattern
+    /// </summary>
+    /// <param name="v"></param>
+    /// <param name="index"></param>
     public void SetFound(Vector2 v, int index)
     {
         origin = v;

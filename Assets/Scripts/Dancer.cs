@@ -90,14 +90,6 @@ public class Dancer : MonoBehaviour
     }
 
     /// <summary>
-    /// Sets up for next round
-    /// </summary>
-    public void NextRound()
-    {
-        
-    }
-
-    /// <summary>
     /// Gets the dancer's board pos from WORLD pos, not board
     /// </summary>
     /// <returns></returns>

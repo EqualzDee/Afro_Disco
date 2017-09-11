@@ -556,7 +556,7 @@ public class Board : MonoBehaviour
         Dancer dtop = null; //null if not found
         Dancer dBot = null;
 
-        //find targets in range
+        //find targets in range (only one)
         for (int i = 0; i < range; i++)
         {
             if(!dtop) //top
