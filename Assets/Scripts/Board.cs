@@ -324,21 +324,22 @@ public class Board : MonoBehaviour
     void MoveCheck()
     {
         MovePaint.Clear();
+
         //Only get dancers of the current player
         Dictionary<Vector2, Dancer> playerMaskedDancers = new Dictionary<Vector2, Dancer>();
         foreach (KeyValuePair<Vector2, Dancer> d in _Dancers)
         {
-            if (d.Value.Player == Player1)
+            if (d.Value.Player == (turn ? Player2 : Player1)) //Add masked players to turn if 
                 playerMaskedDancers.Add(d.Key,d.Value);
         }
 
-        Dictionary<Vector2, string[]> moveStartList = CheckyBoy.CheckForMoves(playerMaskedDancers,BoardW,BoardH);
+        List<Move> moveOriginList = CheckyBoy.CheckForMoves(playerMaskedDancers,BoardW,BoardH);
 
         //Glow valid moves
-        foreach (KeyValuePair<Vector2, string[]> move in moveStartList)
+        foreach (Move m in moveOriginList)
         {    
-            Debug.Log(move.Key);
-            GlowDancer(move.Key, move.Value);
+            Debug.Log(m.origin);
+            GlowDancer(m);
         }
 
         PaintLayer(MovePaint);
@@ -348,8 +349,10 @@ public class Board : MonoBehaviour
     /// Indicates that a group of dancers are ready to perform a move
     /// </summary>
     /// <param name="d"></param>
-    void GlowDancer(Vector2 pos, string[] m)
+    void GlowDancer(Move move)
     {
+        var m = move.FoundMove();
+        var pos = move.origin;
         for (int i = 0; i < m.Length; i++)
         {
             for (int j = 0; j < m[i].Length; j++)
@@ -358,7 +361,7 @@ public class Board : MonoBehaviour
                 {
                     var offset = new Vector2(j, i);
                     if(!MovePaint.ContainsKey(pos + offset))
-                        MovePaint.Add(pos + offset, Color.red);   
+                        MovePaint.Add(pos + offset, move.Color);   
                 }
             }
         }
@@ -473,6 +476,17 @@ public class Board : MonoBehaviour
         return d;
     }
 
+    //Get dancer of a certain player
+    public Dancer GetDancer(Vector2 p, bool isp2)
+    {
+        Dancer d;
+        _Dancers.TryGetValue(p, out d);
+        if (d && d.Player == (isp2 ? Player2 : Player1))        
+            return d;
+        else
+            return null;
+    }
+
     private void RemoveDancer(Dancer d, Vector2 launchVec)
     {
         var key = GetDancerPos(d);
@@ -529,5 +543,36 @@ public class Board : MonoBehaviour
 
         Gizmos.DrawLine(new Vector3(0, 0, BoardH) - new Vector3(0.5f, 0, 0.5f), new Vector3(BoardW, 0, BoardH) - new Vector3(0.5f, 0, 0.5f));
         Gizmos.DrawLine(new Vector3(BoardW, 0, BoardH) - new Vector3(0.5f, 0, 0.5f), new Vector3(BoardW, 0, 0) - new Vector3(0.5f, 0, 0.5f));
+    }
+
+    //Moves here -- may move to XML/file read
+    void Conga(int range, int push, string[] move, Vector2 pos)
+    {
+        //Vertical conga
+        //Get just the tips (we only need one dancer for push to work)
+        Vector2 top = new Vector2(move.Length + pos.x, pos.y);
+        Vector2 bottom = pos;
+
+        Dancer dtop = null; //null if not found
+        Dancer dBot = null;
+
+        //find targets in range
+        for (int i = 0; i < range; i++)
+        {
+            if(!dtop) //top
+                dtop = GetDancer(pos + new Vector2(0, i),turn);
+
+            if (!dBot) //bot
+                dBot = GetDancer(pos - new Vector2(0, i),turn);
+        }
+
+        //Push
+        for(int i = 0; i < push; i++)
+        {
+            if (dtop)
+                Push(dtop, new Vector2(0, 1));
+            if (dBot)
+                Push(dtop, new Vector2(0, -1));
+        }
     }
 }
