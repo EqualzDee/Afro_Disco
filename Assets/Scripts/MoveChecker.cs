@@ -107,7 +107,7 @@ public class MoveChecker
                     found.SetFound(vec,j);
                     MovesFound.Add(found);
 
-                    //todo move filter here
+                    //todo move priority cleaner here
                 }
             }
         }

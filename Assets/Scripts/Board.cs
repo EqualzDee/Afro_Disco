@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Board : MonoBehaviour
 {
@@ -52,6 +53,15 @@ public class Board : MonoBehaviour
     //Paint layers: Colors here won't be overridden;
     private Dictionary<Vector2, Color> SelectedPaint = new Dictionary<Vector2, Color>();
     private Dictionary<Vector2, Color> MovePaint = new Dictionary<Vector2, Color>();
+
+    public Text TurnIndicator;
+
+    //Round timer
+    private float RoundTime = 60;
+    private float roundCountdown = 60;
+    public Text RoundTimerText;
+
+    List<Move> moveOriginList;
 
     void Start ()
     {
@@ -146,6 +156,14 @@ public class Board : MonoBehaviour
             _dancerSelected = null;
             _validPositions.Clear();
             SelectedPaint.Clear();
+        }
+
+        //Round timer
+        roundCountdown -= Time.deltaTime;
+        RoundTimerText.text = roundCountdown.ToString("00");
+        if (roundCountdown < 0)
+        {
+            EndTurn();
         }
     }
 
@@ -333,7 +351,7 @@ public class Board : MonoBehaviour
                 playerMaskedDancers.Add(d.Key,d.Value);
         }
 
-        List<Move> moveOriginList = CheckyBoy.CheckForMoves(playerMaskedDancers,BoardW,BoardH);
+        moveOriginList = CheckyBoy.CheckForMoves(playerMaskedDancers,BoardW,BoardH);
 
         //Glow valid moves
         foreach (Move m in moveOriginList)
@@ -380,6 +398,10 @@ public class Board : MonoBehaviour
 
         //Enable current player moving
         EnableMove(turn ? Player2 : Player1, true);
+
+        TurnIndicator.text = (turn ? "Player 2" : "Player 1") + "'s turn";
+
+        roundCountdown = RoundTime;
     }
 
     /// <summary>
@@ -394,10 +416,7 @@ public class Board : MonoBehaviour
             if (d.Value.Player == p)
             {
                 d.Value.canMove = canMOve;
-                if (!canMOve) //Update player with new move
-                {
-                    d.Value.StartRoundPos = d.Key;
-                }
+                d.Value.StartRoundPos = d.Key;
             }
         }
     }
@@ -545,13 +564,24 @@ public class Board : MonoBehaviour
         Gizmos.DrawLine(new Vector3(BoardW, 0, BoardH) - new Vector3(0.5f, 0, 0.5f), new Vector3(BoardW, 0, 0) - new Vector3(0.5f, 0, 0.5f));
     }
 
-    //Moves here -- may move to XML/file read
-    void Conga(int range, int push, string[] move, Vector2 pos)
+    public void TestConga()
+    {
+        foreach(Move m in moveOriginList)
+        {
+            if(m.MoveName.Contains("Conga"))
+            {
+                Conga(m.origin, 2, 2, m.FoundMove());
+            }
+        }
+    }
+
+    //Moves here -- may move to XML/file read/unity editor tool
+    void Conga(Vector2 pos, int range, int push, string[] move)
     {
         //Vertical conga
         //Get just the tips (we only need one dancer for push to work)
-        Vector2 top = new Vector2(move.Length + pos.x, pos.y);
-        Vector2 bottom = pos;
+        Vector2 top = new Vector2(pos.x, move.Length + pos.y);
+        Vector2 bottom = pos - new Vector2(0,1);
 
         Dancer dtop = null; //null if not found
         Dancer dBot = null;
@@ -560,10 +590,10 @@ public class Board : MonoBehaviour
         for (int i = 0; i < range; i++)
         {
             if(!dtop) //top
-                dtop = GetDancer(pos + new Vector2(0, i),turn);
+                dtop = GetDancer(top + new Vector2(0, i),!turn); //Look for enemies
 
             if (!dBot) //bot
-                dBot = GetDancer(pos - new Vector2(0, i),turn);
+                dBot = GetDancer(pos - new Vector2(0, i),!turn);
         }
 
         //Push
@@ -572,7 +602,7 @@ public class Board : MonoBehaviour
             if (dtop)
                 Push(dtop, new Vector2(0, 1));
             if (dBot)
-                Push(dtop, new Vector2(0, -1));
+                Push(dBot, new Vector2(0, -1));
         }
     }
 }
