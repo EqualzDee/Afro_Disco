@@ -369,7 +369,7 @@ public class Board : MonoBehaviour
     /// <param name="d"></param>
     void GlowDancer(Move move)
     {
-        var m = move.FoundMove();
+        var m = move.GetFoundMove();
         var pos = move.origin;
         for (int i = 0; i < m.Length; i++)
         {
@@ -402,6 +402,10 @@ public class Board : MonoBehaviour
         TurnIndicator.text = (turn ? "Player 2" : "Player 1") + "'s turn";
 
         roundCountdown = RoundTime;
+
+        //Reset move matching
+        MovePaint.Clear();
+        moveOriginList.Clear();
     }
 
     /// <summary>
@@ -564,21 +568,25 @@ public class Board : MonoBehaviour
         Gizmos.DrawLine(new Vector3(BoardW, 0, BoardH) - new Vector3(0.5f, 0, 0.5f), new Vector3(BoardW, 0, 0) - new Vector3(0.5f, 0, 0.5f));
     }
 
+    /// <summary>
+    /// Test conga, executes all congas
+    /// </summary>
     public void TestConga()
     {
         foreach(Move m in moveOriginList)
         {
             if(m.MoveName.Contains("Conga"))
             {
-                Conga(m.origin, 2, 2, m.FoundMove());
+                Conga(m.origin, 2, 2, m.GetFoundMove(), m.foundMoveCard);
             }
         }
     }
 
+    //TODO IMPLIMENT CARDINALITY
     //Moves here -- may move to XML/file read/unity editor tool
-    void Conga(Vector2 pos, int range, int push, string[] move)
+    void Conga(Vector2 pos, int range, int push, string[] move, Vector2 cardinality)
     {
-        //Vertical conga
+        //or top - left, bottom, right
         //Get just the tips (we only need one dancer for push to work)
         Vector2 top = new Vector2(pos.x, move.Length + pos.y);
         Vector2 bottom = pos - new Vector2(0,1);

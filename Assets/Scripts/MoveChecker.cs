@@ -22,64 +22,82 @@ public class MoveChecker
 
 
         //Crowd surf
-        var cs = new List<string[]>();
-        cs.Add(new string[]
+        var cs = new Move("Crowd Surf", Color.blue);
+        cs.AddPattern(new string[]
         {
             ".D.",
             "DDD",
-        });
+        }
+        ,new Vector2(0, -1)
+        );
 
-        cs.Add(new string[]
+        cs.AddPattern(new string[]
         {
-            "D..",
+            "..D",
             "DDD",
-            "D..",
-        });
+            "..D",
+        }
+        , new Vector2(1,0)
+        );
 
-        cs.Add(new string[]
+        cs.AddPattern(new string[]
        {
-            "..D",
-            "DDD",
-            "..D",
-       });
+             "DDD",
+             ".D.",
+       }
+       , new Vector2(0, -1)
+       );
 
-        cs.Add(new string[]
-      {
+        cs.AddPattern(new string[]
+        {
+            "D..",
             "DDD",
-            ".D.",
-      });
-        Moves.Add(new Move("Crowd Surf", Color.blue, cs));
+            "D..",
+        }
+        , new Vector2(-1, 0)
+        );
+
+        Moves.Add(cs);
+
 
         //Conga 3
-        var c3 = new List<string[]>();
-        c3.Add(new string[]
-      {
+        var c3 = new Move("Conga Line Lv.3", Color.green);
+        c3.AddPattern(new string[]
+        {
+            "DDD"
+        }
+        , new Vector2(1, 0)
+        );
+
+        c3.AddPattern(new string[]
+        {
             "D",
             "D",
             "D"
-      });
-
-        c3.Add(new string[]
-    {
-            "DDD",
-    });
-        Moves.Add(new Move("Conga Line Lv.3", Color.green, c3, 2));
+        }
+        , new Vector2(0, 1)
+        );
+        Moves.Add(c3);
 
 
         //Conga 2
-        var c2 = new List<string[]>();
-        c2.Add(new string[]
-      {
+        var c2 = new Move("Conga Line Lv.2", Color.green);
+        c3.AddPattern(new string[]
+        {
+            "DD"
+        }
+        , new Vector2(1, 0)
+        );
+
+        c3.AddPattern(new string[]
+        {
             "D",
             "D",
-      });
-
-        c2.Add(new string[]
-    {
-            "DD",
-    });
-        Moves.Add(new Move("Conga Line Lv.2", Color.green, c2, 1));
-
+            "D"
+        }
+        , new Vector2(0, 1)
+        );
+        Moves.Add(c2);
     }
 
     /// <summary>
@@ -95,16 +113,16 @@ public class MoveChecker
         //Loop through all moves to check them
         for (int i = 0; i < Moves.Count; i++)
         {
-            //Iterate each pattern in the move
-            for(int j = 0; j < Moves[i].Patterns.Count; j++)
+            foreach(KeyValuePair<Vector2,string[]> pat in Moves[i].Patterns)
             {
                 //find ALL the moves in a row
-                var MovesInRow = CheckMove(Rows, Moves[i].Patterns[j]);
-                foreach(Vector2 vec in MovesInRow)
+                var MovesInRow = CheckMove(Rows, pat.Value);
+
+                foreach (Vector2 vec in MovesInRow)
                 {
                     //now make a copy of each move and set the origin where we found it
-                    var found = new Move(Moves[i]); 
-                    found.SetFound(vec,j);
+                    var found = new Move(Moves[i]);
+                    found.SetFound(vec, pat.Key);
                     MovesFound.Add(found);
 
                     //todo move priority cleaner here

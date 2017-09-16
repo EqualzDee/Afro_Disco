@@ -7,20 +7,20 @@ using UnityEngine;
 /// </summary>
 public class Move
 {
-    public List<string[]> Patterns { get; private set; }
+    public Dictionary<Vector2, string[]> Patterns = new Dictionary<Vector2, string[]>();
     public Color Color { get; private set;}
     public string MoveName { get; private set; }
 
 
     //Instance variables
     public Vector2 origin { get; private set; }
-    private int foundMoveindex;
+    public Vector2 foundMoveCard { get; private set; }
     public int Priority { get; private set; }
 
     //Normal constructor
-    public Move(string name, Color col, List<string[]> paterns)
+    public Move(string name, Color col)
     {
-        Patterns = new List<string[]>(paterns); //Copy pasta list
+        //Patterns = new List<string[]>(paterns); //Copy pasta list
         Color = col;
         MoveName = name;
     }
@@ -29,7 +29,7 @@ public class Move
     //Priority constructor
     public Move(string name, Color col, List<string[]> paterns, int priority)
     {
-        Patterns = new List<string[]>(paterns); //Copy pasta list
+        //Patterns = new List<string[]>(paterns); //Copy pasta list
         Color = col;
         MoveName = name;
         Priority = priority;
@@ -38,7 +38,8 @@ public class Move
     //constructor for copying the object
     public Move(Move m)
     {
-        Patterns = new List<string[]>(m.Patterns);
+        //todo: fix
+        //Patterns = new List<string[]>(m.Patterns);
         Color = new Color(m.Color.r, m.Color.g, m.Color.b);
         MoveName = string.Copy(m.MoveName);
     }
@@ -48,14 +49,26 @@ public class Move
     /// </summary>
     /// <param name="v"></param>
     /// <param name="index"></param>
-    public void SetFound(Vector2 v, int index)
+    public void SetFound(Vector2 Origin, Vector2 cardinality)
     {
-        origin = v;
-        foundMoveindex = index;
+        origin = Origin;
+        foundMoveCard = cardinality;
     }
 
-    public string[] FoundMove()
+
+    public void AddPattern(string[] pat, Vector2 cardinality)
     {
-        return Patterns[foundMoveindex];
+        Patterns.Add(cardinality, pat);
+    }
+
+    /// <summary>
+    /// Get the found move from this move instance, returns null if not found
+    /// </summary>
+    /// <returns></returns>
+    public string[] GetFoundMove()
+    {
+        string[] a = null;
+        Patterns.TryGetValue(foundMoveCard,out a);
+        return a;
     }
 }
