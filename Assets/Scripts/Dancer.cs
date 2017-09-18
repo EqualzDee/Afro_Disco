@@ -130,13 +130,13 @@ public class Dancer : MonoBehaviour
     /// </summary>
     public void KnockOut(Vector2 launchVec)
     {
-        //_RB.constraints = RigidbodyConstraints.None;
-        //_RB.AddForce(new Vector3(launchVec.x, 0, launchVec.y)*300);
-        //_RB.AddTorque(Random.rotation.eulerAngles*1000);
+        _RB.constraints = RigidbodyConstraints.None;
+        _RB.AddForce(new Vector3(launchVec.x, 0, launchVec.y)*300);
+        _RB.AddTorque(Random.rotation.eulerAngles*1000);
 
         isDancing = false;
         //Rag doll!
-        EnableRagdoll(true);
+        //EnableRagdoll(true);
         _myAnimator.StopPlayback();
         //Destroy(gameObject, 3);
 

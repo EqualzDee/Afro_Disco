@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
@@ -60,6 +61,8 @@ public class Board : MonoBehaviour
     private float RoundTime = 60;
     private float roundCountdown = 60;
     public Text RoundTimerText;
+
+    public bool debugMode;
 
     List<Move> moveOriginList = new List<Move>();
 
@@ -150,7 +153,7 @@ public class Board : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, 999, moverLayer))
                 {
                     Vector2 hitBoardPos = new Vector2(hit.transform.position.x, hit.transform.position.z);
-                    if (_validPositions.ContainsKey(hitBoardPos))
+                    if (_validPositions.ContainsKey(hitBoardPos) || debugMode)
                         Move(_dancerSelected, hitBoardPos);
                     //Push(_dancerSelected, hitBoardPos - GetDancerPos(_dancerSelected));
                 }
@@ -334,9 +337,9 @@ public class Board : MonoBehaviour
 
         if (InBounds(EndPos) && _Dancers.TryGetValue(EndPos, out pushDancer)) //If next space is full
         {
+            d.Stumble();
             Push(pushDancer, delta);
             Move(d, EndPos);
-            d.Stumble();
         }
         else //Space is free or we've reached the end of the board
         {
@@ -363,7 +366,7 @@ public class Board : MonoBehaviour
                 playerMaskedDancers.Add(d.Key,d.Value);
         }
 
-        moveOriginList = CheckyBoy.CheckForMoves(playerMaskedDancers,BoardW,BoardH);
+        moveOriginList = CheckyBoy.CheckForMoves(playerMaskedDancers,BoardW,BoardH + 1);
 
         //Glow valid moves
         foreach (Move m in moveOriginList)
@@ -418,6 +421,8 @@ public class Board : MonoBehaviour
         //Reset move matching
         MovePaint.Clear();
         moveOriginList.Clear();
+
+        MoveCheck();
     }
 
     /// <summary>
@@ -589,7 +594,7 @@ public class Board : MonoBehaviour
         {
             if(m.MoveName.Contains("Conga"))
             {
-                Conga(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
+                Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
             }
         }
     }
@@ -606,29 +611,24 @@ public class Board : MonoBehaviour
     }
 
     //Moves here -- WHAT IS OO DESIGN ANYWAY?
-    void Conga(Vector2 pos, int range, int push, string[] move, Vector2 cardinality)
+    [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
+    void Conga(Vector2 pos, int range, int push, Vector2 cardinality)
     {
-        //or top - left, bottom, right
-        //Get just the tips (we only need one dancer for push to work)
+        //Get just the tips
         Vector2 top;
-        if (cardinality.y > 0)
-            top = new Vector2(pos.x, move.Length + pos.y);
-        else
-            top = new Vector2(move[0].Length + pos.x, pos.y);
-
-        Vector2 bottom = pos - new Vector2(0,1);
+        top = (cardinality* (range - 1)) + pos;    //Assumes range = length of line
 
         Dancer dtop = null; //null if not found
         Dancer dBot = null;
 
-        //find targets in range (only one)
-        for (int i = 0; i < range; i++)
+        //find targets in range (only one since that's all we need for push to work)
+        for (int i = 1; i < range + 1; i++)
         {
-            if(!dtop) //top
+            if(!dtop) //top                
                 dtop = GetDancer(top + (cardinality * i),!turn); //Look for enemies
 
             if (!dBot) //bot
-                dBot = GetDancer(bottom - (cardinality * i), !turn);
+                dBot = GetDancer(pos - (cardinality * i), !turn);
         }
 
         //Push
@@ -646,7 +646,7 @@ public class Board : MonoBehaviour
     {
         //First we need to find the firing point
         //To do this we subtract the cardinality from the position of A
-        //So get the pos of A
+        //So first get the pos of A
         Vector2 APos = Vector2.zero;
         for(int i = 0; i < move.Length; i++)
             for (int j = 0; j < move[i].Length; j++)
@@ -657,19 +657,20 @@ public class Board : MonoBehaviour
                 }
             }
 
-        Vector2 firingPoint = (APos - cardinality) + pos; //firing position in board space
+        var localFire = APos - cardinality; //now find where we fire from 
+        Vector2 firingPoint = localFire + pos; //Convert to board space
+
+        //Find the direction the move is facing since cardinality is the push direction
+        //To do this, get the 2d cross product (perpendicular vector)
+        Vector2 facing = new Vector2(cardinality.y, -cardinality.x);
+
+        //This might be wrong depending on the move, but we can tell it's valid
+        //by checking if a dancer is below the firing pos
+        if (GetDancer(firingPoint + facing, turn))
+            facing = -facing; //if invalid flip direction
 
         //Now find a dancer in range (Starting at the furtherest range and going in)
         Dancer d = null;
-
-        //Find the direcion the move is facing since cardinality is the push direction
-        //To do this, get the 2d corss product (get the perpendicular vector)
-        Vector2 facing = new Vector2(cardinality.y, -cardinality.x);
-
-        //if the facing position is valid, the move is NOT valid, if not flip it
-        if (facing.y < move[1].Length && facing.x < move.Length)
-            facing = -facing;
-
         for (int i = range; i > 0; i--)
         {
             Vector2 searchPos = firingPoint + (facing*i);

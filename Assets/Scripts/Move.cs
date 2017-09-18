@@ -32,10 +32,12 @@ public class Move : IComparable<Move>
 
 
     //Priority constructor
-    public Move(string name, Color col, int priority)
-    {        
+    public Move(string name, Color col, int range, int pushPower, int priority)
+    {
         Color = col;
         MoveName = name;
+        PushPower = pushPower;
+        Range = range;
         Priority = priority;
     }
 

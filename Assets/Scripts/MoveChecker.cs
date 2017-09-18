@@ -17,7 +17,8 @@ public class MoveChecker
     public MoveChecker()
     {
         //MOVES GO HERE
-        //. will match anything (ie empty space)
+        //. will match anything (ie empty space)    
+        //_ will match only a blank space    
         //D will match any dancer (ie any letter)
         //A will match main dancer
 
@@ -124,7 +125,7 @@ public class MoveChecker
                 "D.",
                 ".D"
             }
-            , new Vector2(0, 1)
+            , new Vector2(0, -1)
         );
 
         b1A.AddPattern(new string[]
@@ -133,7 +134,7 @@ public class MoveChecker
                 ".D",
                 "A."
           }
-          , new Vector2(0, -1)
+          , new Vector2(0, 1)
       );
         Moves.Add(b1A);
 
@@ -161,7 +162,7 @@ public class MoveChecker
                 "D.",
                 ".A"
             }
-            , new Vector2(0, -1)
+            , new Vector2(0, 1)
         );
 
         b1B.AddPattern(new string[]
@@ -170,7 +171,7 @@ public class MoveChecker
                 ".D",
                 "D."
           }
-          , new Vector2(0, 1)
+          , new Vector2(0, -1)
       );
         Moves.Add(b1B);
     }
@@ -203,21 +204,35 @@ public class MoveChecker
             }
         }
 
-        //Move priority filter DOESN'T WORK LOL
-        MovesFound.Sort(); //Avoid a nested loop by sorting
-        for(int i = 0; i < MovesFound.Count - 1; i++)
-        {
-            var m1 = MovesFound[i];
-            var m2 = MovesFound[i + 1];
-            if (m1.origin == m2.origin)
-            {
-                if (m1.Priority > m2.Priority)
-                    MovesFound.RemoveAt(i + 1);
-                else if (m1.Priority < m2.Priority)
-                    MovesFound.RemoveAt(i);
-            }
-        }
+        //Move priority filter
+        //Iterate in reverse to avoid out of range when removing
+        //if (MovesFound.Count != 0)
+        //{
+        //    for (int i = MovesFound.Count - 1; i >= 0; i--)
+        //    {
+        //        for (int j = MovesFound.Count - 1; j >= 0; j--)
+        //        {
+        //            var m1 = MovesFound[i];
+        //            var m2 = MovesFound[j];
+        //            if (m1.origin == m2.origin)
+        //            {
+        //                if (m1.Priority > m2.Priority)
+        //                    MovesFound.RemoveAt(i);
+        //                else if (m1.Priority < m2.Priority)
+        //                    MovesFound.RemoveAt(i);
+        //            }
+        //        }
+        //    }
+        //}
+        //tHiS wOn'T dO
 
+        //judo-code
+        //double looparino moves found
+        //find moves of the same type         
+        //iterate the pattern like in glow tiles
+        //delete any moves of lower priority
+        //????
+        //profit
 
         return MovesFound;
     }
@@ -244,7 +259,7 @@ public class MoveChecker
                 //Find all potential starts in row with regex
                 List<int> PotentialStartsRegex = new List<int>();
 
-                string reg = Move[rowsRight].Replace("D","\\w"); //replace D with match any word character
+                string reg = Move[rowsRight].Replace("D", "\\w"); //replace D with match any word character
                 Regex regexObj = new Regex(reg);
                 Match matchObj = regexObj.Match(Rows[i]);
                 while (matchObj.Success)
@@ -266,7 +281,7 @@ public class MoveChecker
                         //Also iterate up the list
                         //Also this wastes one loop cycle here but eh
                         var substring = Rows[i + rowsRight].Substring((int) moveStart.x, moveWidth);
-                        string reg2 = Move[rowsRight].Replace("D", "\\w"); ;
+                        string reg2 = Move[rowsRight].Replace("D", "\\w");
                         Match m2 = Regex.Match(substring, reg2);
                         var match = m2.Success; 
                         
