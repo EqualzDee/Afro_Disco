@@ -10,12 +10,10 @@ public class Dancer : MonoBehaviour
     private Vector3 _target;
     private Rigidbody _RB;
 
-
-    public float _switchInterval = 1;
+    public bool IsLead { get; private set; }
+    
     public float noiseFactor = 0.2f;
-    private Vector3 rand;
-   
-    private float _switchTime;
+    private Vector3 rand;    
 
     public bool canMove = false;
 
@@ -25,16 +23,20 @@ public class Dancer : MonoBehaviour
 
     bool isDancing = true; //is Alive basically
 
+    private Animator _myAnimator;
+
+    public CapsuleCollider myCollider;
+
 
     /// <summary>
-    /// Called on spawn
+    /// Initalize dancer to board
     /// </summary>
     /// <param name="pos">My start pos</param>
     /// <param name="b">The controlling board</param>
     public void Initialize(Vector2 pos)
     {
         StartRoundPos = pos;
-        _target = new Vector3(pos.x,0,pos.y);        
+        _target = new Vector3(pos.x,0,pos.y);    
     }
 
 	// Use this for initialization
@@ -42,11 +44,27 @@ public class Dancer : MonoBehaviour
 	{
 	    _RB = GetComponent<Rigidbody>();
 	    StartRoundPos = new Vector2((int)transform.position.x, (int)transform.position.z);
-	    _switchTime = Time.time + _switchTime;
+
+	    _myAnimator = GetComponentInChildren<Animator>();
+        _myAnimator.enabled = false;
+
+	    Invoke("animOffset", Random.Range(0f, 0.2f));
+
+        //Disable rag doll colliders
+        EnableRagdoll(false);
+
+        //Set random offset for collider to prevent weird collisions    
+        myCollider.transform.position += new Vector3(Random.Range(-0.1f, 0.1f), 0,
+            Random.Range(-0.1f, 0.1f)); 
 
         //Listen to the beet mon
         AudioMan.OnBeat += Groove;
 	}
+
+    void animOffset()
+    {
+        _myAnimator.enabled = true;
+    }
 	
 	// Update is called once per frame
 	void Update ()
@@ -91,6 +109,7 @@ public class Dancer : MonoBehaviour
 
     /// <summary>
     /// Gets the dancer's board pos from WORLD pos, not board
+    /// only use this if you have to
     /// </summary>
     /// <returns></returns>
     public Vector2 GetPosition()
@@ -111,12 +130,57 @@ public class Dancer : MonoBehaviour
     /// </summary>
     public void KnockOut(Vector2 launchVec)
     {
-        _RB.constraints = RigidbodyConstraints.None;
-        _RB.AddForce(new Vector3(launchVec.x, 0, launchVec.y)*300);
-        _RB.AddTorque(Random.rotation.eulerAngles*1000);
-        isDancing = false;
-        Destroy(gameObject, 3);
+        //_RB.constraints = RigidbodyConstraints.None;
+        //_RB.AddForce(new Vector3(launchVec.x, 0, launchVec.y)*300);
+        //_RB.AddTorque(Random.rotation.eulerAngles*1000);
 
+        isDancing = false;
+        //Rag doll!
+        EnableRagdoll(true);
+        _myAnimator.StopPlayback();
+        //Destroy(gameObject, 3);
+
+    }
+
+    /// <summary>
+    /// Set this dancer as lead (only 1 per team) (NOT VALIDATED!!!!)
+    /// </summary>
+    /// <param name="b"></param>
+    public void SetLead(bool b)
+    {
+        IsLead = true;
+    }
+
+    //Animation to play when pushed
+    public void Stumble()
+    {
+        _myAnimator.SetTrigger("Stumble");
+    }
+
+
+    //When a dancer brushes this dancer, play shove animation
+    void OnCollisionEnter(Collision c)
+    {
+        if (c.collider.tag == "Dancer" && !_selected)
+        {            
+            _myAnimator.SetTrigger("Shove");
+        }
+    }
+
+    void EnableRagdoll(bool b)
+    {
+        //Rag doll!
+        foreach (Rigidbody r in GetComponentsInChildren<Rigidbody>())
+        {
+            r.isKinematic = !b;
+        }
+        foreach (Collider c in GetComponentsInChildren<Collider>())
+        {
+            c.enabled = b;
+        }
+
+        myCollider.enabled = !b;
+        _RB.isKinematic = b;
     }
 
 }

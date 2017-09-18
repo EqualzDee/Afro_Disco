@@ -61,7 +61,7 @@ public class Board : MonoBehaviour
     private float roundCountdown = 60;
     public Text RoundTimerText;
 
-    List<Move> moveOriginList;
+    List<Move> moveOriginList = new List<Move>();
 
     void Start ()
     {
@@ -106,8 +106,18 @@ public class Board : MonoBehaviour
             dancer.Initialize(v);
             dancerObj.name = "Dancer " + i;
 
-            //PLS REMOVE DIS
-            dancerObj.GetComponentInChildren<MeshRenderer>().material.color = p == Player1 ? Color.red : Color.magenta;
+            //PLS REMOVE DIS WHEN WE GET MODELS
+            //dancerObj.GetComponentInChildren<MeshRenderer>().material.color = p == Player1 ? Color.red : Color.magenta;
+
+            dancerObj.transform.localRotation = p == Player1 ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
+
+            if (i == 2)
+            {
+                dancer.SetLead(true);
+                dancerObj.GetComponentInChildren<MeshRenderer>().material.color = p == Player1
+                    ? Color.yellow
+                    : Color.gray;
+            }
         }
     }
 	
@@ -326,9 +336,11 @@ public class Board : MonoBehaviour
         {
             Push(pushDancer, delta);
             Move(d, EndPos);
+            d.Stumble();
         }
         else //Space is free or we've reached the end of the board
         {
+            d.Stumble();
             Move(d, EndPos);
         }
 
@@ -577,18 +589,33 @@ public class Board : MonoBehaviour
         {
             if(m.MoveName.Contains("Conga"))
             {
-                Conga(m.origin, 2, 2, m.GetFoundMove(), m.foundMoveCard);
+                Conga(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
             }
         }
     }
 
-    //TODO IMPLIMENT CARDINALITY
-    //Moves here -- may move to XML/file read/unity editor tool
+    public void TestBoogaloo()
+    {
+        foreach (Move m in moveOriginList)
+        {
+            if (m.MoveName.Contains("Boogaloo"))
+            {
+                Boogaloo(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
+            }
+        }
+    }
+
+    //Moves here -- WHAT IS OO DESIGN ANYWAY?
     void Conga(Vector2 pos, int range, int push, string[] move, Vector2 cardinality)
     {
         //or top - left, bottom, right
         //Get just the tips (we only need one dancer for push to work)
-        Vector2 top = new Vector2(pos.x, move.Length + pos.y);
+        Vector2 top;
+        if (cardinality.y > 0)
+            top = new Vector2(pos.x, move.Length + pos.y);
+        else
+            top = new Vector2(move[0].Length + pos.x, pos.y);
+
         Vector2 bottom = pos - new Vector2(0,1);
 
         Dancer dtop = null; //null if not found
@@ -598,19 +625,65 @@ public class Board : MonoBehaviour
         for (int i = 0; i < range; i++)
         {
             if(!dtop) //top
-                dtop = GetDancer(top + new Vector2(0, i),!turn); //Look for enemies
+                dtop = GetDancer(top + (cardinality * i),!turn); //Look for enemies
 
             if (!dBot) //bot
-                dBot = GetDancer(pos - new Vector2(0, i),!turn);
+                dBot = GetDancer(bottom - (cardinality * i), !turn);
         }
 
         //Push
         for(int i = 0; i < push; i++)
         {
             if (dtop)
-                Push(dtop, new Vector2(0, 1));
+                Push(dtop, cardinality);
             if (dBot)
-                Push(dBot, new Vector2(0, -1));
+                Push(dBot, -cardinality);
+        }
+    }
+
+
+    void Boogaloo(Vector2 pos, int range, int push, string[] move, Vector2 cardinality)
+    {
+        //First we need to find the firing point
+        //To do this we subtract the cardinality from the position of A
+        //So get the pos of A
+        Vector2 APos = Vector2.zero;
+        for(int i = 0; i < move.Length; i++)
+            for (int j = 0; j < move[i].Length; j++)
+            {
+                if (move[i][j] == 'A')
+                {
+                    APos = new Vector2(j, i);
+                }
+            }
+
+        Vector2 firingPoint = (APos - cardinality) + pos; //firing position in board space
+
+        //Now find a dancer in range (Starting at the furtherest range and going in)
+        Dancer d = null;
+
+        //Find the direcion the move is facing since cardinality is the push direction
+        //To do this, get the 2d corss product (get the perpendicular vector)
+        Vector2 facing = new Vector2(cardinality.y, -cardinality.x);
+
+        //if the facing position is valid, the move is NOT valid, if not flip it
+        if (facing.y < move[1].Length && facing.x < move.Length)
+            facing = -facing;
+
+        for (int i = range; i > 0; i--)
+        {
+            Vector2 searchPos = firingPoint + (facing*i);
+            d = GetDancer(searchPos, !turn);
+            if (d) break; //if we found dancer
+        }
+
+        //Now pushy pushy
+        if (d)
+        {
+            for (int i = 0; i < push; i++)
+            {
+                Push(d, cardinality);
+            }
         }
     }
 }

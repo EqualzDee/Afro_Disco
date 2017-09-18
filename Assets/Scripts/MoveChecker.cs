@@ -2,27 +2,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
-//using NUnit.Framework;
 using UnityEngine;
 
+
+/// <summary>
+/// Contains methods for 2d pattern searching
+/// Also sets up available moves in constructor
+/// todo make singleton
+/// </summary>
 public class MoveChecker
 {
-    //private string[][,] Moves = new string[1][,];
-    private List<Move> Moves = new List<Move>();
-    private string[] MoveNames;    
+    private readonly List<Move> Moves = new List<Move>();
     
-
-    //Constructa (man it's been a while since I've seen one of those in unity)
     public MoveChecker()
     {
         //MOVES GO HERE
         //. will match anything (ie empty space)
-        //D will match any dancer
-        //A will match main dancer(todo)
+        //D will match any dancer (ie any letter)
+        //A will match main dancer
 
 
         //Crowd surf
-        var cs = new Move("Crowd Surf", Color.blue);
+        var cs = new Move("Crowd Surf", Color.blue, 0,3);
         cs.AddPattern(new string[]
         {
             ".D.",
@@ -45,7 +46,7 @@ public class MoveChecker
              "DDD",
              ".D.",
        }
-       , new Vector2(0, -1)
+       , new Vector2(0, 1)
        );
 
         cs.AddPattern(new string[]
@@ -61,7 +62,7 @@ public class MoveChecker
 
 
         //Conga 3
-        var c3 = new Move("Conga Line Lv.3", Color.green);
+        var c3 = new Move("Conga Line Lv.3", Color.green, 3, 2);
         c3.AddPattern(new string[]
         {
             "DDD"
@@ -81,23 +82,97 @@ public class MoveChecker
 
 
         //Conga 2
-        var c2 = new Move("Conga Line Lv.2", Color.green);
-        c3.AddPattern(new string[]
+        var c2 = new Move("Conga Line Lv.2", Color.green,2,2);
+        c2.AddPattern(new string[]
         {
             "DD"
         }
         , new Vector2(1, 0)
         );
 
-        c3.AddPattern(new string[]
+        c2.AddPattern(new string[]
         {
             "D",
             "D",
-            "D"
         }
         , new Vector2(0, 1)
         );
         Moves.Add(c2);
+
+
+        //Boogaloo 1 (Type A)
+        var b1A = new Move("Boogaloo Lv.1 A", new Color(0.29f, 0, 0.66f),1,3);
+        b1A.AddPattern(new string[]
+            {
+                "A.D",
+                ".D.",
+            }
+            , new Vector2(-1, 0)
+        );
+
+        b1A.AddPattern(new string[]
+            {
+                ".D.",
+                "D.A",
+            }
+            , new Vector2(1, 0)
+        );
+
+        b1A.AddPattern(new string[]
+            {
+                ".A",
+                "D.",
+                ".D"
+            }
+            , new Vector2(0, 1)
+        );
+
+        b1A.AddPattern(new string[]
+          {
+                "D.",
+                ".D",
+                "A."
+          }
+          , new Vector2(0, -1)
+      );
+        Moves.Add(b1A);
+
+        //Boogaloo 1 (Type B)
+        var b1B = new Move("Boogaloo Lv.1 B", new Color(0.29f, 0, 0.66f),1,3);
+        b1B.AddPattern(new string[]
+            {
+                "D.A",
+                ".D.",
+            }
+            , new Vector2(1, 0)
+        );
+
+        b1B.AddPattern(new string[]
+            {
+                ".D.",
+                "A.D",
+            }
+            , new Vector2(-1, 0)
+        );
+
+        b1B.AddPattern(new string[]
+            {
+                ".D",
+                "D.",
+                ".A"
+            }
+            , new Vector2(0, -1)
+        );
+
+        b1B.AddPattern(new string[]
+          {
+                "A.",
+                ".D",
+                "D."
+          }
+          , new Vector2(0, 1)
+      );
+        Moves.Add(b1B);
     }
 
     /// <summary>
@@ -124,11 +199,25 @@ public class MoveChecker
                     var found = new Move(Moves[i]);
                     found.SetFound(vec, pat.Key);
                     MovesFound.Add(found);
-
-                    //todo move priority cleaner here
                 }
             }
         }
+
+        //Move priority filter DOESN'T WORK LOL
+        MovesFound.Sort(); //Avoid a nested loop by sorting
+        for(int i = 0; i < MovesFound.Count - 1; i++)
+        {
+            var m1 = MovesFound[i];
+            var m2 = MovesFound[i + 1];
+            if (m1.origin == m2.origin)
+            {
+                if (m1.Priority > m2.Priority)
+                    MovesFound.RemoveAt(i + 1);
+                else if (m1.Priority < m2.Priority)
+                    MovesFound.RemoveAt(i);
+            }
+        }
+
 
         return MovesFound;
     }
@@ -155,8 +244,8 @@ public class MoveChecker
                 //Find all potential starts in row with regex
                 List<int> PotentialStartsRegex = new List<int>();
 
-                //Match m = Regex.Match(reg, Move[rowsRight]);
-                Regex regexObj = new Regex(Move[rowsRight]);
+                string reg = Move[rowsRight].Replace("D","\\w"); //replace D with match any word character
+                Regex regexObj = new Regex(reg);
                 Match matchObj = regexObj.Match(Rows[i]);
                 while (matchObj.Success)
                 {
@@ -177,7 +266,8 @@ public class MoveChecker
                         //Also iterate up the list
                         //Also this wastes one loop cycle here but eh
                         var substring = Rows[i + rowsRight].Substring((int) moveStart.x, moveWidth);
-                        Match m2 = Regex.Match(substring, Move[rowsRight]);
+                        string reg2 = Move[rowsRight].Replace("D", "\\w"); ;
+                        Match m2 = Regex.Match(substring, reg2);
                         var match = m2.Success; 
                         
                         if (match && rowsRight + i + 1 < Rows.Length) //if match is in bounds
@@ -207,14 +297,6 @@ public class MoveChecker
 
     private string[] ToStringArray(Dictionary<Vector2, Dancer> board, int boardW, int boardH)
     {
-        //Make dancer array
-        bool[,] dancers = new bool[boardH,boardW];
-        foreach (KeyValuePair<Vector2, Dancer> d in board)
-        {
-            var pos = d.Key;
-            dancers[(int)pos.y,(int)pos.x] = true;
-        }
-
         //Initalize string array with dancers
         string[] stringBoard = new string[boardH];
         for (int i = 0; i < boardH; i++)
@@ -222,30 +304,19 @@ public class MoveChecker
             string row = "";
             for (int j = 0; j < boardW; j++)
             {
-                if (dancers[i,j])
-                    row += "D";
-                else
+                Dancer d = null;
+                board.TryGetValue(new Vector2(j, i), out d); //get dancer at pos
+
+                if(!d)
                     row += ".";
+                else if (d.IsLead)
+                    row += "A";
+                else if (d)
+                    row += "D";
+                
             }
             stringBoard[i] = row;
         }
         return stringBoard;
     }
-
-    private string ConvertMoveToRegex(string s)
-    {
-        string SReturn = s;
-        int lineCount = 0;
-        while (lineCount < s.Length)
-        {
-            int index = s.IndexOf(".", lineCount);
-            if (index != -1)
-            {
-                SReturn = SReturn.Insert(index, "\\");
-                lineCount = index;
-            }
-        }
-        return SReturn;
-    }
-
 }
