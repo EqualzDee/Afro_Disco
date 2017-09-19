@@ -63,7 +63,7 @@ public class MoveChecker
 
 
         //Conga 3
-        var c3 = new Move("Conga Line Lv.3", Color.green, 3, 2);
+        var c3 = new Move("Conga Line Lv.3", Color.green * 0.5f, 3, 2,5);
         c3.AddPattern(new string[]
         {
             "DDD"
@@ -102,7 +102,7 @@ public class MoveChecker
 
 
         //Boogaloo 1 (Type A)
-        var b1A = new Move("Boogaloo Lv.1 A", new Color(0.29f, 0, 0.66f),1,3);
+        var b1A = new Move("Boogaloo Lv.1 A", new Color(0.29f, 0, 0.66f),1,3,8);
         b1A.AddPattern(new string[]
             {
                 "A.D",
@@ -139,7 +139,7 @@ public class MoveChecker
         Moves.Add(b1A);
 
         //Boogaloo 1 (Type B)
-        var b1B = new Move("Boogaloo Lv.1 B", new Color(0.29f, 0, 0.66f),1,3);
+        var b1B = new Move("Boogaloo Lv.1 B", new Color(0.29f, 0, 0.66f),1,3,8);
         b1B.AddPattern(new string[]
             {
                 "D.A",
@@ -174,6 +174,85 @@ public class MoveChecker
           , new Vector2(0, -1)
       );
         Moves.Add(b1B);
+
+
+        //Boogaloo 2 (Type A)
+        var b2A = new Move("Boogaloo Lv.1 A", new Color(0.29f, 0, 0.66f), 2, 3,9);
+        b2A.AddPattern(new string[]
+            {
+                "A.D",
+                ".D.",
+                ".D."
+            }
+            , new Vector2(-1, 0)
+        );
+
+        b2A.AddPattern(new string[]
+            {
+                ".D.",
+                ".D.",
+                "D.A",
+            }
+            , new Vector2(1, 0)
+        );
+
+        b2A.AddPattern(new string[]
+            {
+                "..A",
+                "DD.",
+                "..D"
+            }
+            , new Vector2(0, -1)
+        );
+
+        b2A.AddPattern(new string[]
+          {
+                "D..",
+                ".DD",
+                "A.."
+          }
+          , new Vector2(0, 1)
+      );
+        Moves.Add(b2A);
+
+        //Boogaloo 2 (Type B)
+        var b2B = new Move("Boogaloo Lv.1 B", new Color(0.29f, 0, 0.66f), 2, 3,9);
+        b2B.AddPattern(new string[]
+            {
+                "D.A",
+                ".D.",
+                ".D."
+            }
+            , new Vector2(1, 0)
+        );
+
+        b2B.AddPattern(new string[]
+            {
+                ".D.",
+                ".D.",
+                "A.D",
+            }
+            , new Vector2(-1, 0)
+        );
+
+        b2B.AddPattern(new string[]
+            {
+                "..D",
+                "DD.",
+                "..A"
+            }
+            , new Vector2(0, 1)
+        );
+
+        b2B.AddPattern(new string[]
+          {
+                "A..",
+                ".DD",
+                "D.."
+          }
+          , new Vector2(0, -1)
+      );
+        Moves.Add(b2B);
     }
 
     /// <summary>

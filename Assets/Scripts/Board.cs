@@ -64,6 +64,18 @@ public class Board : MonoBehaviour
 
     public bool debugMode;
 
+
+    //FOR PROTOTYPE
+    public Button conga;
+    public Button boogaloo;
+
+
+    public GameObject Afro;
+    public GameObject AfroBackup;
+
+    public GameObject Rock;
+    public GameObject RockBackup;
+
     List<Move> moveOriginList = new List<Move>();
 
     void Start ()
@@ -101,7 +113,17 @@ public class Board : MonoBehaviour
         for (int i = 0; i < 5; i++)
         {
             var v = new Vector2(1 + i, yOffset);
-            var dancerObj = Instantiate(DancerPrefab, new Vector3(v.x, 0, v.y), Quaternion.identity);
+
+            GameObject dancerObj;
+            if (i == 2) //hackjob for prototype
+            {
+                dancerObj = Instantiate(p == Player1 ? Afro : Rock, new Vector3(v.x, 0, v.y), Quaternion.identity);
+            }
+            else //backup
+            {
+                dancerObj = Instantiate(p == Player1 ? AfroBackup : RockBackup, new Vector3(v.x, 0, v.y), Quaternion.identity);
+            }
+
             var dancer = dancerObj.GetComponent<Dancer>();
 
             dancer.Player = p;
@@ -369,6 +391,7 @@ public class Board : MonoBehaviour
         moveOriginList = CheckyBoy.CheckForMoves(playerMaskedDancers,BoardW,BoardH + 1);
 
         //Glow valid moves
+        moveOriginList.Sort();
         foreach (Move m in moveOriginList)
         {    
             Debug.Log(m.origin);
@@ -423,6 +446,9 @@ public class Board : MonoBehaviour
         moveOriginList.Clear();
 
         MoveCheck();
+
+        conga.interactable = true;
+        boogaloo.interactable = true;
     }
 
     /// <summary>
@@ -564,6 +590,7 @@ public class Board : MonoBehaviour
             foreach (Material m in Tiles)
             {
                 m.SetColor("_Color",current);
+                //m.SetColor("_EmissionColor", current * 0.5f);
             }
 
             elapsedTime += Time.deltaTime;
@@ -595,6 +622,7 @@ public class Board : MonoBehaviour
             if(m.MoveName.Contains("Conga"))
             {
                 Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
+                conga.interactable = false;
             }
         }
     }
@@ -606,6 +634,7 @@ public class Board : MonoBehaviour
             if (m.MoveName.Contains("Boogaloo"))
             {
                 Boogaloo(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
+                boogaloo.interactable = false;
             }
         }
     }

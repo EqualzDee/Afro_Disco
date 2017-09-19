@@ -94,16 +94,17 @@ public class Move : IComparable<Move>
     //Implement the comparable interface so we can sort easily in lists
     public int CompareTo(Move other)
     {
-        var v1 = origin;
-        var v2 = other.origin;
+        //return Priority.CompareTo(other.Priority);
+        return other.Priority.CompareTo(Priority);
 
-        if (v1.x < v2.x && v1.y < v2.y)
-            return -1;
-        if (v1.x == v2.x && v1.y == v2.y)
-            return 0;
-        if (v1.x > v2.x && v1.y > v2.y)
-            return 1;
+        //var v1 = origin;
+        //var v2 = other.origin;
 
-        return 0;
+        //if (v1.x < v2.x && v1.y < v2.y)
+        //    return -1;
+        //if (v1.x == v2.x && v1.y == v2.y)
+        //    return 0;
+        //if (v1.x > v2.x && v1.y > v2.y)
+        //    return 1;
     }
 }
