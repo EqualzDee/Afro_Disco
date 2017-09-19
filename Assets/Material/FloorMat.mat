@@ -79,4 +79,4 @@ Material:
     m_Colors:
     - <noninit>: {r: 0, g: 9.4072104e-35, b: 0, a: 9.4071736e-35}
     - _Color: {r: 0, g: 0.43382353, b: 0.038894415, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0.63235295, g: 0.63235295, b: 0.63235295, a: 1}
