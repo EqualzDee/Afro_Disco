@@ -1,0 +1,18 @@
+Funky Chicken
+	AB...E
+	
+	Pull enemy 3 spaces towards backup
+
+Stayin' Alive
+	|BB
+
+	| = edge of map
+	Move 3 spaces right
+
+Hustle
+	B
+	 B
+	B
+	
+	Move 2 spaces right
+	Move 1 extra space for each dancer you've lost

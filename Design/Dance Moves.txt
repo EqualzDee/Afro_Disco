@@ -1,0 +1,122 @@
+# Electric Boogaloo
+# Dance Moves
+
+All Moves can be reflected on either axis and/or rotated any multiple of 90 degrees
+
+Eras
+	Pop
+		"Neutral"
+		Can be use in any era
+		Standard set of Moves
+		No specific mechanics
+	Disco
+		Livin' on the edge
+	Rock
+		Mass movement
+	Hip Hop
+		Pinching enemy units
+	Swing
+		TODO: Mechanical theme
+
+Key
+	  Anything
+	_ Anything (showing distance)
+	A Lead dancer
+	D Any friendly dancer
+	* Target
+	E Enemy
+	- Any number of spaces
+
+Pop
+	Conga Line
+		**AA**  OR  ***AAA***  OR  ****AAAA****  OR  *****AAAAA*****
+		Launch enemies away 2 spaces
+		Hits all enemies within X spaces in a line out from each end, X is the number of dancers involved
+	Boogaloo
+		 A         A           A
+		D *  OR  DD _*  OR  DDD _ *
+		 D         D           D
+		Launch target 3 spaces up
+	Booty Call
+		D-A-D
+		Pull both backup dancers to your Lead Dancer's side
+		Spaces between must be empty
+	Crowd Surf
+		 D
+		DD
+		 D
+		Launch centre Dancer 3 spaces to the right
+
+Disco
+	Funky Chicken
+		AD...E
+		Pull enemy 3 spaces towards backup
+	Stayin' Alive
+		|DD
+		| = edge of map
+		Move 3 spaces right
+	Hustle
+		D
+		 D
+		D
+		Move 2 spaces right
+		Move 1 extra space for each Dancer you've lost
+	Footloose
+		PASSIVE
+		All your Dance Moves have their push distance increased by 1 for each Dancer you've lost
+
+Rock
+	Headbang
+		DA
+		Launch Lead Dancer 2 spaces to the right
+	Twist
+		***
+		*A*
+		***
+		Rotate all targets around your Lead Dancer 90 degrees (pick direction)
+	Moshpit
+		  *
+		  _
+		*_A_*
+		  _
+		  *
+		Empties must be empty
+		Pull all targets 1 or 2 spaces in
+
+Hip Hop
+	Pop, Lock, Drop
+		A-D
+		Pull Lead Dancer to the space right beside the Backup Dancer
+		The spaces between can have Dancers in them
+		This pushes all Dancers in between, possibly pushing the Backup Dancer involved in the Move
+	Breakdance
+		 ***
+		*DAD*
+		 ***
+		Push all Dancers adjacent to the Move (not including diagonals) away 2 spaces
+		Also hits friendly Dancers
+	???
+		TODO
+	TODO: Name
+		PASSIVE
+		Whenever you push one of your own Dancers, it gains an extra space of Movement this turn
+		Each Dancer can only use this once in a turn
+
+Swing
+	???
+		AD
+		TODO
+	Jitterbug
+		TODO
+	???
+		TODO
+
+
+
+
+
+
+
+
+
+
