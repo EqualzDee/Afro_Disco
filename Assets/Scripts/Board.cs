@@ -41,8 +41,10 @@ public class Board : MonoBehaviour
     public Color[] colorssss;
     private int colCounter;
     public float colLerptime = 0.2f;
-    
-    Dictionary<Vector2, Dancer> _Dancers = new Dictionary<Vector2, Dancer>(); //Big papa
+	public float emissionIntensity = 0.0f;
+
+
+	Dictionary<Vector2, Dancer> _Dancers = new Dictionary<Vector2, Dancer>(); //Big papa
 
     private Dancer _dancerSelected;
     Dictionary<Vector2, GameObject> _validPositions = new Dictionary<Vector2,GameObject>(); //Grid postions
@@ -590,7 +592,7 @@ public class Board : MonoBehaviour
             foreach (Material m in Tiles)
             {
                 m.SetColor("_Color",current);
-                //m.SetColor("_EmissionColor", current * 0.5f);
+                m.SetColor("_EmissionColor", current * emissionIntensity);
             }
 
             elapsedTime += Time.deltaTime;
