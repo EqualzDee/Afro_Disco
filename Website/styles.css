@@ -1,3 +1,35 @@
 body {
+	background-color: #8b179f;
+	
+	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif
+}
+
+#mainWrap {
 	background-color: #9b27af;
+	
+	position: absolute;
+	z-index: 0;
+	
+	left: 10%;
+	right: 10%;
+	top: 50px;
+	
+	text-align: center;
+}
+
+#afroDiscoImg {
+	border-radius: 50%;
+	
+	height: 400px;
+	width: 400px;
+}
+
+#showcaseImg {
+	border-radius: 20px;
+	
+	height: 200px;
+	width: 200px;
+	
+	padding-left: 5px;
+	padding-right: 5px;
 }
