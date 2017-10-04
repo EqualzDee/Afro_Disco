@@ -253,6 +253,88 @@ public class MoveChecker
           , new Vector2(0, -1)
       );
         Moves.Add(b2B);
+
+        //Boogaloo 3 (Type A)
+        var b3A = new Move("Boogaloo Lv.1 A", new Color(0.29f, 0, 0.66f), 3, 3, 10);
+        b3A.AddPattern(new string[]
+            {
+                "A.D",
+                ".D.",
+                ".D.",
+                ".D."
+            }
+            , new Vector2(-1, 0)
+        );
+
+        b3A.AddPattern(new string[]
+            {
+                ".D.",
+                ".D.",
+                ".D.",
+                "D.A",
+            }
+            , new Vector2(1, 0)
+        );
+
+        b3A.AddPattern(new string[]
+            {
+                "...A",
+                "DDD.",
+                "...D"
+            }
+            , new Vector2(0, -1)
+        );
+
+        b3A.AddPattern(new string[]
+          {
+                "D...",
+                ".DDD",
+                "A..."
+          }
+          , new Vector2(0, 1)
+      );
+        Moves.Add(b3A);
+
+        //Boogaloo 3 (Type B)
+        var b3B = new Move("Boogaloo Lv.1 B", new Color(0.29f, 0, 0.66f), 3, 3, 9);
+        b3B.AddPattern(new string[]
+            {
+                "D.A",
+                ".D.",
+                ".D.",
+                ".D."
+            }
+            , new Vector2(1, 0)
+        );
+
+        b3B.AddPattern(new string[]
+            {
+                ".D.",
+                ".D.",
+                ".D.",
+                "A.D",
+            }
+            , new Vector2(-1, 0)
+        );
+
+        b3B.AddPattern(new string[]
+            {
+                "...D",
+                "DDD.",
+                "...A"
+            }
+            , new Vector2(0, 1)
+        );
+
+        b3B.AddPattern(new string[]
+          {
+                "A...",
+                ".DDD",
+                "D..."
+          }
+          , new Vector2(0, -1)
+      );
+        Moves.Add(b3B);
     }
 
     /// <summary>
