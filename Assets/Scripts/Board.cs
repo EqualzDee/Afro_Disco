@@ -41,10 +41,10 @@ public class Board : MonoBehaviour
     public Color[] colorssss;
     private int colCounter;
     public float colLerptime = 0.2f;
-	public float emissionIntensity = 0.0f;
+	public float emissionIntensity = 1.0f;
+    public float secondaryEmission;
 
-
-	Dictionary<Vector2, Dancer> _Dancers = new Dictionary<Vector2, Dancer>(); //Big papa
+    Dictionary<Vector2, Dancer> _Dancers = new Dictionary<Vector2, Dancer>(); //Big papa
 
     private Dancer _dancerSelected;
     Dictionary<Vector2, GameObject> _validPositions = new Dictionary<Vector2,GameObject>(); //Grid postions
@@ -79,6 +79,7 @@ public class Board : MonoBehaviour
     public GameObject RockBackup;
 
     List<Move> moveOriginList = new List<Move>();
+    
 
     void Start ()
     {
@@ -475,7 +476,9 @@ public class Board : MonoBehaviour
         foreach (KeyValuePair<Vector2, Color> paint in d)
         {
             var tile = Tiles[(int)paint.Key.y, (int)paint.Key.x];
-            tile.GetComponent<MeshRenderer>().material.SetColor("_Color", paint.Value);
+            var m = tile.GetComponent<MeshRenderer>().material;
+            m.SetColor("_Color", paint.Value);
+            m.SetColor("_EmissionColor", paint.Value * emissionIntensity);
         }
     }
 
@@ -592,7 +595,7 @@ public class Board : MonoBehaviour
             foreach (Material m in Tiles)
             {
                 m.SetColor("_Color",current);
-                m.SetColor("_EmissionColor", current * emissionIntensity);
+                m.SetColor("_EmissionColor", current * secondaryEmission);
             }
 
             elapsedTime += Time.deltaTime;

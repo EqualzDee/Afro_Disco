@@ -293,6 +293,8 @@ MonoBehaviour:
   - {r: 1, g: 0.76862746, b: 0, a: 1}
   - {r: 1, g: 0.5686275, b: 0, a: 1}
   colLerptime: 0.2
+  emissionIntensity: 0.8
+  secondaryEmission: 0.1
   TurnIndicator: {fileID: 2090233859}
   RoundTimerText: {fileID: 1493617069}
   debugMode: 0
@@ -6277,6 +6279,7 @@ GameObject:
   - component: {fileID: 1189180608}
   - component: {fileID: 1189180607}
   - component: {fileID: 1189180606}
+  - component: {fileID: 1189180611}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -6354,6 +6357,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 90, y: 0, z: 0}
+--- !u!114 &1189180611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1189180605}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4975a6e437fc3b149a8cd508ce5bdd69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  threshold: 0.41
+  intensity: 1.14
+  blurSize: 2.83
+  blurIterations: 1
+  blurType: 0
+  fastBloomShader: {fileID: 4800000, guid: 68a00c837b82e4c6d92e7da765dc5f1d, type: 3}
 --- !u!4 &1193505448 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4559205332547016, guid: 89a1e1f58500cfe4fa24f4c01f24623b,
