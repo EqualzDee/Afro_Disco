@@ -13,15 +13,24 @@ using UnityEngine;
 public class MoveChecker
 {
     private readonly List<Move> Moves = new List<Move>();
-    
+
+
+    Dictionary<string, string> RegReplace = new Dictionary<string, string>()
+    {
+        {"D","\\w"},
+        {"-","\\.*"},
+        {"_", "\\."}
+    };
+
+
     public MoveChecker()
     {
         //MOVES GO HERE
         //. will match anything (ie empty space)    
         //_ will match only a blank space    
+        //- will match any number of blank spaces
         //D will match any dancer (ie any letter)
         //A will match main dancer
-
 
         //Crowd surf
         var cs = new Move("Crowd Surf", Color.blue, 0,3);
@@ -335,6 +344,28 @@ public class MoveChecker
           , new Vector2(0, -1)
       );
         Moves.Add(b3B);
+
+
+        //Booty Call
+        var booty = new Move("Booty Call", new Color(0.95f, 0.26f, 0.211f), 0, 0, 1);
+        booty.AddPattern(new string[]
+            {
+                "D-A-D"
+            }
+            , new Vector2(1, 0)
+        );
+
+        booty.AddPattern(new string[]
+           {
+                "D",
+                "-",
+                "A",
+                "-",
+                "D",
+           }
+           , new Vector2(0, 1)
+       );
+        Moves.Add(booty);
     }
 
     /// <summary>
@@ -406,6 +437,7 @@ public class MoveChecker
     /// <returns>Returns the X and Y of a found moveS</returns>
     private List<Vector2> CheckMove(string[] Rows, string[] Move)
     {
+        //Move restriction here won't work for n blank spaces :/
         int moveHeight = Move.Length;
         int moveWidth = Move[0].Length;
         int rowsRight = 0;
@@ -420,7 +452,8 @@ public class MoveChecker
                 //Find all potential starts in row with regex
                 List<int> PotentialStartsRegex = new List<int>();
 
-                string reg = Move[rowsRight].Replace("D", "\\w"); //replace D with match any word character
+                //string reg = Move[rowsRight].Replace("D", "\\w"); //replace D with match any word character
+                string reg = replaceRegex(Move[rowsRight], RegReplace);
                 Regex regexObj = new Regex(reg);
                 Match matchObj = regexObj.Match(Rows[i]);
                 while (matchObj.Success)
@@ -428,7 +461,6 @@ public class MoveChecker
                     var matchIndex = matchObj.Index; //Match overlaps
                     PotentialStartsRegex.Add(matchIndex);
                     matchObj = regexObj.Match(Rows[i], matchIndex + 1);
-                    
                 }              
               
                 //Now check out those potential starts to see if they're the move
@@ -442,7 +474,8 @@ public class MoveChecker
                         //Also iterate up the list
                         //Also this wastes one loop cycle here but eh
                         var substring = Rows[i + rowsRight].Substring((int) moveStart.x, moveWidth);
-                        string reg2 = Move[rowsRight].Replace("D", "\\w");
+                        //string reg2 = Move[rowsRight].Replace("D", "\\w");
+                        string reg2 = replaceRegex(Move[rowsRight], RegReplace);
                         Match m2 = Regex.Match(substring, reg2);
                         var match = m2.Success; 
                         
@@ -494,5 +527,15 @@ public class MoveChecker
             stringBoard[i] = row;
         }
         return stringBoard;
+    }
+
+    private string replaceRegex(string s, Dictionary<string,string> d)
+    {
+        string returnString = s;
+        foreach (KeyValuePair<string, string> entry in d)
+        {
+            returnString =  returnString.Replace(entry.Key, entry.Value);
+        }
+        return returnString;
     }
 }
