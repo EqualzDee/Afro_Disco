@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -275,7 +275,7 @@ MonoBehaviour:
   moverLayer:
     serializedVersion: 2
     m_Bits: 512
-  turn: 0
+  turn: 1
   SelectedColor: {r: 0, g: 1, b: 0.91724133, a: 1}
   colorssss:
   - {r: 1, g: 0.09019608, b: 0.26666668, a: 1}
