@@ -66,6 +66,9 @@ public class Board : MonoBehaviour
 
     public bool debugMode;
 
+	//Move finder
+	[SerializeField]
+	private GameObject uiParent;
 
     //FOR PROTOTYPE
     public Button conga;
@@ -622,15 +625,29 @@ public class Board : MonoBehaviour
     /// </summary>
     public void TestConga()
     {
-        foreach(Move m in moveOriginList)
-        {
+        for(int i = 0; i < moveOriginList.Count; i++)
+		{
+		Move m = moveOriginList[i];
             if(m.MoveName.Contains("Conga"))
             {
                 Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
                 conga.interactable = false;
+				
+				//Create Conga Buttons
+				//moveSelectorButton newButton = GameObject.Instantiate(moveSelectorButton);
+				
+				//newButton.transform.SetParent(null);
+				//TODO: Set position
+				//newButton.DanceMoveInstance.index = i;
+				//newButton.SetActive(true);
             }
         }
     }
+	
+	public void ApplyConga(DanceMoveInstance indexHolder) {
+		Move m = moveOriginList[indexHolder.index];
+		Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
+	}
 
     public void TestBoogaloo()
     {
