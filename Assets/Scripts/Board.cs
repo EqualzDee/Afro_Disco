@@ -5,6 +5,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
+[RequireComponent(typeof(Painter))]
 public class Board : MonoBehaviour
 {
     public GameObject TilePrefab;   
@@ -21,41 +22,32 @@ public class Board : MonoBehaviour
     public const int BoardW = 7;
     public const int BoardH = 11;
     private int _tileCounter;
-    private bool _oddEven;
+    
 
     //TILES SHOULD BE THE ONLY PLACE WHERE X AND Y IS REVERSED (i and j)
     private GameObject[,] Tiles = new GameObject[BoardH, BoardW];
 
     //False is player 1 turn
     //True is player 2 turn
-    public bool turn = false;
+    private bool turn = false;
 
     //Create player structs
     Player Player1 = new Player();
     Player Player2 = new Player();
 
+    Dictionary<Vector2, Dancer> _Dancers = new Dictionary<Vector2, Dancer>(); //Big papa
+    private Dancer _dancerSelected;
+    Dictionary<Vector2, GameObject> _validPositions = new Dictionary<Vector2, GameObject>(); //Grid postions
+
     //flashing tiles
     bool flashThisTurn = true;
     private int RecurseDepth = 0;
     public Color SelectedColor;
-    public Color[] colorssss;
-    private int colCounter;
-    public float colLerptime = 0.2f;
-	public float emissionIntensity = 1.0f;
-    public float secondaryEmission;
+    public Color SelectedOriginColor;
 
-    Dictionary<Vector2, Dancer> _Dancers = new Dictionary<Vector2, Dancer>(); //Big papa
-
-    private Dancer _dancerSelected;
-    Dictionary<Vector2, GameObject> _validPositions = new Dictionary<Vector2,GameObject>(); //Grid postions
-
+    //Objects
     private MoveChecker CheckyBoy = new MoveChecker();
-
-    private bool speedUp; //true when either team has less than 3 dancers
-
-    //Paint layers: Colors here won't be overridden;
-    private Dictionary<Vector2, Color> SelectedPaint = new Dictionary<Vector2, Color>();
-    private Dictionary<Vector2, Color> MovePaint = new Dictionary<Vector2, Color>();
+    private Painter painter;
 
     public Text TurnIndicator;
 
@@ -74,7 +66,6 @@ public class Board : MonoBehaviour
     public Button conga;
     public Button boogaloo;
 
-
     public GameObject Afro;
     public GameObject AfroBackup;
 
@@ -84,7 +75,7 @@ public class Board : MonoBehaviour
     List<Move> moveOriginList = new List<Move>();
     
 
-    void Start ()
+    void Awake()
     {
         //Make board
         for (int i = 0; i < BoardW; i++)
@@ -109,11 +100,14 @@ public class Board : MonoBehaviour
         //Let player 1 move for first move
         EnableMove(Player1, true);
 
-        //like share subscribe
-        AudioMan.OnBeat += ChangeFloorCol;
-        ChangeFloorCol();
+        painter = GetComponent<Painter>();
     }
 
+    /// <summary>
+    /// Spawn Dancers for players
+    /// </summary>
+    /// <param name="yOffset">Y offset position</param>
+    /// <param name="p">Player to spawn for</param>
     void GenerateDancers(int yOffset, Player p)
     {
         for (int i = 0; i < 5; i++)
@@ -172,7 +166,7 @@ public class Board : MonoBehaviour
                     //Select and paint selected tiles
                     _dancerSelected.Select();
                     ShowValidTiles(_dancerSelected);
-                    PaintLayer(SelectedPaint);
+                    //paint selected layer
                 }
             }
             else //Dancer is selected
@@ -196,7 +190,7 @@ public class Board : MonoBehaviour
             //ResetTileCol();
             _dancerSelected = null;
             _validPositions.Clear();
-            SelectedPaint.Clear();
+            painter.ClearLayer(0);
         }
 
         //Round timer
@@ -233,24 +227,6 @@ public class Board : MonoBehaviour
     }
 
     /// <summary>
-    /// Resets the tiles back to white
-    /// </summary>
-    void ResetTileCol()
-    {
-        for (int i = 0; i < BoardW; i++)
-        {
-            for (int j = 0; j < BoardH; j++)
-            {
-                Tiles[j, i].GetComponent<MeshRenderer>().material.SetColor("_Color",Color.white);
-
-                //Tiles[j, i].GetComponent<MeshRenderer>().material.color = (i % 2) != (j%2)
-                //    ? tileColor1
-                //    : tileColor2;
-            }
-        }
-    }
-
-    /// <summary>
     /// Steps in the direction of the vector given to see if the tile is free
     /// </summary>
     /// <param name="dX">dancer x</param>
@@ -268,10 +244,8 @@ public class Board : MonoBehaviour
             {
                 //Change tile col
                 var t = Tiles[(int) check.y, (int) check.x]; //The valid tile
-                Color c = i == 0 ? Color.blue : SelectedColor;
-                //t.GetComponent<MeshRenderer>().material.SetColor("_Color", c);
-                if(!SelectedPaint.ContainsKey(check))
-                    SelectedPaint.Add(check, c); //Paint color
+                Color c = i == 0 ? SelectedOriginColor : SelectedColor; //Set different color if origin
+                painter.AddToLayer(0, check, c);
 
                 //Add to dict if not already
                 if (!_validPositions.ContainsKey(check))
@@ -384,7 +358,7 @@ public class Board : MonoBehaviour
     /// </summary>
     void MoveCheck()
     {
-        MovePaint.Clear();
+        painter.ClearLayer(1); //Clear move layer
 
         //Only get dancers of the current player
         Dictionary<Vector2, Dancer> playerMaskedDancers = new Dictionary<Vector2, Dancer>();
@@ -396,15 +370,15 @@ public class Board : MonoBehaviour
 
         moveOriginList = CheckyBoy.CheckForMoves(playerMaskedDancers,BoardW,BoardH + 1);
 
-        //Glow valid moves
+        //Paint valid moves
         moveOriginList.Sort();
         foreach (Move m in moveOriginList)
-        {    
-            Debug.Log(m.origin);
+        {   
+            if(debugMode) Debug.Log(m.origin);
             GlowDancer(m);
         }
 
-        PaintLayer(MovePaint);
+        //PaintLayer(MovePaint);
     }
 
     /// <summary>
@@ -422,8 +396,7 @@ public class Board : MonoBehaviour
                 if (m[i][j] == 'D' || m[i][j] == 'A')
                 {
                     var offset = new Vector2(j, i);
-                    if(!MovePaint.ContainsKey(pos + offset))
-                        MovePaint.Add(pos + offset, move.Color);   
+                    painter.AddToLayer(1, pos + offset, move.Color);
                 }
             }
         }
@@ -448,7 +421,7 @@ public class Board : MonoBehaviour
         roundCountdown = RoundTime;
 
         //Reset move matching
-        MovePaint.Clear();
+        painter.ClearLayer(1);
         moveOriginList.Clear();
 
         MoveCheck();
@@ -474,73 +447,7 @@ public class Board : MonoBehaviour
         }
     }
 
-    private void PaintLayer(Dictionary<Vector2,Color> d)
-    {
-        foreach (KeyValuePair<Vector2, Color> paint in d)
-        {
-            var tile = Tiles[(int)paint.Key.y, (int)paint.Key.x];
-            var m = tile.GetComponent<MeshRenderer>().material;
-            m.SetColor("_Color", paint.Value);
-            m.SetColor("_EmissionColor", paint.Value * emissionIntensity);
-        }
-    }
 
-    /// <summary>
-    /// Called on the beat to change the tile color all flashy like
-    /// </summary>
-    private void ChangeFloorCol()
-    {
-        //Flashy on snare
-        if (!speedUp)
-        {
-            if (!flashThisTurn)
-            {
-                flashThisTurn = true;
-                return;
-            }
-        }
-
-        ResetTileCol();
-
-        _tileCounter = 0;
-        _oddEven = !_oddEven;
-       
-        List<Material> tilesOn = new List<Material>();
-        List<Material> tilesOff = new List<Material>();
-
-        //Paint floor tiles
-        for (int i = 0; i < BoardW; i++)
-        {
-            for(int j = 0; j < BoardH; j++)
-            {
-                var indexVec = new Vector2(i, j);
-                if (!(SelectedPaint.ContainsKey(indexVec) ||
-                    MovePaint.ContainsKey(indexVec)))
-                {
-                    if (_tileCounter % 2 == (_oddEven ? 0 : 1))
-                        tilesOn.Add(Tiles[j, i].GetComponent<MeshRenderer>().material);
-                    if (_tileCounter % 2 == (_oddEven ? 1 : 0))
-                        tilesOff.Add(Tiles[j, i].GetComponent<MeshRenderer>().material);
-                }
-                _tileCounter++;
-            }
-        }
-
-        //Start routines
-        StartCoroutine(ColChange(colorssss[colCounter], Color.white, tilesOff, colLerptime/2));
-
-        colCounter++;
-        if (colCounter >= colorssss.Length)
-            colCounter = 0;
-
-        StartCoroutine(ColChange(Color.white, colorssss[colCounter], tilesOn, colLerptime));
-
-        //Paint layers over the top
-        PaintLayer(SelectedPaint);
-        PaintLayer(MovePaint);
-
-        flashThisTurn = false;
-    }
 
     //Getters for the dancer map
     public Dancer GetDancer(Vector2 p)
@@ -561,6 +468,11 @@ public class Board : MonoBehaviour
             return null;
     }
 
+    /// <summary>
+    /// Remove dancer from board
+    /// </summary>
+    /// <param name="d">Dancer to remove</param>
+    /// <param name="launchVec">How far to launch the dancer using physics</param>
     private void RemoveDancer(Dancer d, Vector2 launchVec)
     {
         var key = GetDancerPos(d);
@@ -571,39 +483,9 @@ public class Board : MonoBehaviour
     /// <summary>
     /// Get the position of a dancer with a reverse lookup
     /// </summary>
-    /// <param name="d"></param>
-    /// <returns></returns>
     private Vector2 GetDancerPos(Dancer d)
     {
         return _Dancers.FirstOrDefault(x => x.Value == d).Key;
-    }
-
-    /// <summary>
-    /// Coroutine to change color
-    /// </summary>
-    /// <param name="start"></param>
-    /// <param name="end"></param>
-    /// <param name="Tiles"></param>
-    /// <param name="time"></param>
-    /// <returns></returns>
-    private IEnumerator ColChange(Color start, Color end, List<Material> Tiles, float time)
-    {
-        float elapsedTime = 0;
-        Color current = start;
-
-        while (elapsedTime < time)
-        {
-            current = Color.Lerp(start, end, elapsedTime / time);
-            
-            foreach (Material m in Tiles)
-            {
-                m.SetColor("_Color",current);
-                m.SetColor("_EmissionColor", current * secondaryEmission);
-            }
-
-            elapsedTime += Time.deltaTime;
-            yield return new WaitForEndOfFrame();
-        }
     }
 
     /// <summary>
@@ -630,7 +512,7 @@ public class Board : MonoBehaviour
 		Move m = moveOriginList[i];
             if(m.MoveName.Contains("Conga"))
             {
-                Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
+                //Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
                 conga.interactable = false;
 				
 				//Create Conga Buttons
@@ -646,7 +528,7 @@ public class Board : MonoBehaviour
 	
 	public void ApplyConga(DanceMoveInstance indexHolder) {
 		Move m = moveOriginList[indexHolder.index];
-		Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
+		//Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
 	}
 
     public void TestBoogaloo()
@@ -655,87 +537,16 @@ public class Board : MonoBehaviour
         {
             if (m.MoveName.Contains("Boogaloo"))
             {
-                Boogaloo(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
+                //Boogaloo(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
                 boogaloo.interactable = false;
             }
         }
     }
 
-    //Moves here -- WHAT IS OO DESIGN ANYWAY?
-    [SuppressMessage("ReSharper", "HeuristicUnreachableCode")]
-    void Conga(Vector2 pos, int range, int push, Vector2 cardinality)
+    public GameObject[,] GetTiles()
     {
-        //Get just the tips
-        Vector2 top;
-        top = (cardinality* (range - 1)) + pos;    //Assumes range = length of line
-
-        Dancer dtop = null; //null if not found
-        Dancer dBot = null;
-
-        //find targets in range (only one since that's all we need for push to work)
-        for (int i = 1; i < range + 1; i++)
-        {
-            if(!dtop) //top                
-                dtop = GetDancer(top + (cardinality * i),!turn); //Look for enemies
-
-            if (!dBot) //bot
-                dBot = GetDancer(pos - (cardinality * i), !turn);
-        }
-
-        //Push
-        for(int i = 0; i < push; i++)
-        {
-            if (dtop)
-                Push(dtop, cardinality);
-            if (dBot)
-                Push(dBot, -cardinality);
-        }
+        return Tiles;
     }
 
-
-    void Boogaloo(Vector2 pos, int range, int push, string[] move, Vector2 cardinality)
-    {
-        //First we need to find the firing point
-        //To do this we subtract the cardinality from the position of A
-        //So first get the pos of A
-        Vector2 APos = Vector2.zero;
-        for(int i = 0; i < move.Length; i++)
-            for (int j = 0; j < move[i].Length; j++)
-            {
-                if (move[i][j] == 'A')
-                {
-                    APos = new Vector2(j, i);
-                }
-            }
-
-        var localFire = APos - cardinality; //now find where we fire from 
-        Vector2 firingPoint = localFire + pos; //Convert to board space
-
-        //Find the direction the move is facing since cardinality is the push direction
-        //To do this, get the 2d cross product (perpendicular vector)
-        Vector2 facing = new Vector2(cardinality.y, -cardinality.x);
-
-        //This might be wrong depending on the move, but we can tell it's valid
-        //by checking if a dancer is below the firing pos
-        if (GetDancer(firingPoint + facing, turn))
-            facing = -facing; //if invalid flip direction
-
-        //Now find a dancer in range (Starting at the furtherest range and going in)
-        Dancer d = null;
-        for (int i = range; i > 0; i--)
-        {
-            Vector2 searchPos = firingPoint + (facing*i);
-            d = GetDancer(searchPos, !turn);
-            if (d) break; //if we found dancer
-        }
-
-        //Now pushy pushy
-        if (d)
-        {
-            for (int i = 0; i < push; i++)
-            {
-                Push(d, cardinality);
-            }
-        }
-    }
+    
 }

@@ -40,7 +40,7 @@ public class MoveChecker
             "DDD",
         }
         ,new Vector2(0, -1)
-        );
+        );        
 
         cs.AddPattern(new string[]
         {
@@ -437,9 +437,10 @@ public class MoveChecker
     /// <returns>Returns the X and Y of a found moveS</returns>
     private List<Vector2> CheckMove(string[] Rows, string[] Move)
     {
-        //Move restriction here won't work for n blank spaces :/
+        //Temp 
         int moveHeight = Move.Length;
         int moveWidth = Move[0].Length;
+
         int rowsRight = 0;
         Vector2 moveStart = Vector2.zero - Vector2.one; //Negative if not found
 
@@ -474,7 +475,7 @@ public class MoveChecker
                         //Also iterate up the list
                         //Also this wastes one loop cycle here but eh
                         var substring = Rows[i + rowsRight].Substring((int) moveStart.x, moveWidth);
-                        //string reg2 = Move[rowsRight].Replace("D", "\\w");
+                        
                         string reg2 = replaceRegex(Move[rowsRight], RegReplace);
                         Match m2 = Regex.Match(substring, reg2);
                         var match = m2.Success; 
@@ -529,6 +530,12 @@ public class MoveChecker
         return stringBoard;
     }
 
+    /// <summary>
+    /// Replaces nice looking strings with regex that mr computer understands
+    /// </summary>
+    /// <param name="s">nice string to converty</param>
+    /// <param name="d">Dictionart to swap with</param>
+    /// <returns></returns>
     private string replaceRegex(string s, Dictionary<string,string> d)
     {
         string returnString = s;
