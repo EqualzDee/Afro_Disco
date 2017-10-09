@@ -8,7 +8,7 @@ using UnityEngine.UI;
 [RequireComponent(typeof(Painter))]
 public class Board : MonoBehaviour
 {
-    public GameObject TilePrefab;   
+    public GameObject TilePrefab;
     public Camera cam;              //used for raycasting
     public GameObject DancerPrefab;
 
@@ -22,22 +22,22 @@ public class Board : MonoBehaviour
     public const int BoardW = 7;
     public const int BoardH = 11;
     private int _tileCounter;
-    
+
 
     //TILES SHOULD BE THE ONLY PLACE WHERE X AND Y IS REVERSED (i and j)
     private GameObject[,] Tiles = new GameObject[BoardH, BoardW];
 
     //False is player 1 turn
     //True is player 2 turn
-    private bool turn = false;
+    public bool turn {get; private set;}
 
-    //Create player structs
+    //Player structs
     Player Player1 = new Player();
     Player Player2 = new Player();
 
     Dictionary<Vector2, Dancer> _Dancers = new Dictionary<Vector2, Dancer>(); //Big papa
     private Dancer _dancerSelected;
-    Dictionary<Vector2, GameObject> _validPositions = new Dictionary<Vector2, GameObject>(); //Grid postions
+    Dictionary<Dancer, List<Vector2>>_validPositions = new Dictionary<Dancer, List<Vector2>>(); //Grid postions
 
     //flashing tiles
     bool flashThisTurn = true;
@@ -48,6 +48,7 @@ public class Board : MonoBehaviour
     //Objects
     private MoveChecker CheckyBoy = new MoveChecker();
     private Painter painter;
+    private BustAMove busta;
 
     public Text TurnIndicator;
 
@@ -101,6 +102,9 @@ public class Board : MonoBehaviour
         EnableMove(Player1, true);
 
         painter = GetComponent<Painter>();
+        busta = new BustAMove(this);
+
+        BakeMovement(turn);
     }
 
     /// <summary>
@@ -130,9 +134,6 @@ public class Board : MonoBehaviour
             _Dancers.Add(v, dancer);
             dancer.Initialize(v);
             dancerObj.name = "Dancer " + i;
-
-            //PLS REMOVE DIS WHEN WE GET MODELS
-            //dancerObj.GetComponentInChildren<MeshRenderer>().material.color = p == Player1 ? Color.red : Color.magenta;
 
             dancerObj.transform.localRotation = p == Player1 ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
 
@@ -165,8 +166,11 @@ public class Board : MonoBehaviour
                     
                     //Select and paint selected tiles
                     _dancerSelected.Select();
-                    ShowValidTiles(_dancerSelected);
+                    //FindValidTiles(_dancerSelected);
                     //paint selected layer
+                    PaintSelection(_dancerSelected);
+
+
                 }
             }
             else //Dancer is selected
@@ -175,9 +179,13 @@ public class Board : MonoBehaviour
                 if (Physics.Raycast(ray, out hit, 999, moverLayer))
                 {
                     Vector2 hitBoardPos = new Vector2(hit.transform.position.x, hit.transform.position.z);
-                    if (_validPositions.ContainsKey(hitBoardPos) || debugMode)
-                        Move(_dancerSelected, hitBoardPos);
-                    //Push(_dancerSelected, hitBoardPos - GetDancerPos(_dancerSelected));
+
+                    List<Vector2> poslist;
+                    _validPositions.TryGetValue(_dancerSelected, out poslist);
+                    Debug.Assert(_validPositions.ContainsKey(_dancerSelected));
+
+                    if (poslist.Contains(hitBoardPos) || debugMode)
+                        Move(_dancerSelected, hitBoardPos);                    
                 }
             }
         }
@@ -189,7 +197,6 @@ public class Board : MonoBehaviour
             _dancerSelected.DeSelect();
             //ResetTileCol();
             _dancerSelected = null;
-            _validPositions.Clear();
             painter.ClearLayer(0);
         }
 
@@ -201,92 +208,6 @@ public class Board : MonoBehaviour
             EndTurn();
         }
     }
-
-    /// <summary>
-    /// Outlines the tiles where the player can go
-    /// </summary>
-    void ShowValidTiles(Dancer d)
-    {
-        var dX = (int)d.StartRoundPos.x;
-        var dY = (int)d.StartRoundPos.y;
-
-        //Loop through all directions to check
-        for (int i = -1; i < 2; i++)
-        {
-            for (int j = -1; j < 2; j++)
-            {
-                int range = DancerRange;
-                var VecCheck = new Vector2(j, i);
-
-                //Decrease range for diags
-                if (!(VecCheck.x == 0 || VecCheck.y == 0)) range -= 1;
-                
-                CastValidTile(dX, dY, VecCheck, range, d);
-            }
-        }
-    }
-
-    /// <summary>
-    /// Steps in the direction of the vector given to see if the tile is free
-    /// </summary>
-    /// <param name="dX">dancer x</param>
-    /// <param name="dY">dancer y</param>
-    /// <param name="v">vector to check</param>
-    /// <param name="length">distance to check</param>
-    /// <param name="d">dancer</param>
-    //todo override flashing tiles with valid tiles
-    void CastValidTile(int dX, int dY, Vector2 v, int length, Dancer d)
-    {        
-        for (int i = 0; i < length + 1; i++)
-        {
-            Vector2 check = new Vector2(dX, dY) + (v*i);            
-            if (IsValidPos(check, d))
-            {
-                //Change tile col
-                var t = Tiles[(int) check.y, (int) check.x]; //The valid tile
-                Color c = i == 0 ? SelectedOriginColor : SelectedColor; //Set different color if origin
-                painter.AddToLayer(0, check, c);
-
-                //Add to dict if not already
-                if (!_validPositions.ContainsKey(check))
-                    _validPositions.Add(check,t);
-            }
-            else if(i > 0) //if newpos is not start position
-            {
-                return;
-            }
-        }
-    }
-
-    /// <summary>
-    /// Checks for a valid board position 
-    /// </summary>
-    /// <param name="v">newpos</param>
-    /// <param name="d">the dancer asking</param>
-    /// <returns></returns>
-    bool IsValidPos(Vector2 v, Dancer d)
-    {
-        if (InBounds(v))
-        {
-            //Doesn't contain a dancer at that position, or the dancer is me
-            var key = new Vector2(v.x, v.y);
-            Dancer d2;
-            _Dancers.TryGetValue(key, out d2);
-
-            return !_Dancers.ContainsKey(key) || d == d2; 
-        }        
-        return false;
-    }
-
-    bool InBounds(Vector2 v)
-    {
-        return v.x >= 0 &&
-               v.y >= 0 &&
-               v.x < BoardW &&
-               v.y < BoardH;
-    }
-
-
 
     /// <summary>
     /// Moves a dancer to a postion. Will knock the dancer out if moved off the floor
@@ -407,6 +328,14 @@ public class Board : MonoBehaviour
     /// </summary>
     public void EndTurn()
     {
+        //Deslect any dancers
+        if (_dancerSelected)
+        {
+            _dancerSelected.DeSelect();
+            _dancerSelected = null;
+        }
+        painter.ClearLayer(0);
+
         //Disable previous player moving
         EnableMove(turn ? Player2 : Player1, false);
 
@@ -424,8 +353,11 @@ public class Board : MonoBehaviour
         painter.ClearLayer(1);
         moveOriginList.Clear();
 
-        MoveCheck();
+        //Move check + find all availible tiles
+        MoveCheck();        
+        BakeMovement(turn);
 
+        //Make dis better
         conga.interactable = true;
         boogaloo.interactable = true;
     }
@@ -448,6 +380,126 @@ public class Board : MonoBehaviour
     }
 
 
+    /// <summary>
+    /// Outlines the tiles where the player can go
+    /// </summary>
+    void FindValidTiles(Dancer d)
+    {
+        var dX = (int)d.StartRoundPos.x;
+        var dY = (int)d.StartRoundPos.y;
+
+        //Loop through all directions to check
+        for (int i = -1; i < 2; i++)
+        {
+            for (int j = -1; j < 2; j++)
+            {
+                int range = DancerRange;
+                var VecCheck = new Vector2(j, i);
+
+                //Decrease range for diags
+                if (!(VecCheck.x == 0 || VecCheck.y == 0)) range -= 1;
+
+                CastValidTile(dX, dY, VecCheck, range, d);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Steps in the direction of the vector given to see if the tile is free
+    /// </summary>
+    /// <param name="dX">dancer x</param>
+    /// <param name="dY">dancer y</param>
+    /// <param name="v">vector to check</param>
+    /// <param name="length">distance to check</param>
+    /// <param name="d">dancer</param>    
+    void CastValidTile(int dX, int dY, Vector2 v, int length, Dancer d)
+    {
+        for (int i = 0; i < length + 1; i++)
+        {
+            Vector2 check = new Vector2(dX, dY) + (v * i);
+            if (IsValidPos(check, d))
+            {
+                //Change tile col
+                var t = Tiles[(int)check.y, (int)check.x]; //The valid tile
+                Color c = i == 0 ? SelectedOriginColor : SelectedColor; //Set different color if origin
+                //painter.AddToLayer(0, check, c);
+
+                //Adderino dancer if can
+                List<Vector2> poslist;
+                _validPositions.TryGetValue(d, out poslist);
+
+                if (!poslist.Contains(check))
+                    poslist.Add(check);
+            }
+            else if (i > 0) //if newpos is not start position
+            {
+                return;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Checks for a valid board position 
+    /// </summary>
+    /// <param name="v">newpos</param>
+    /// <param name="d">the dancer asking</param>
+    bool IsValidPos(Vector2 v, Dancer d)
+    {
+        if (InBounds(v))
+        {
+            //Doesn't contain a dancer at that position, or the dancer is me
+            var key = new Vector2(v.x, v.y);
+            Dancer d2;
+            _Dancers.TryGetValue(key, out d2);
+
+            return !_Dancers.ContainsKey(key) || d == d2;
+        }
+        return false;
+    }
+
+    bool InBounds(Vector2 v)
+    {
+        return v.x >= 0 &&
+               v.y >= 0 &&
+               v.x < BoardW &&
+               v.y < BoardH;
+    }
+
+    /// <summary>
+    /// Bakes all possible move spaces 
+    /// </summary>
+    private void BakeMovement(bool turn)
+    {
+        _validPositions.Clear();
+        foreach(Dancer d in _Dancers.Values.ToList()) //Get all dancers
+        {
+            if(turn ? d.Player == Player2 : d.Player == Player1) //Get all dancers from player current turn
+            {
+                //make sure dancer is in dict
+                if (!_validPositions.ContainsKey(d))
+                    _validPositions.Add(d, new List<Vector2>());
+                
+                FindValidTiles(d);
+            }
+        }
+    }
+
+    /// <summary>
+    /// Paints the dancer's valid moves
+    /// </summary>
+    /// <param name="d"></param>
+    private void PaintSelection(Dancer d)
+    {
+        painter.AddToLayer(0, d.StartRoundPos, SelectedOriginColor); //Origin colour
+
+        List<Vector2> poslist;
+        _validPositions.TryGetValue(d, out poslist);
+
+        foreach(Vector2 v in poslist)
+        {
+            painter.AddToLayer(0, v, SelectedColor);                
+        }
+    }
 
     //Getters for the dancer map
     public Dancer GetDancer(Vector2 p)
@@ -512,7 +564,7 @@ public class Board : MonoBehaviour
 		Move m = moveOriginList[i];
             if(m.MoveName.Contains("Conga"))
             {
-                //Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
+                busta.Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
                 conga.interactable = false;
 				
 				//Create Conga Buttons
@@ -528,7 +580,7 @@ public class Board : MonoBehaviour
 	
 	public void ApplyConga(DanceMoveInstance indexHolder) {
 		Move m = moveOriginList[indexHolder.index];
-		//Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
+		busta.Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
 	}
 
     public void TestBoogaloo()
@@ -537,7 +589,7 @@ public class Board : MonoBehaviour
         {
             if (m.MoveName.Contains("Boogaloo"))
             {
-                //Boogaloo(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
+                busta.Boogaloo(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
                 boogaloo.interactable = false;
             }
         }
