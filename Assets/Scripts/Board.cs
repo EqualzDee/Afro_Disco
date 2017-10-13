@@ -97,7 +97,7 @@ public class Board : MonoBehaviour
         GenerateDancers(1,5,Player1);
         //Player 2 dancers
         GenerateDancers(9,5,Player2);
-        //GenerateDancers(9, 1, Player1);
+        
         //Let player 1 move for first move
         EnableMove(Player1, true);
 
@@ -108,54 +108,16 @@ public class Board : MonoBehaviour
         //MoveCheck();
     }
 
-    /// <summary>
-    /// Spawn Dancers for players
-    /// </summary>
-    /// <param name="yOffset">Y offset position</param>
-    /// <param name="p">Player to spawn for</param>
-    void GenerateDancers(int yOffset, int players, Player p)
-    {
-        for (int i = 0; i < players; i++)
-        {
-            var v = new Vector2(1 + i, yOffset);
-
-            GameObject dancerObj;
-            if (i == 2) //hackjob for prototype
-            {
-                dancerObj = Instantiate(p == Player1 ? Afro : Rock, new Vector3(v.x, 0, v.y), Quaternion.identity);
-            }
-            else //backup
-            {
-                dancerObj = Instantiate(p == Player1 ? AfroBackup : RockBackup, new Vector3(v.x, 0, v.y), Quaternion.identity);
-            }
-
-            var dancer = dancerObj.GetComponent<Dancer>();
-
-            dancer.Player = p;
-            _Dancers.Add(v, dancer);
-            dancer.Initialize(v);
-            dancerObj.name = "Dancer " + i;
-
-            dancerObj.transform.localRotation = p == Player1 ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
-
-            if (i == 2)
-            {
-                dancer.SetLead(true);
-                dancerObj.GetComponentInChildren<MeshRenderer>().material.color = p == Player1
-                    ? Color.yellow
-                    : Color.gray;
-            }
-        }
-    }
 	
 	// Update is called once per frame
 	void Update ()
     {
         //Select Dancer with mouse via ray
-        if (Input.GetKey(KeyCode.Mouse0))
+        //if (Input.GetKey(KeyCode.Mouse0))
+        if(Input.touchCount > 0)
         {
             RaycastHit hit;
-            Ray ray = cam.ScreenPointToRay(Input.mousePosition);
+			Ray ray = cam.ScreenPointToRay(Input.GetTouch(0).position);
 
             if (!_dancerSelected) //no dancer selected
             {
@@ -209,6 +171,46 @@ public class Board : MonoBehaviour
         if (roundCountdown < 0)
         {
             EndTurn();
+        }
+    }
+
+    /// <summary>
+    /// Spawn Dancers for players
+    /// </summary>
+    /// <param name="yOffset">Y offset position</param>
+    /// <param name="p">Player to spawn for</param>
+    void GenerateDancers(int yOffset, int players, Player p)
+    {
+        for (int i = 0; i < players; i++)
+        {
+            var v = new Vector2(1 + i, yOffset);
+
+            GameObject dancerObj;
+            if (i == 2) //hackjob for prototype
+            {
+                dancerObj = Instantiate(p == Player1 ? Afro : Rock, new Vector3(v.x, 0, v.y), Quaternion.identity);
+            }
+            else //backup
+            {
+                dancerObj = Instantiate(p == Player1 ? AfroBackup : RockBackup, new Vector3(v.x, 0, v.y), Quaternion.identity);
+            }
+
+            var dancer = dancerObj.GetComponent<Dancer>();
+
+            dancer.Player = p;
+            _Dancers.Add(v, dancer);
+            dancer.Initialize(v);
+            dancerObj.name = "Dancer " + i;
+
+            dancerObj.transform.localRotation = p == Player1 ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
+
+            if (i == 2)
+            {
+                dancer.SetLead(true);
+                dancerObj.GetComponentInChildren<MeshRenderer>().material.color = p == Player1
+                    ? Color.yellow
+                    : Color.gray;
+            }
         }
     }
 
@@ -348,7 +350,7 @@ public class Board : MonoBehaviour
         //Enable current player moving
         EnableMove(turn ? Player2 : Player1, true);
 
-        TurnIndicator.text = (turn ? "Player 2" : "Player 1") + "'s turn";
+//        TurnIndicator.text = (turn ? "Player 2" : "Player 1") + "'s turn";
 
         roundCountdown = RoundTime;
 
