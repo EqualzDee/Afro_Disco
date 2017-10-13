@@ -94,10 +94,10 @@ public class Board : MonoBehaviour
         }
 
         //Player 1 Dancers
-        GenerateDancers(1,Player1);
+        GenerateDancers(1,5,Player1);
         //Player 2 dancers
-        GenerateDancers(9,Player2);
-
+        GenerateDancers(9,5,Player2);
+        //GenerateDancers(9, 1, Player1);
         //Let player 1 move for first move
         EnableMove(Player1, true);
 
@@ -105,6 +105,7 @@ public class Board : MonoBehaviour
         busta = new BustAMove(this);
 
         BakeMovement(turn);
+        //MoveCheck();
     }
 
     /// <summary>
@@ -112,9 +113,9 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="yOffset">Y offset position</param>
     /// <param name="p">Player to spawn for</param>
-    void GenerateDancers(int yOffset, Player p)
+    void GenerateDancers(int yOffset, int players, Player p)
     {
-        for (int i = 0; i < 5; i++)
+        for (int i = 0; i < players; i++)
         {
             var v = new Vector2(1 + i, yOffset);
 
@@ -193,11 +194,13 @@ public class Board : MonoBehaviour
         {
             //Checky moves!
             MoveCheck();
+            
 
             _dancerSelected.DeSelect();
             //ResetTileCol();
             _dancerSelected = null;
             painter.ClearLayer(0);
+            BakeMovement(turn);
         }
 
         //Round timer
@@ -363,7 +366,7 @@ public class Board : MonoBehaviour
     }
 
     /// <summary>
-    /// Enables a player's dancers, also resets the initial position
+    /// Enables a player's dancers, also resets the initial position and range
     /// </summary>
     /// <param name="p"></param>
     /// <param name="canMOve"></param>
@@ -375,6 +378,7 @@ public class Board : MonoBehaviour
             {
                 d.Value.canMove = canMOve;
                 d.Value.StartRoundPos = d.Key;
+                d.Value.rangePoints = DancerRange;
             }
         }
     }
@@ -385,15 +389,18 @@ public class Board : MonoBehaviour
     /// </summary>
     void FindValidTiles(Dancer d)
     {
-        var dX = (int)d.StartRoundPos.x;
-        var dY = (int)d.StartRoundPos.y;
+        //var dX = (int)d.StartRoundPos.x;
+        //var dY = (int)d.StartRoundPos.y;
+
+        var dX = (int)d._target.x;
+        var dY = (int)d._target.z;
 
         //Loop through all directions to check
         for (int i = -1; i < 2; i++)
         {
             for (int j = -1; j < 2; j++)
             {
-                int range = DancerRange;
+                int range = d.rangePoints;
                 var VecCheck = new Vector2(j, i);
 
                 //Decrease range for diags
@@ -490,7 +497,8 @@ public class Board : MonoBehaviour
     /// <param name="d"></param>
     private void PaintSelection(Dancer d)
     {
-        painter.AddToLayer(0, d.StartRoundPos, SelectedOriginColor); //Origin colour
+        if(d.rangePoints > 0)
+            painter.AddToLayer(0, d.StartRoundPos, SelectedOriginColor); //Origin colour
 
         List<Vector2> poslist;
         _validPositions.TryGetValue(d, out poslist);
@@ -600,5 +608,14 @@ public class Board : MonoBehaviour
         return Tiles;
     }
 
-    
+    public void ResetDancers()
+    {
+        var buffer = new List<Dancer>(_Dancers.Values);
+        foreach (var key in buffer)
+        {
+            Move(key, key.StartRoundPos);
+            key.rangePoints = DancerRange;
+        }
+        BakeMovement(turn);
+    }
 }

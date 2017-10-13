@@ -345,6 +345,7 @@ public class MoveChecker
       );
         Moves.Add(b3B);
 
+        Moves.Clear(); //DEBUG
 
         //Booty Call
         var booty = new Move("Booty Call", new Color(0.95f, 0.26f, 0.211f), 0, 0, 1);
@@ -365,6 +366,21 @@ public class MoveChecker
            }
            , new Vector2(0, 1)
        );
+
+        booty.AddPattern(new string[]
+         {
+                "DA-D"
+         }
+         , new Vector2(1, 0)
+     );
+
+        booty.AddPattern(new string[]
+        {
+                "DA-D"
+        }
+        , new Vector2(1, 0)
+    );
+
         Moves.Add(booty);
     }
 
@@ -372,7 +388,6 @@ public class MoveChecker
     /// Highlevel move checker
     /// </summary>
     /// <param name="board"></param>
-    /// <returns></returns>
     public List<Move> CheckForMoves(Dictionary<Vector2, Dancer> board, int boardW, int boardH)
     {
         string[] Rows = ToStringArray(board, boardW, boardH); //Convert to string array
@@ -453,7 +468,6 @@ public class MoveChecker
                 //Find all potential starts in row with regex
                 List<int> PotentialStartsRegex = new List<int>();
 
-                //string reg = Move[rowsRight].Replace("D", "\\w"); //replace D with match any word character
                 string reg = replaceRegex(Move[rowsRight], RegReplace);
                 Regex regexObj = new Regex(reg);
                 Match matchObj = regexObj.Match(Rows[i]);

@@ -7,7 +7,7 @@ public class Dancer : MonoBehaviour
     public float moveSpeed = 100;
 
     private bool _selected = false;
-    private Vector3 _target;
+    public Vector3 _target { get; private set;} //aka board position
     private Rigidbody _RB;
 
     public bool IsLead { get; private set; }
@@ -20,10 +20,13 @@ public class Dancer : MonoBehaviour
     public Player Player;
 
     public Vector2 StartRoundPos; //My Position at the start of the round
+    private Vector2 PrevPos;
 
     bool isDancing = true; //is Alive basically
 
     private Animator _myAnimator;
+
+    public int rangePoints = 2;
 
     public CapsuleCollider myCollider;
 
@@ -36,6 +39,7 @@ public class Dancer : MonoBehaviour
     public void Initialize(Vector2 pos)
     {
         StartRoundPos = pos;
+        PrevPos = pos;
         _target = new Vector3(pos.x,0,pos.y);    
     }
 
@@ -100,11 +104,11 @@ public class Dancer : MonoBehaviour
     public void DeSelect()
     {
         _selected = false;
-
-        foreach (MeshRenderer m in GetComponentsInChildren<MeshRenderer>())
-        {
-            m.material.color = Color.white;
-        }
+        var delta = PrevPos - GetBoardPos();
+        var rangeLoss = (int) Mathf.Abs(delta.x) + (int)Mathf.Abs(delta.y);
+        rangePoints -= rangeLoss;
+        rangePoints = Mathf.Clamp(rangePoints, 0, 5);
+        PrevPos = GetBoardPos();
     }
 
     /// <summary>
@@ -112,7 +116,7 @@ public class Dancer : MonoBehaviour
     /// only use this if you have to
     /// </summary>
     /// <returns></returns>
-    public Vector2 GetPosition()
+    public Vector2 GetWorldPosition()
     {
         return new Vector2(_target.x, _target.z);
     }
@@ -181,6 +185,17 @@ public class Dancer : MonoBehaviour
 
         myCollider.enabled = !b;
         _RB.isKinematic = b;
+    }
+
+    public void ResettiTheSpaghetti(int range)
+    {
+        rangePoints = range;
+        PrevPos = StartRoundPos;
+    }
+
+    public Vector2 GetBoardPos()
+    {
+        return new Vector2(_target.x, _target.z);
     }
 
 }
