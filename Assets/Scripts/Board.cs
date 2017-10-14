@@ -49,6 +49,7 @@ public class Board : MonoBehaviour
     private MoveChecker CheckyBoy = new MoveChecker();
     public Painter painter;
     private BustAMove busta;
+    public UIMan UI;
 
     public Text TurnIndicator;
 
@@ -57,11 +58,7 @@ public class Board : MonoBehaviour
     private float roundCountdown = 60;
     public Text RoundTimerText;
 
-    public bool debugMode;
-
-	//Move finder
-	[SerializeField]
-	private GameObject uiParent;
+    public bool debugMode;	
 
     //FOR PROTOTYPE
     public Button conga;
@@ -104,8 +101,8 @@ public class Board : MonoBehaviour
         painter = GetComponent<Painter>();
         busta = new BustAMove(this);
 
-        BakeMovement(turn);
-        //MoveCheck();
+        BakeMovement(turn, false);
+        UI.UpdateStuff(turn);
     }
 
 	
@@ -156,12 +153,11 @@ public class Board : MonoBehaviour
             //Checky moves!
             MoveCheck();
             
-
             _dancerSelected.DeSelect();
             //ResetTileCol();
             _dancerSelected = null;
             painter.ClearLayer(0);
-            BakeMovement(turn);
+            BakeMovement(turn, false);
         }
 
         //Round timer
@@ -221,7 +217,7 @@ public class Board : MonoBehaviour
     public void Move(Dancer d, Vector2 newpos)
     {
         //Knock out!
-        if (!InBounds(newpos))
+        if (!InBounds(newpos) && d.isDancing)
         {
             RemoveDancer(d, newpos - GetDancerPos(d));
         }
@@ -376,11 +372,9 @@ public class Board : MonoBehaviour
 
         //Move check + find all availible tiles
         MoveCheck();        
-        BakeMovement(turn);
+        BakeMovement(turn, false);
 
-        //Make dis better
-        conga.interactable = true;
-        boogaloo.interactable = true;
+        UI.UpdateStuff(turn);
     }
 
     /// <summary>
@@ -397,6 +391,7 @@ public class Board : MonoBehaviour
                 d.Value.canMove = canMOve;
                 d.Value.StartRoundPos = d.Key;
                 d.Value.rangePoints = DancerRange;
+                d.Value.PrevPos = d.Value.GetBoardPos();
             }
         }
     }
@@ -493,16 +488,22 @@ public class Board : MonoBehaviour
     /// <summary>
     /// Bakes all possible move spaces 
     /// </summary>
-    private void BakeMovement(bool turn)
+    private void BakeMovement(bool turn, bool changeOrigin)
     {
         _validPositions.Clear();
         foreach(Dancer d in _Dancers.Values.ToList()) //Get all dancers
         {
-            if(turn ? d.Player == Player2 : d.Player == Player1) //Get all dancers from player current turn
+            if(d.Player == (turn ? Player2 : Player1)) //Get all dancers from player current turn
             {
                 //make sure dancer is in dict
                 if (!_validPositions.ContainsKey(d))
                     _validPositions.Add(d, new List<Vector2>());
+
+                if (changeOrigin) //Changes origin and points to prevent cheatin
+                {
+                    d.StartRoundPos = d.GetBoardPos();
+                    d.StartrangePoints = d.rangePoints;
+                }
                 
                 FindValidTiles(d);
             }
@@ -551,11 +552,12 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="d">Dancer to remove</param>
     /// <param name="launchVec">How far to launch the dancer using physics</param>
-    private void RemoveDancer(Dancer d, Vector2 launchVec)
+    private void RemoveDancer(Dancer d, Vector2 launchVec) //CALLED TWICE FOR SOME REASON
     {
         var key = GetDancerPos(d);
         d.KnockOut(launchVec);
         _Dancers.Remove(key);
+        UI.AnotherOneBitesTheDust(d.Player == Player2);
     }
 
     /// <summary>
@@ -591,17 +593,19 @@ public class Board : MonoBehaviour
             if(m.MoveName.Contains("Conga"))
             {
                 busta.Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
-                conga.interactable = false;
-				
-				//Create Conga Buttons
-				//moveSelectorButton newButton = GameObject.Instantiate(moveSelectorButton);
-				
-				//newButton.transform.SetParent(null);
-				//TODO: Set position
-				//newButton.DanceMoveInstance.index = i;
-				//newButton.SetActive(true);
+                UI.ActivateButton(0, turn, false);
+                BakeMovement(turn, true);
+
+                //Create Conga Buttons
+                //moveSelectorButton newButton = GameObject.Instantiate(moveSelectorButton);
+
+                //newButton.transform.SetParent(null);
+                //TODO: Set position
+                //newButton.DanceMoveInstance.index = i;
+                //newButton.SetActive(true);
             }
         }
+
     }
 	
 	public void ApplyConga(DanceMoveInstance indexHolder) {
@@ -616,9 +620,11 @@ public class Board : MonoBehaviour
             if (m.MoveName.Contains("Boogaloo"))
             {
                 busta.Boogaloo(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
-                boogaloo.interactable = false;
+                UI.ActivateButton(1, turn, false);
+                BakeMovement(turn, true);
             }
         }
+
     }
 
 	public void TestCrowdSurf()
@@ -628,9 +634,13 @@ public class Board : MonoBehaviour
 			if (m.MoveName.Contains("Crowd Surf"))
 			{
 				busta.CrowdSurf(m.origin, m.GetFoundMoveFiringPos() ,m.PushPower, m.GetFoundMove(), m.foundMoveCard);
-			}
+                UI.ActivateButton(2, turn, false);
+                BakeMovement(turn, true);
+                MoveCheck();
+            }
 		}
-	}
+
+    }
 
     public void TestBooty()
     {
@@ -640,8 +650,12 @@ public class Board : MonoBehaviour
             {
                 //Cardinality is normalized since we have overlapping keys
                 busta.BootyCall(m.origin, m.GetFoundMove(), m.foundMoveCard.normalized);
+                UI.ActivateButton(3, turn, false);
+                BakeMovement(turn, true);
+                MoveCheck();
             }
         }
+
     }
 
     public GameObject[,] GetTiles()
@@ -654,9 +668,14 @@ public class Board : MonoBehaviour
         var buffer = new List<Dancer>(_Dancers.Values);
         foreach (var key in buffer)
         {
-            Move(key, key.StartRoundPos);
-            key.rangePoints = DancerRange;
+            if (key.Player == (turn ? Player2 : Player1)) //Only get your homies
+            {
+                Move(key, key.StartRoundPos);
+                key.rangePoints = key.StartrangePoints;
+                key.PrevPos = key.GetBoardPos();
+            }
         }
-        BakeMovement(turn);
+        BakeMovement(turn, false);
+        MoveCheck();
     }
 }

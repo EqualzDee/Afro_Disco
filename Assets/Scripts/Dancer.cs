@@ -20,13 +20,14 @@ public class Dancer : MonoBehaviour
     public Player Player;
 
     public Vector2 StartRoundPos; //My Position at the start of the round
-    private Vector2 PrevPos;
+    public Vector2 PrevPos;
 
-    bool isDancing = true; //is Alive basically
+    public bool isDancing { get; private set; }
 
     private Animator _myAnimator;
 
     public int rangePoints = 2;
+    public int StartrangePoints = 2;
 
     public CapsuleCollider myCollider;
 
@@ -40,7 +41,8 @@ public class Dancer : MonoBehaviour
     {
         StartRoundPos = pos;
         PrevPos = pos;
-        _target = new Vector3(pos.x,0,pos.y);    
+        _target = new Vector3(pos.x,0,pos.y);
+        isDancing = true;
     }
 
 	// Use this for initialization

@@ -2800,11 +2800,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: db2dea16b6a38d944bec598c71ff778b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 5
+  moveSpeed: 6
   noiseFactor: 0
   canMove: 0
   StartRoundPos: {x: 0, y: 0}
+  PrevPos: {x: 0, y: 0}
   rangePoints: 2
+  StartrangePoints: 2
   myCollider: {fileID: 136628922011769348}
 --- !u!114 &114744630757475690
 MonoBehaviour:
