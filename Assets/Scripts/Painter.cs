@@ -28,7 +28,8 @@ public class Painter : MonoBehaviour
     public static readonly string[] layerNames =
     {
         "Selected",
-        "Move"
+        "Move",
+        "Debug"
     };
 
     private Layer[] Layers = new Layer[layerNames.Length];
@@ -59,6 +60,8 @@ public class Painter : MonoBehaviour
         ResetTileCol(tilesOn, tilesOff);
         PaintLayer(1);
         PaintLayer(0);
+
+        PaintLayer(2);
     }
 
     /// <summary>
@@ -174,6 +177,8 @@ public class Painter : MonoBehaviour
 
             PaintLayer(1);
             PaintLayer(0);
+
+            PaintLayer(2);
 
             elapsedTime += Time.deltaTime;
             yield return new WaitForEndOfFrame();

@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class UIMan : MonoBehaviour {
 
+    public Transform Left;
+    public Transform Right;    
+
 	// Use this for initialization
 	void Start () {
 		
@@ -13,4 +16,9 @@ public class UIMan : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void UpdateUI(bool turn)
+    {
+
+    }
 }

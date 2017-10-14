@@ -9,6 +9,7 @@ using UnityEngine;
 public class Move : IComparable<Move>
 {
     public Dictionary<Vector2, string[]> Patterns = new Dictionary<Vector2, string[]>();
+	public Dictionary<Vector2, Vector2> FiringPos = new Dictionary<Vector2, Vector2>();
     public Color Color { get; private set;}
     public string MoveName { get; private set; }
     public int Range { get; private set; }
@@ -45,6 +46,7 @@ public class Move : IComparable<Move>
     public Move(Move m)
     {   
         Patterns = new Dictionary<Vector2, string[]>(m.Patterns);
+        FiringPos = new Dictionary<Vector2, Vector2>(m.FiringPos);
         Color = new Color(m.Color.r, m.Color.g, m.Color.b);
         MoveName = string.Copy(m.MoveName);
 
@@ -79,6 +81,17 @@ public class Move : IComparable<Move>
         }
         Patterns.Add(cardinality, pat);
     }
+		
+	public void AddPattern(string[] pat, Vector2 cardinality, Vector2 firingPos)
+	{
+		if (Patterns.ContainsKey(cardinality))
+		{
+			Debug.Log(MoveName + "has overlapping keys!");
+			return;
+		}
+		Patterns.Add(cardinality, pat);
+		FiringPos.Add(cardinality, firingPos);
+	}
 
     /// <summary>
     /// Get the found move from this move instance, returns null if not found
@@ -90,6 +103,13 @@ public class Move : IComparable<Move>
         Patterns.TryGetValue(foundMoveCard,out a);
         return a;
     }
+
+	public Vector2 GetFoundMoveFiringPos()
+	{
+		Vector2 a;
+		FiringPos.TryGetValue(foundMoveCard,out a);
+		return a;
+	}
 
     //Implement the comparable interface so we can sort easily in lists
     public int CompareTo(Move other)

@@ -32,47 +32,8 @@ public class MoveChecker
         //D will match any dancer (ie any letter)
         //A will match main dancer
 
-        //Crowd surf
-        var cs = new Move("Crowd Surf", Color.blue, 0,3);
-        cs.AddPattern(new string[]
-        {
-            ".D.",
-            "DDD",
-        }
-        ,new Vector2(0, -1)
-        );        
-
-        cs.AddPattern(new string[]
-        {
-            "..D",
-            "DDD",
-            "..D",
-        }
-        , new Vector2(1,0)
-        );
-
-        cs.AddPattern(new string[]
-       {
-             "DDD",
-             ".D.",
-       }
-       , new Vector2(0, 1)
-       );
-
-        cs.AddPattern(new string[]
-        {
-            "D..",
-            "DDD",
-            "D..",
-        }
-        , new Vector2(-1, 0)
-        );
-
-        Moves.Add(cs);
-
-
         //Conga 3
-        var c3 = new Move("Conga Line Lv.3", Color.green * 0.5f, 3, 2,5);
+        var c3 = new Move("Conga Line Lv.3", Color.green * 0.5f, 3, 2, 5);
         c3.AddPattern(new string[]
         {
             "DDD"
@@ -92,7 +53,7 @@ public class MoveChecker
 
 
         //Conga 2
-        var c2 = new Move("Conga Line Lv.2", Color.green,2,2);
+        var c2 = new Move("Conga Line Lv.2", Color.green, 2, 2);
         c2.AddPattern(new string[]
         {
             "DD"
@@ -111,7 +72,7 @@ public class MoveChecker
 
 
         //Boogaloo 1 (Type A)
-        var b1A = new Move("Boogaloo Lv.1 A", new Color(0.29f, 0, 0.66f),1,3,8);
+        var b1A = new Move("Boogaloo Lv.1 A", new Color(0.29f, 0, 0.66f), 1, 3, 8);
         b1A.AddPattern(new string[]
             {
                 "A.D",
@@ -148,7 +109,7 @@ public class MoveChecker
         Moves.Add(b1A);
 
         //Boogaloo 1 (Type B)
-        var b1B = new Move("Boogaloo Lv.1 B", new Color(0.29f, 0, 0.66f),1,3,8);
+        var b1B = new Move("Boogaloo Lv.1 B", new Color(0.29f, 0, 0.66f), 1, 3, 8);
         b1B.AddPattern(new string[]
             {
                 "D.A",
@@ -186,7 +147,7 @@ public class MoveChecker
 
 
         //Boogaloo 2 (Type A)
-        var b2A = new Move("Boogaloo Lv.1 A", new Color(0.29f, 0, 0.66f), 2, 3,9);
+        var b2A = new Move("Boogaloo Lv.1 A", new Color(0.29f, 0, 0.66f), 2, 3, 9);
         b2A.AddPattern(new string[]
             {
                 "A.D",
@@ -225,7 +186,7 @@ public class MoveChecker
         Moves.Add(b2A);
 
         //Boogaloo 2 (Type B)
-        var b2B = new Move("Boogaloo Lv.1 B", new Color(0.29f, 0, 0.66f), 2, 3,9);
+        var b2B = new Move("Boogaloo Lv.1 B", new Color(0.29f, 0, 0.66f), 2, 3, 9);
         b2B.AddPattern(new string[]
             {
                 "D.A",
@@ -345,44 +306,76 @@ public class MoveChecker
       );
         Moves.Add(b3B);
 
-        Moves.Clear(); //DEBUG
 
         //Booty Call
         var booty = new Move("Booty Call", new Color(0.95f, 0.26f, 0.211f), 0, 0, 1);
         booty.AddPattern(new string[]
             {
-                "D-A-D"
+                "D-_A_-D"
             }
             , new Vector2(1, 0)
         );
 
         booty.AddPattern(new string[]
-           {
-                "D",
-                "-",
-                "A",
-                "-",
-                "D",
-           }
-           , new Vector2(0, 1)
-       );
-
-        booty.AddPattern(new string[]
-         {
-                "DA-D"
-         }
-         , new Vector2(1, 0)
-     );
+        {
+                "D-_A--D"
+        }
+        , new Vector2(2, 0)
+        );
 
         booty.AddPattern(new string[]
         {
-                "DA-D"
+                "D-A_--D"
         }
-        , new Vector2(1, 0)
-    );
+        , new Vector2(3, 0)
+        );
 
         Moves.Add(booty);
+
+        var surf = new Move("Crowd Surf", new Color(0.992f, 0.847f, 0.208f), 0, 3, 50);
+        surf.AddPattern(new string[]
+        {
+            "._.",
+            "DDD",
+            ".D.",
+        }
+        , new Vector2(0, -1)
+        , new Vector2(2, 1)
+        );
+
+        surf.AddPattern(new string[]
+       {
+            ".D.",
+            "DDD",
+            "._."
+       }
+       , new Vector2(0, 1)
+       , new Vector2(0, 1)
+       );
+
+        surf.AddPattern(new string[]
+      {
+          ".D.",
+          "DD_",
+          ".D."
+      }
+      , new Vector2(1, 0)
+      , new Vector2(1, 0)
+      );
+
+        surf.AddPattern(new string[]
+     {
+          ".D.",
+          "_DD",
+          ".D."
+     }
+     , new Vector2(-1, 0)
+     , new Vector2(1, 2)
+     );
+        Moves.Add(surf);
+
     }
+
 
     /// <summary>
     /// Highlevel move checker
@@ -396,7 +389,7 @@ public class MoveChecker
         //Loop through all moves to check them
         for (int i = 0; i < Moves.Count; i++)
         {
-            foreach(KeyValuePair<Vector2,string[]> pat in Moves[i].Patterns)
+            foreach (KeyValuePair<Vector2, string[]> pat in Moves[i].Patterns)
             {
                 //find ALL the moves in a row
                 var MovesInRow = CheckMove(Rows, pat.Value);
@@ -471,13 +464,18 @@ public class MoveChecker
                 string reg = replaceRegex(Move[rowsRight], RegReplace);
                 Regex regexObj = new Regex(reg);
                 Match matchObj = regexObj.Match(Rows[i]);
-                while (matchObj.Success)
+                while (matchObj.Success) //Go through all matches
                 {
                     var matchIndex = matchObj.Index; //Match overlaps
-                    PotentialStartsRegex.Add(matchIndex);
+
+                    //For booty call + others
+                    var indexbuffer = matchIndex;
+                    if (moveWidth >= 7) indexbuffer = 0;
+
+                    PotentialStartsRegex.Add(indexbuffer);
                     matchObj = regexObj.Match(Rows[i], matchIndex + 1);
-                }              
-              
+                }
+
                 //Now check out those potential starts to see if they're the move
                 foreach (int start in PotentialStartsRegex)
                 {
@@ -488,12 +486,12 @@ public class MoveChecker
                         //Now only check for move in a substring
                         //Also iterate up the list
                         //Also this wastes one loop cycle here but eh
-                        var substring = Rows[i + rowsRight].Substring((int) moveStart.x, moveWidth);
-                        
+                        var substring = Rows[i + rowsRight].Substring((int)moveStart.x, moveWidth);
+
                         string reg2 = replaceRegex(Move[rowsRight], RegReplace);
                         Match m2 = Regex.Match(substring, reg2);
-                        var match = m2.Success; 
-                        
+                        var match = m2.Success;
+
                         if (match && rowsRight + i + 1 < Rows.Length) //if match is in bounds
                         {
                             rowsRight++;
@@ -531,13 +529,13 @@ public class MoveChecker
                 Dancer d = null;
                 board.TryGetValue(new Vector2(j, i), out d); //get dancer at pos
 
-                if(!d)
+                if (!d)
                     row += ".";
                 else if (d.IsLead)
                     row += "A";
                 else if (d)
                     row += "D";
-                
+
             }
             stringBoard[i] = row;
         }
@@ -550,12 +548,12 @@ public class MoveChecker
     /// <param name="s">nice string to converty</param>
     /// <param name="d">Dictionart to swap with</param>
     /// <returns></returns>
-    private string replaceRegex(string s, Dictionary<string,string> d)
+    private string replaceRegex(string s, Dictionary<string, string> d)
     {
         string returnString = s;
         foreach (KeyValuePair<string, string> entry in d)
         {
-            returnString =  returnString.Replace(entry.Key, entry.Value);
+            returnString = returnString.Replace(entry.Key, entry.Value);
         }
         return returnString;
     }

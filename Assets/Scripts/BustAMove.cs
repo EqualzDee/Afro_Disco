@@ -91,4 +91,63 @@ public class BustAMove
             }
         }
     }
+
+	public void CrowdSurf(Vector2 pos, Vector2 firingPos, int push, string[] move, Vector2 cardinality)
+    {
+		Debug.Assert (push > 1); //can't have a push of 1
+
+		var worldpos = new Vector2(firingPos.y,firingPos.x) + pos; //Get firing position the wimp way		
+        //board.painter.AddToLayer(2, worldpos, Color.red);
+        var d = board.GetDancer(worldpos);
+        board.Move(d, worldpos + (cardinality * 2)); //Move out in front 
+
+        //Push 
+        for(int i = 0; i < push - 1; i++)
+        {
+            board.Push(d, cardinality);
+        }
+    }
+
+    bool inArrayBounds(string[] arr, Vector2 pos)
+    {
+        return pos.x > 0 && pos.x < arr[0].Length &&
+            pos.y > 0 && pos.y < arr.Length;
+            
+    }
+
+    public void BootyCall(Vector2 pos, string[] move, Vector2 cardinality)
+    {
+        //Get lead
+        Dancer lead = null;
+        for(int i = 0; i < Board.BoardW; i++)
+        {
+            var dcheck = board.GetDancer(pos + (cardinality * i));
+            if (dcheck && dcheck.IsLead)
+            {
+                lead = dcheck;
+                //board.painter.AddToLayer(2, dcheck.GetBoardPos(), Color.red);
+                break;
+            }
+        }
+
+        //Find backups
+        Dancer Above = null;
+        Dancer Below = null;
+        Vector2 leadPos = lead.GetBoardPos();
+        int j = 1;
+        while(Above == null || Below == null)
+        {
+            if(!Above)
+                Above = board.GetDancer(leadPos + (cardinality * j)); 
+
+            if (!Below)
+                Below = board.GetDancer(leadPos - (cardinality * j));
+
+            j++;            
+        }
+
+        //Movey backups
+        board.Move(Above, leadPos + cardinality);
+        board.Move(Below, leadPos - cardinality);
+    }
 }

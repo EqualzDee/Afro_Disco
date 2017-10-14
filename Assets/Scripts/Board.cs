@@ -47,7 +47,7 @@ public class Board : MonoBehaviour
 
     //Objects
     private MoveChecker CheckyBoy = new MoveChecker();
-    private Painter painter;
+    public Painter painter;
     private BustAMove busta;
 
     public Text TurnIndicator;
@@ -113,11 +113,10 @@ public class Board : MonoBehaviour
 	void Update ()
     {
         //Select Dancer with mouse via ray
-        //if (Input.GetKey(KeyCode.Mouse0))
-        if(Input.touchCount > 0)
+        if (Input.GetKey(KeyCode.Mouse0))
         {
             RaycastHit hit;
-			Ray ray = cam.ScreenPointToRay(Input.GetTouch(0).position);
+			Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
             if (!_dancerSelected) //no dancer selected
             {
@@ -186,7 +185,7 @@ public class Board : MonoBehaviour
             var v = new Vector2(1 + i, yOffset);
 
             GameObject dancerObj;
-            if (i == 2) //hackjob for prototype
+            if (i == 2) //Lead
             {
                 dancerObj = Instantiate(p == Player1 ? Afro : Rock, new Vector3(v.x, 0, v.y), Quaternion.identity);
             }
@@ -219,7 +218,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="d">dancer to move</param>
     /// <param name="newpos">position to move to</param>
-    void Move(Dancer d, Vector2 newpos)
+    public void Move(Dancer d, Vector2 newpos)
     {
         //Knock out!
         if (!InBounds(newpos))
@@ -313,16 +312,33 @@ public class Board : MonoBehaviour
     /// <param name="d"></param>
     void GlowDancer(Move move)
     {
+        //Common
         var m = move.GetFoundMove();
         var pos = move.origin;
+
+        bool isBooty = false;
+
+        //Glow Booty call
+        if (move.GetFoundMove().Length >= BoardW ||
+            move.GetFoundMove()[0].Length >= BoardW) 
+        {
+            isBooty = true;
+        }
+
         for (int i = 0; i < m.Length; i++)
         {
             for (int j = 0; j < m[i].Length; j++)
             {
-                if (m[i][j] == 'D' || m[i][j] == 'A')
+                if (isBooty)
                 {
-                    var offset = new Vector2(j, i);
-                    painter.AddToLayer(1, pos + offset, move.Color);
+                    if (GetDancer(new Vector2(j,i) + pos))
+                    {
+                        painter.AddToLayer(1, pos + new Vector2(j, i), move.Color);
+                    }
+                }
+                else if (m[i][j] == 'D' || m[i][j] == 'A')
+                {
+                    painter.AddToLayer(1, pos + new Vector2(j, i), move.Color);
                 }
             }
         }
@@ -601,6 +617,29 @@ public class Board : MonoBehaviour
             {
                 busta.Boogaloo(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
                 boogaloo.interactable = false;
+            }
+        }
+    }
+
+	public void TestCrowdSurf()
+	{
+		foreach (Move m in moveOriginList)
+		{
+			if (m.MoveName.Contains("Crowd Surf"))
+			{
+				busta.CrowdSurf(m.origin, m.GetFoundMoveFiringPos() ,m.PushPower, m.GetFoundMove(), m.foundMoveCard);
+			}
+		}
+	}
+
+    public void TestBooty()
+    {
+        foreach (Move m in moveOriginList)
+        {
+            if (m.MoveName.Contains("Booty"))
+            {
+                //Cardinality is normalized since we have overlapping keys
+                busta.BootyCall(m.origin, m.GetFoundMove(), m.foundMoveCard.normalized);
             }
         }
     }

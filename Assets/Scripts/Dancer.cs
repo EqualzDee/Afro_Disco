@@ -62,7 +62,7 @@ public class Dancer : MonoBehaviour
             Random.Range(-0.1f, 0.1f)); 
 
         //Listen to the beet mon
-        AudioMan.OnBeat += Groove;
+        //AudioMan.OnBeat += Groove;
 	}
 
     void animOffset()
