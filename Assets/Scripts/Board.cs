@@ -202,9 +202,6 @@ public class Board : MonoBehaviour
             if (i == 2)
             {
                 dancer.SetLead(true);
-                dancerObj.GetComponentInChildren<MeshRenderer>().material.color = p == Player1
-                    ? Color.yellow
-                    : Color.gray;
             }
         }
     }
