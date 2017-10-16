@@ -1,0 +1,258 @@
+fileFormatVersion: 2
+guid: 8e05b79fa639b784ca0ce332271ae137
+timeCreated: 1508147055
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: IdleTake1Mocap:Head
+    100004: IdleTake1Mocap:Head_End
+    100006: IdleTake1Mocap:Hips
+    100008: IdleTake1Mocap:LeftArm
+    100010: IdleTake1Mocap:LeftFoot
+    100012: IdleTake1Mocap:LeftFoot_End
+    100014: IdleTake1Mocap:LeftForeArm
+    100016: IdleTake1Mocap:LeftHand
+    100018: IdleTake1Mocap:LeftHandIndex1
+    100020: IdleTake1Mocap:LeftHandIndex2
+    100022: IdleTake1Mocap:LeftHandIndex3
+    100024: IdleTake1Mocap:LeftHandIndex3_End
+    100026: IdleTake1Mocap:LeftHandMiddle1
+    100028: IdleTake1Mocap:LeftHandMiddle2
+    100030: IdleTake1Mocap:LeftHandMiddle3
+    100032: IdleTake1Mocap:LeftHandMiddle3_End
+    100034: IdleTake1Mocap:LeftHandPinky1
+    100036: IdleTake1Mocap:LeftHandPinky2
+    100038: IdleTake1Mocap:LeftHandPinky3
+    100040: IdleTake1Mocap:LeftHandPinky3_End
+    100042: IdleTake1Mocap:LeftHandRing1
+    100044: IdleTake1Mocap:LeftHandRing2
+    100046: IdleTake1Mocap:LeftHandRing3
+    100048: IdleTake1Mocap:LeftHandRing3_End
+    100050: IdleTake1Mocap:LeftHandThumb1
+    100052: IdleTake1Mocap:LeftHandThumb2
+    100054: IdleTake1Mocap:LeftHandThumb3
+    100056: IdleTake1Mocap:LeftHandThumb3_End
+    100058: IdleTake1Mocap:LeftInHandIndex
+    100060: IdleTake1Mocap:LeftInHandMiddle
+    100062: IdleTake1Mocap:LeftInHandPinky
+    100064: IdleTake1Mocap:LeftInHandRing
+    100066: IdleTake1Mocap:LeftLeg
+    100068: IdleTake1Mocap:LeftShoulder
+    100070: IdleTake1Mocap:LeftUpLeg
+    100072: IdleTake1Mocap:Neck
+    100074: IdleTake1Mocap:RightArm
+    100076: IdleTake1Mocap:RightFoot
+    100078: IdleTake1Mocap:RightFoot_End
+    100080: IdleTake1Mocap:RightForeArm
+    100082: IdleTake1Mocap:RightHand
+    100084: IdleTake1Mocap:RightHandIndex1
+    100086: IdleTake1Mocap:RightHandIndex2
+    100088: IdleTake1Mocap:RightHandIndex3
+    100090: IdleTake1Mocap:RightHandIndex3_End
+    100092: IdleTake1Mocap:RightHandMiddle1
+    100094: IdleTake1Mocap:RightHandMiddle2
+    100096: IdleTake1Mocap:RightHandMiddle3
+    100098: IdleTake1Mocap:RightHandMiddle3_End
+    100100: IdleTake1Mocap:RightHandPinky1
+    100102: IdleTake1Mocap:RightHandPinky2
+    100104: IdleTake1Mocap:RightHandPinky3
+    100106: IdleTake1Mocap:RightHandPinky3_End
+    100108: IdleTake1Mocap:RightHandRing1
+    100110: IdleTake1Mocap:RightHandRing2
+    100112: IdleTake1Mocap:RightHandRing3
+    100114: IdleTake1Mocap:RightHandRing3_End
+    100116: IdleTake1Mocap:RightHandThumb1
+    100118: IdleTake1Mocap:RightHandThumb2
+    100120: IdleTake1Mocap:RightHandThumb3
+    100122: IdleTake1Mocap:RightHandThumb3_End
+    100124: IdleTake1Mocap:RightInHandIndex
+    100126: IdleTake1Mocap:RightInHandMiddle
+    100128: IdleTake1Mocap:RightInHandPinky
+    100130: IdleTake1Mocap:RightInHandRing
+    100132: IdleTake1Mocap:RightLeg
+    100134: IdleTake1Mocap:RightShoulder
+    100136: IdleTake1Mocap:RightUpLeg
+    100138: IdleTake1Mocap:Spine
+    100140: IdleTake1Mocap:Spine1
+    100142: IdleTake1Mocap:Spine2
+    100144: IdleTake1Mocap:Spine3
+    400000: //RootNode
+    400002: IdleTake1Mocap:Head
+    400004: IdleTake1Mocap:Head_End
+    400006: IdleTake1Mocap:Hips
+    400008: IdleTake1Mocap:LeftArm
+    400010: IdleTake1Mocap:LeftFoot
+    400012: IdleTake1Mocap:LeftFoot_End
+    400014: IdleTake1Mocap:LeftForeArm
+    400016: IdleTake1Mocap:LeftHand
+    400018: IdleTake1Mocap:LeftHandIndex1
+    400020: IdleTake1Mocap:LeftHandIndex2
+    400022: IdleTake1Mocap:LeftHandIndex3
+    400024: IdleTake1Mocap:LeftHandIndex3_End
+    400026: IdleTake1Mocap:LeftHandMiddle1
+    400028: IdleTake1Mocap:LeftHandMiddle2
+    400030: IdleTake1Mocap:LeftHandMiddle3
+    400032: IdleTake1Mocap:LeftHandMiddle3_End
+    400034: IdleTake1Mocap:LeftHandPinky1
+    400036: IdleTake1Mocap:LeftHandPinky2
+    400038: IdleTake1Mocap:LeftHandPinky3
+    400040: IdleTake1Mocap:LeftHandPinky3_End
+    400042: IdleTake1Mocap:LeftHandRing1
+    400044: IdleTake1Mocap:LeftHandRing2
+    400046: IdleTake1Mocap:LeftHandRing3
+    400048: IdleTake1Mocap:LeftHandRing3_End
+    400050: IdleTake1Mocap:LeftHandThumb1
+    400052: IdleTake1Mocap:LeftHandThumb2
+    400054: IdleTake1Mocap:LeftHandThumb3
+    400056: IdleTake1Mocap:LeftHandThumb3_End
+    400058: IdleTake1Mocap:LeftInHandIndex
+    400060: IdleTake1Mocap:LeftInHandMiddle
+    400062: IdleTake1Mocap:LeftInHandPinky
+    400064: IdleTake1Mocap:LeftInHandRing
+    400066: IdleTake1Mocap:LeftLeg
+    400068: IdleTake1Mocap:LeftShoulder
+    400070: IdleTake1Mocap:LeftUpLeg
+    400072: IdleTake1Mocap:Neck
+    400074: IdleTake1Mocap:RightArm
+    400076: IdleTake1Mocap:RightFoot
+    400078: IdleTake1Mocap:RightFoot_End
+    400080: IdleTake1Mocap:RightForeArm
+    400082: IdleTake1Mocap:RightHand
+    400084: IdleTake1Mocap:RightHandIndex1
+    400086: IdleTake1Mocap:RightHandIndex2
+    400088: IdleTake1Mocap:RightHandIndex3
+    400090: IdleTake1Mocap:RightHandIndex3_End
+    400092: IdleTake1Mocap:RightHandMiddle1
+    400094: IdleTake1Mocap:RightHandMiddle2
+    400096: IdleTake1Mocap:RightHandMiddle3
+    400098: IdleTake1Mocap:RightHandMiddle3_End
+    400100: IdleTake1Mocap:RightHandPinky1
+    400102: IdleTake1Mocap:RightHandPinky2
+    400104: IdleTake1Mocap:RightHandPinky3
+    400106: IdleTake1Mocap:RightHandPinky3_End
+    400108: IdleTake1Mocap:RightHandRing1
+    400110: IdleTake1Mocap:RightHandRing2
+    400112: IdleTake1Mocap:RightHandRing3
+    400114: IdleTake1Mocap:RightHandRing3_End
+    400116: IdleTake1Mocap:RightHandThumb1
+    400118: IdleTake1Mocap:RightHandThumb2
+    400120: IdleTake1Mocap:RightHandThumb3
+    400122: IdleTake1Mocap:RightHandThumb3_End
+    400124: IdleTake1Mocap:RightInHandIndex
+    400126: IdleTake1Mocap:RightInHandMiddle
+    400128: IdleTake1Mocap:RightInHandPinky
+    400130: IdleTake1Mocap:RightInHandRing
+    400132: IdleTake1Mocap:RightLeg
+    400134: IdleTake1Mocap:RightShoulder
+    400136: IdleTake1Mocap:RightUpLeg
+    400138: IdleTake1Mocap:Spine
+    400140: IdleTake1Mocap:Spine1
+    400142: IdleTake1Mocap:Spine2
+    400144: IdleTake1Mocap:Spine3
+    7400000: Idle
+    9500000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Idle
+      takeName: Take 001
+      firstFrame: 60
+      lastFrame: 400
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

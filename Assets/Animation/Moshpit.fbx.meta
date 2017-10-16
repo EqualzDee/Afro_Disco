@@ -1,0 +1,258 @@
+fileFormatVersion: 2
+guid: 876e05161484f764b9d9af821ebdb7e2
+timeCreated: 1508148403
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: MoshpitTake1Mocap:Head
+    100004: MoshpitTake1Mocap:Head_End
+    100006: MoshpitTake1Mocap:Hips
+    100008: MoshpitTake1Mocap:LeftArm
+    100010: MoshpitTake1Mocap:LeftFoot
+    100012: MoshpitTake1Mocap:LeftFoot_End
+    100014: MoshpitTake1Mocap:LeftForeArm
+    100016: MoshpitTake1Mocap:LeftHand
+    100018: MoshpitTake1Mocap:LeftHandIndex1
+    100020: MoshpitTake1Mocap:LeftHandIndex2
+    100022: MoshpitTake1Mocap:LeftHandIndex3
+    100024: MoshpitTake1Mocap:LeftHandIndex3_End
+    100026: MoshpitTake1Mocap:LeftHandMiddle1
+    100028: MoshpitTake1Mocap:LeftHandMiddle2
+    100030: MoshpitTake1Mocap:LeftHandMiddle3
+    100032: MoshpitTake1Mocap:LeftHandMiddle3_End
+    100034: MoshpitTake1Mocap:LeftHandPinky1
+    100036: MoshpitTake1Mocap:LeftHandPinky2
+    100038: MoshpitTake1Mocap:LeftHandPinky3
+    100040: MoshpitTake1Mocap:LeftHandPinky3_End
+    100042: MoshpitTake1Mocap:LeftHandRing1
+    100044: MoshpitTake1Mocap:LeftHandRing2
+    100046: MoshpitTake1Mocap:LeftHandRing3
+    100048: MoshpitTake1Mocap:LeftHandRing3_End
+    100050: MoshpitTake1Mocap:LeftHandThumb1
+    100052: MoshpitTake1Mocap:LeftHandThumb2
+    100054: MoshpitTake1Mocap:LeftHandThumb3
+    100056: MoshpitTake1Mocap:LeftHandThumb3_End
+    100058: MoshpitTake1Mocap:LeftInHandIndex
+    100060: MoshpitTake1Mocap:LeftInHandMiddle
+    100062: MoshpitTake1Mocap:LeftInHandPinky
+    100064: MoshpitTake1Mocap:LeftInHandRing
+    100066: MoshpitTake1Mocap:LeftLeg
+    100068: MoshpitTake1Mocap:LeftShoulder
+    100070: MoshpitTake1Mocap:LeftUpLeg
+    100072: MoshpitTake1Mocap:Neck
+    100074: MoshpitTake1Mocap:RightArm
+    100076: MoshpitTake1Mocap:RightFoot
+    100078: MoshpitTake1Mocap:RightFoot_End
+    100080: MoshpitTake1Mocap:RightForeArm
+    100082: MoshpitTake1Mocap:RightHand
+    100084: MoshpitTake1Mocap:RightHandIndex1
+    100086: MoshpitTake1Mocap:RightHandIndex2
+    100088: MoshpitTake1Mocap:RightHandIndex3
+    100090: MoshpitTake1Mocap:RightHandIndex3_End
+    100092: MoshpitTake1Mocap:RightHandMiddle1
+    100094: MoshpitTake1Mocap:RightHandMiddle2
+    100096: MoshpitTake1Mocap:RightHandMiddle3
+    100098: MoshpitTake1Mocap:RightHandMiddle3_End
+    100100: MoshpitTake1Mocap:RightHandPinky1
+    100102: MoshpitTake1Mocap:RightHandPinky2
+    100104: MoshpitTake1Mocap:RightHandPinky3
+    100106: MoshpitTake1Mocap:RightHandPinky3_End
+    100108: MoshpitTake1Mocap:RightHandRing1
+    100110: MoshpitTake1Mocap:RightHandRing2
+    100112: MoshpitTake1Mocap:RightHandRing3
+    100114: MoshpitTake1Mocap:RightHandRing3_End
+    100116: MoshpitTake1Mocap:RightHandThumb1
+    100118: MoshpitTake1Mocap:RightHandThumb2
+    100120: MoshpitTake1Mocap:RightHandThumb3
+    100122: MoshpitTake1Mocap:RightHandThumb3_End
+    100124: MoshpitTake1Mocap:RightInHandIndex
+    100126: MoshpitTake1Mocap:RightInHandMiddle
+    100128: MoshpitTake1Mocap:RightInHandPinky
+    100130: MoshpitTake1Mocap:RightInHandRing
+    100132: MoshpitTake1Mocap:RightLeg
+    100134: MoshpitTake1Mocap:RightShoulder
+    100136: MoshpitTake1Mocap:RightUpLeg
+    100138: MoshpitTake1Mocap:Spine
+    100140: MoshpitTake1Mocap:Spine1
+    100142: MoshpitTake1Mocap:Spine2
+    100144: MoshpitTake1Mocap:Spine3
+    400000: //RootNode
+    400002: MoshpitTake1Mocap:Head
+    400004: MoshpitTake1Mocap:Head_End
+    400006: MoshpitTake1Mocap:Hips
+    400008: MoshpitTake1Mocap:LeftArm
+    400010: MoshpitTake1Mocap:LeftFoot
+    400012: MoshpitTake1Mocap:LeftFoot_End
+    400014: MoshpitTake1Mocap:LeftForeArm
+    400016: MoshpitTake1Mocap:LeftHand
+    400018: MoshpitTake1Mocap:LeftHandIndex1
+    400020: MoshpitTake1Mocap:LeftHandIndex2
+    400022: MoshpitTake1Mocap:LeftHandIndex3
+    400024: MoshpitTake1Mocap:LeftHandIndex3_End
+    400026: MoshpitTake1Mocap:LeftHandMiddle1
+    400028: MoshpitTake1Mocap:LeftHandMiddle2
+    400030: MoshpitTake1Mocap:LeftHandMiddle3
+    400032: MoshpitTake1Mocap:LeftHandMiddle3_End
+    400034: MoshpitTake1Mocap:LeftHandPinky1
+    400036: MoshpitTake1Mocap:LeftHandPinky2
+    400038: MoshpitTake1Mocap:LeftHandPinky3
+    400040: MoshpitTake1Mocap:LeftHandPinky3_End
+    400042: MoshpitTake1Mocap:LeftHandRing1
+    400044: MoshpitTake1Mocap:LeftHandRing2
+    400046: MoshpitTake1Mocap:LeftHandRing3
+    400048: MoshpitTake1Mocap:LeftHandRing3_End
+    400050: MoshpitTake1Mocap:LeftHandThumb1
+    400052: MoshpitTake1Mocap:LeftHandThumb2
+    400054: MoshpitTake1Mocap:LeftHandThumb3
+    400056: MoshpitTake1Mocap:LeftHandThumb3_End
+    400058: MoshpitTake1Mocap:LeftInHandIndex
+    400060: MoshpitTake1Mocap:LeftInHandMiddle
+    400062: MoshpitTake1Mocap:LeftInHandPinky
+    400064: MoshpitTake1Mocap:LeftInHandRing
+    400066: MoshpitTake1Mocap:LeftLeg
+    400068: MoshpitTake1Mocap:LeftShoulder
+    400070: MoshpitTake1Mocap:LeftUpLeg
+    400072: MoshpitTake1Mocap:Neck
+    400074: MoshpitTake1Mocap:RightArm
+    400076: MoshpitTake1Mocap:RightFoot
+    400078: MoshpitTake1Mocap:RightFoot_End
+    400080: MoshpitTake1Mocap:RightForeArm
+    400082: MoshpitTake1Mocap:RightHand
+    400084: MoshpitTake1Mocap:RightHandIndex1
+    400086: MoshpitTake1Mocap:RightHandIndex2
+    400088: MoshpitTake1Mocap:RightHandIndex3
+    400090: MoshpitTake1Mocap:RightHandIndex3_End
+    400092: MoshpitTake1Mocap:RightHandMiddle1
+    400094: MoshpitTake1Mocap:RightHandMiddle2
+    400096: MoshpitTake1Mocap:RightHandMiddle3
+    400098: MoshpitTake1Mocap:RightHandMiddle3_End
+    400100: MoshpitTake1Mocap:RightHandPinky1
+    400102: MoshpitTake1Mocap:RightHandPinky2
+    400104: MoshpitTake1Mocap:RightHandPinky3
+    400106: MoshpitTake1Mocap:RightHandPinky3_End
+    400108: MoshpitTake1Mocap:RightHandRing1
+    400110: MoshpitTake1Mocap:RightHandRing2
+    400112: MoshpitTake1Mocap:RightHandRing3
+    400114: MoshpitTake1Mocap:RightHandRing3_End
+    400116: MoshpitTake1Mocap:RightHandThumb1
+    400118: MoshpitTake1Mocap:RightHandThumb2
+    400120: MoshpitTake1Mocap:RightHandThumb3
+    400122: MoshpitTake1Mocap:RightHandThumb3_End
+    400124: MoshpitTake1Mocap:RightInHandIndex
+    400126: MoshpitTake1Mocap:RightInHandMiddle
+    400128: MoshpitTake1Mocap:RightInHandPinky
+    400130: MoshpitTake1Mocap:RightInHandRing
+    400132: MoshpitTake1Mocap:RightLeg
+    400134: MoshpitTake1Mocap:RightShoulder
+    400136: MoshpitTake1Mocap:RightUpLeg
+    400138: MoshpitTake1Mocap:Spine
+    400140: MoshpitTake1Mocap:Spine1
+    400142: MoshpitTake1Mocap:Spine2
+    400144: MoshpitTake1Mocap:Spine3
+    7400000: Moshpit
+    9500000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Moshpit
+      takeName: Take 001
+      firstFrame: 120
+      lastFrame: 216
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

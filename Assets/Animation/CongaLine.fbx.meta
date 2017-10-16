@@ -1,0 +1,258 @@
+fileFormatVersion: 2
+guid: 193a0aa40a7ed034382adab9988ebe98
+timeCreated: 1508145876
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: //RootNode
+    100002: CongaLineTake1Mocap:Head
+    100004: CongaLineTake1Mocap:Head_End
+    100006: CongaLineTake1Mocap:Hips
+    100008: CongaLineTake1Mocap:LeftArm
+    100010: CongaLineTake1Mocap:LeftFoot
+    100012: CongaLineTake1Mocap:LeftFoot_End
+    100014: CongaLineTake1Mocap:LeftForeArm
+    100016: CongaLineTake1Mocap:LeftHand
+    100018: CongaLineTake1Mocap:LeftHandIndex1
+    100020: CongaLineTake1Mocap:LeftHandIndex2
+    100022: CongaLineTake1Mocap:LeftHandIndex3
+    100024: CongaLineTake1Mocap:LeftHandIndex3_End
+    100026: CongaLineTake1Mocap:LeftHandMiddle1
+    100028: CongaLineTake1Mocap:LeftHandMiddle2
+    100030: CongaLineTake1Mocap:LeftHandMiddle3
+    100032: CongaLineTake1Mocap:LeftHandMiddle3_End
+    100034: CongaLineTake1Mocap:LeftHandPinky1
+    100036: CongaLineTake1Mocap:LeftHandPinky2
+    100038: CongaLineTake1Mocap:LeftHandPinky3
+    100040: CongaLineTake1Mocap:LeftHandPinky3_End
+    100042: CongaLineTake1Mocap:LeftHandRing1
+    100044: CongaLineTake1Mocap:LeftHandRing2
+    100046: CongaLineTake1Mocap:LeftHandRing3
+    100048: CongaLineTake1Mocap:LeftHandRing3_End
+    100050: CongaLineTake1Mocap:LeftHandThumb1
+    100052: CongaLineTake1Mocap:LeftHandThumb2
+    100054: CongaLineTake1Mocap:LeftHandThumb3
+    100056: CongaLineTake1Mocap:LeftHandThumb3_End
+    100058: CongaLineTake1Mocap:LeftInHandIndex
+    100060: CongaLineTake1Mocap:LeftInHandMiddle
+    100062: CongaLineTake1Mocap:LeftInHandPinky
+    100064: CongaLineTake1Mocap:LeftInHandRing
+    100066: CongaLineTake1Mocap:LeftLeg
+    100068: CongaLineTake1Mocap:LeftShoulder
+    100070: CongaLineTake1Mocap:LeftUpLeg
+    100072: CongaLineTake1Mocap:Neck
+    100074: CongaLineTake1Mocap:RightArm
+    100076: CongaLineTake1Mocap:RightFoot
+    100078: CongaLineTake1Mocap:RightFoot_End
+    100080: CongaLineTake1Mocap:RightForeArm
+    100082: CongaLineTake1Mocap:RightHand
+    100084: CongaLineTake1Mocap:RightHandIndex1
+    100086: CongaLineTake1Mocap:RightHandIndex2
+    100088: CongaLineTake1Mocap:RightHandIndex3
+    100090: CongaLineTake1Mocap:RightHandIndex3_End
+    100092: CongaLineTake1Mocap:RightHandMiddle1
+    100094: CongaLineTake1Mocap:RightHandMiddle2
+    100096: CongaLineTake1Mocap:RightHandMiddle3
+    100098: CongaLineTake1Mocap:RightHandMiddle3_End
+    100100: CongaLineTake1Mocap:RightHandPinky1
+    100102: CongaLineTake1Mocap:RightHandPinky2
+    100104: CongaLineTake1Mocap:RightHandPinky3
+    100106: CongaLineTake1Mocap:RightHandPinky3_End
+    100108: CongaLineTake1Mocap:RightHandRing1
+    100110: CongaLineTake1Mocap:RightHandRing2
+    100112: CongaLineTake1Mocap:RightHandRing3
+    100114: CongaLineTake1Mocap:RightHandRing3_End
+    100116: CongaLineTake1Mocap:RightHandThumb1
+    100118: CongaLineTake1Mocap:RightHandThumb2
+    100120: CongaLineTake1Mocap:RightHandThumb3
+    100122: CongaLineTake1Mocap:RightHandThumb3_End
+    100124: CongaLineTake1Mocap:RightInHandIndex
+    100126: CongaLineTake1Mocap:RightInHandMiddle
+    100128: CongaLineTake1Mocap:RightInHandPinky
+    100130: CongaLineTake1Mocap:RightInHandRing
+    100132: CongaLineTake1Mocap:RightLeg
+    100134: CongaLineTake1Mocap:RightShoulder
+    100136: CongaLineTake1Mocap:RightUpLeg
+    100138: CongaLineTake1Mocap:Spine
+    100140: CongaLineTake1Mocap:Spine1
+    100142: CongaLineTake1Mocap:Spine2
+    100144: CongaLineTake1Mocap:Spine3
+    400000: //RootNode
+    400002: CongaLineTake1Mocap:Head
+    400004: CongaLineTake1Mocap:Head_End
+    400006: CongaLineTake1Mocap:Hips
+    400008: CongaLineTake1Mocap:LeftArm
+    400010: CongaLineTake1Mocap:LeftFoot
+    400012: CongaLineTake1Mocap:LeftFoot_End
+    400014: CongaLineTake1Mocap:LeftForeArm
+    400016: CongaLineTake1Mocap:LeftHand
+    400018: CongaLineTake1Mocap:LeftHandIndex1
+    400020: CongaLineTake1Mocap:LeftHandIndex2
+    400022: CongaLineTake1Mocap:LeftHandIndex3
+    400024: CongaLineTake1Mocap:LeftHandIndex3_End
+    400026: CongaLineTake1Mocap:LeftHandMiddle1
+    400028: CongaLineTake1Mocap:LeftHandMiddle2
+    400030: CongaLineTake1Mocap:LeftHandMiddle3
+    400032: CongaLineTake1Mocap:LeftHandMiddle3_End
+    400034: CongaLineTake1Mocap:LeftHandPinky1
+    400036: CongaLineTake1Mocap:LeftHandPinky2
+    400038: CongaLineTake1Mocap:LeftHandPinky3
+    400040: CongaLineTake1Mocap:LeftHandPinky3_End
+    400042: CongaLineTake1Mocap:LeftHandRing1
+    400044: CongaLineTake1Mocap:LeftHandRing2
+    400046: CongaLineTake1Mocap:LeftHandRing3
+    400048: CongaLineTake1Mocap:LeftHandRing3_End
+    400050: CongaLineTake1Mocap:LeftHandThumb1
+    400052: CongaLineTake1Mocap:LeftHandThumb2
+    400054: CongaLineTake1Mocap:LeftHandThumb3
+    400056: CongaLineTake1Mocap:LeftHandThumb3_End
+    400058: CongaLineTake1Mocap:LeftInHandIndex
+    400060: CongaLineTake1Mocap:LeftInHandMiddle
+    400062: CongaLineTake1Mocap:LeftInHandPinky
+    400064: CongaLineTake1Mocap:LeftInHandRing
+    400066: CongaLineTake1Mocap:LeftLeg
+    400068: CongaLineTake1Mocap:LeftShoulder
+    400070: CongaLineTake1Mocap:LeftUpLeg
+    400072: CongaLineTake1Mocap:Neck
+    400074: CongaLineTake1Mocap:RightArm
+    400076: CongaLineTake1Mocap:RightFoot
+    400078: CongaLineTake1Mocap:RightFoot_End
+    400080: CongaLineTake1Mocap:RightForeArm
+    400082: CongaLineTake1Mocap:RightHand
+    400084: CongaLineTake1Mocap:RightHandIndex1
+    400086: CongaLineTake1Mocap:RightHandIndex2
+    400088: CongaLineTake1Mocap:RightHandIndex3
+    400090: CongaLineTake1Mocap:RightHandIndex3_End
+    400092: CongaLineTake1Mocap:RightHandMiddle1
+    400094: CongaLineTake1Mocap:RightHandMiddle2
+    400096: CongaLineTake1Mocap:RightHandMiddle3
+    400098: CongaLineTake1Mocap:RightHandMiddle3_End
+    400100: CongaLineTake1Mocap:RightHandPinky1
+    400102: CongaLineTake1Mocap:RightHandPinky2
+    400104: CongaLineTake1Mocap:RightHandPinky3
+    400106: CongaLineTake1Mocap:RightHandPinky3_End
+    400108: CongaLineTake1Mocap:RightHandRing1
+    400110: CongaLineTake1Mocap:RightHandRing2
+    400112: CongaLineTake1Mocap:RightHandRing3
+    400114: CongaLineTake1Mocap:RightHandRing3_End
+    400116: CongaLineTake1Mocap:RightHandThumb1
+    400118: CongaLineTake1Mocap:RightHandThumb2
+    400120: CongaLineTake1Mocap:RightHandThumb3
+    400122: CongaLineTake1Mocap:RightHandThumb3_End
+    400124: CongaLineTake1Mocap:RightInHandIndex
+    400126: CongaLineTake1Mocap:RightInHandMiddle
+    400128: CongaLineTake1Mocap:RightInHandPinky
+    400130: CongaLineTake1Mocap:RightInHandRing
+    400132: CongaLineTake1Mocap:RightLeg
+    400134: CongaLineTake1Mocap:RightShoulder
+    400136: CongaLineTake1Mocap:RightUpLeg
+    400138: CongaLineTake1Mocap:Spine
+    400140: CongaLineTake1Mocap:Spine1
+    400142: CongaLineTake1Mocap:Spine2
+    400144: CongaLineTake1Mocap:Spine3
+    7400000: CongaLine
+    9500000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: CongaLine
+      takeName: Take 001
+      firstFrame: 83
+      lastFrame: 150
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 1
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask: []
+      maskType: 3
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
