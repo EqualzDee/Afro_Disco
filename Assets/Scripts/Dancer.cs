@@ -29,15 +29,16 @@ public class Dancer : MonoBehaviour
     public int rangePoints = 2;
     public int StartrangePoints = 2;
 
-    public CapsuleCollider myCollider;    
+	public CapsuleCollider CapsCollider;
+	public BoxCollider myCollider;
 
 
-    /// <summary>
-    /// Initalize dancer to board
-    /// </summary>
-    /// <param name="pos">My start pos</param>
-    /// <param name="b">The controlling board</param>
-    public void Initialize(Vector2 pos)
+	/// <summary>
+	/// Initalize dancer to board
+	/// </summary>
+	/// <param name="pos">My start pos</param>
+	/// <param name="b">The controlling board</param>
+	public void Initialize(Vector2 pos)
     {
         StartRoundPos = pos;
         PrevPos = pos;
@@ -59,12 +60,15 @@ public class Dancer : MonoBehaviour
         //Disable rag doll colliders
         EnableRagdoll(false);
 
-        //Set random offset for collider to prevent weird collisions    
-        myCollider.transform.position += new Vector3(Random.Range(-0.1f, 0.1f), 0,
-            Random.Range(-0.1f, 0.1f)); 
+		//Set random offset for collider to prevent weird collisions    
+		myCollider.transform.position += new Vector3(Random.Range(-0.1f,0.1f),0,
+			Random.Range(-0.1f,0.1f));
 
-        //Listen to the beet mon
-        //AudioMan.OnBeat += Groove;
+		CapsCollider.transform.position += new Vector3(Random.Range(-0.1f,0.1f),0,
+			Random.Range(-0.1f,0.1f));
+
+		//Listen to the beet mon
+		//AudioMan.OnBeat += Groove;
 	}
 
     void animOffset()
@@ -185,8 +189,9 @@ public class Dancer : MonoBehaviour
             c.enabled = b;
         }
 
-        myCollider.enabled = !b;
-        _RB.isKinematic = b;
+		myCollider.enabled = !b;
+		CapsCollider.enabled = !b;
+		_RB.isKinematic = b;
     }
 
     public void ResettiTheSpaghetti(int range)
