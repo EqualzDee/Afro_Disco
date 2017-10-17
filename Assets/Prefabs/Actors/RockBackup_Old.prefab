@@ -229,7 +229,7 @@ GameObject:
   - component: {fileID: 114516990916309452}
   - component: {fileID: 54611498400026172}
   m_Layer: 8
-  m_Name: RockBackup
+  m_Name: RockBackup_Old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

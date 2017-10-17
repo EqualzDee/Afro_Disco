@@ -29,7 +29,7 @@ public class Dancer : MonoBehaviour
     public int rangePoints = 2;
     public int StartrangePoints = 2;
 
-    public CapsuleCollider myCollider;
+    public CapsuleCollider myCollider;    
 
 
     /// <summary>
@@ -77,7 +77,7 @@ public class Dancer : MonoBehaviour
     {
         if (isDancing)
         {
-            _RB.MovePosition(Vector3.Lerp(transform.position, _target + rand, Time.deltaTime*moveSpeed));
+            _RB.MovePosition(Vector3.Lerp(transform.position, _target + rand, moveSpeed));  
         }
     }
  
@@ -198,6 +198,27 @@ public class Dancer : MonoBehaviour
     public Vector2 GetBoardPos()
     {
         return new Vector2(_target.x, _target.z);
+    }
+
+    
+    public static Vector3 Vector3Sinerp(Vector3 start, Vector3 end, float value)
+    {
+        return
+            new Vector3(
+            Mathf.Lerp(start.x, end.x, Mathf.Sin(value * Mathf.PI * 0.5f)),
+            Mathf.Lerp(start.y, end.y, Mathf.Sin(value * Mathf.PI * 0.5f)),
+            Mathf.Lerp(start.z, end.z, Mathf.Sin(value * Mathf.PI * 0.5f))
+            );
+    }
+
+    public static Vector3 Vector3SmoothStep(Vector3 start, Vector3 end, float value)
+    {
+        return
+            new Vector3(
+                Mathf.SmoothStep(start.x,end.x,value),
+                Mathf.SmoothStep(start.y, end.y, value),
+                Mathf.SmoothStep(start.z, end.z, value)
+            );
     }
 
 }

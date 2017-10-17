@@ -851,7 +851,7 @@ GameObject:
   - component: {fileID: 114076282350308190}
   - component: {fileID: 54415758115888774}
   m_Layer: 8
-  m_Name: AfroDisco
+  m_Name: AfroDisco_Old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

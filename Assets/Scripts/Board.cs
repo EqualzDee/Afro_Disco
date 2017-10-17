@@ -128,8 +128,6 @@ public class Board : MonoBehaviour
                     //FindValidTiles(_dancerSelected);
                     //paint selected layer
                     PaintSelection(_dancerSelected);
-
-
                 }
             }
             else //Dancer is selected

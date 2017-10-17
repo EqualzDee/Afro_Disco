@@ -11,6 +11,8 @@ public class AudioMan : MonoBehaviour {
     private float timeBetweenBeets;
     private float beetTime;
 
+    private bool isMuting;
+
     // Use this for initialization
     void Start () {
         timeBetweenBeets = 60f / BPM;
@@ -26,5 +28,11 @@ public class AudioMan : MonoBehaviour {
             beetTime -= timeBetweenBeets;	//Stops the beat from drifting in the long term
             if (OnBeat != null) OnBeat();
         }
+    }
+
+    public void Mute()
+    {
+        isMuting = !isMuting;
+        GetComponent<AudioSource>().mute = isMuting;
     }
 }

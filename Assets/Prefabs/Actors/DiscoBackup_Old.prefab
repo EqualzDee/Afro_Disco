@@ -1211,7 +1211,7 @@ GameObject:
   - component: {fileID: 114427360979611722}
   - component: {fileID: 54181018120950356}
   m_Layer: 8
-  m_Name: DiscoBackup
+  m_Name: DiscoBackup_Old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -637,7 +637,7 @@ GameObject:
   - component: {fileID: 114320539131852852}
   - component: {fileID: 54278479508316508}
   m_Layer: 8
-  m_Name: RockMullet
+  m_Name: RockMullet_Old
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
