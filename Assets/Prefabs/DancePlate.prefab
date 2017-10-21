@@ -23,7 +23,7 @@ GameObject:
   - component: {fileID: 23417269650821398}
   - component: {fileID: 95248593167285488}
   - component: {fileID: 65602206562491838}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: DancePlate
   m_TagString: Untagged
   m_Icon: {fileID: 0}

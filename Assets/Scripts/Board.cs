@@ -18,6 +18,7 @@ public class Board : MonoBehaviour
     public int DancerRange;
 
     public LayerMask moverLayer;
+    public LayerMask DancerLayer;
 
     public const int BoardW = 7;
     public const int BoardH = 11;
@@ -71,7 +72,7 @@ public class Board : MonoBehaviour
     public GameObject RockBackup;
 
     List<Move> moveOriginList = new List<Move>();
-    
+    public float LaunchForce = 50;
 
     void Awake()
     {
@@ -116,24 +117,34 @@ public class Board : MonoBehaviour
 			Ray ray = cam.ScreenPointToRay(Input.mousePosition);
 
             if (!_dancerSelected) //no dancer selected
-            {
+            {                
                 if (Physics.Raycast(ray, out hit)) //8 is dancer layer
                 {
-                    _dancerSelected = hit.transform.GetComponentInParent<Dancer>();
 
-                    if (!_dancerSelected || !_dancerSelected.canMove) return;
-                    
-                    //Select and paint selected tiles
-                    _dancerSelected.Select();
-                    //FindValidTiles(_dancerSelected);
-                    //paint selected layer
-                    PaintSelection(_dancerSelected);
+                    //Hit dancer
+                    _dancerSelected = hit.transform.GetComponent<Dancer>();
+                    if (!_dancerSelected)
+                    {
+                        //Hit board
+                        var hitpos = hit.transform.position;
+                        var boardPos = new Vector2(hitpos.x, hitpos.z);
+                        _dancerSelected = GetDancer(boardPos);
+                    }
+
+                    if (_dancerSelected && _dancerSelected.canMove)
+                    {
+                        //Select and paint selected tiles
+                        _dancerSelected.Select();
+                        //FindValidTiles(_dancerSelected);
+                        //paint selected layer
+                        PaintSelection(_dancerSelected);
+                    }
                 }
             }
             else //Dancer is selected
             {
                 //Move that booty
-                if (Physics.Raycast(ray, out hit, 999, moverLayer))
+                if (Physics.Raycast(ray, out hit, 999, moverLayer.value))
                 {
                     Vector2 hitBoardPos = new Vector2(hit.transform.position.x, hit.transform.position.z);
 
@@ -214,7 +225,8 @@ public class Board : MonoBehaviour
         //Knock out!
         if (!InBounds(newpos) && d.isDancing)
         {
-            RemoveDancer(d, newpos - GetDancerPos(d));
+            Vector2 dir = (newpos - GetDancerPos(d));
+            RemoveDancer(d,  dir * LaunchForce);
         }
         else //All good
         {
@@ -672,5 +684,10 @@ public class Board : MonoBehaviour
         }
         BakeMovement(turn, false);
         MoveCheck();
+    }
+
+    public static bool OnOuterEdge(Vector2 pos)
+    {
+        return pos.x == 0 || pos.y == 0 || pos.x == BoardW || pos.y == BoardW;
     }
 }

@@ -1853,7 +1853,6 @@ MonoBehaviour:
   PrevPos: {x: 0, y: 0}
   rangePoints: 2
   StartrangePoints: 2
-  myCollider: {fileID: 136997360100556952}
 --- !u!136 &136997360100556952
 CapsuleCollider:
   m_ObjectHideFlags: 1

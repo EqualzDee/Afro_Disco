@@ -474,7 +474,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4654191108171242}
   - component: {fileID: 136466064567031632}
-  - component: {fileID: 65646166621034522}
   m_Layer: 8
   m_Name: Collider
   m_TagString: Dancer
@@ -1802,18 +1801,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!65 &65646166621034522
-BoxCollider:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1474979747376418}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 0.2, z: 1}
-  m_Center: {x: -0.07794476, y: 0, z: 0}
 --- !u!95 &95143012670175940
 Animator:
   serializedVersion: 3
@@ -1866,8 +1853,7 @@ MonoBehaviour:
   PrevPos: {x: 0, y: 0}
   rangePoints: 2
   StartrangePoints: 2
-  CapsCollider: {fileID: 136466064567031632}
-  myCollider: {fileID: 65646166621034522}
+  outOfRangeTimeOut: 0.5
 --- !u!136 &136466064567031632
 CapsuleCollider:
   m_ObjectHideFlags: 1

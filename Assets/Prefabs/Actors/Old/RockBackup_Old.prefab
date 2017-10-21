@@ -2807,7 +2807,6 @@ MonoBehaviour:
   PrevPos: {x: 0, y: 0}
   rangePoints: 2
   StartrangePoints: 2
-  myCollider: {fileID: 136472320659909118}
 --- !u!114 &114901229663875408
 MonoBehaviour:
   m_ObjectHideFlags: 1

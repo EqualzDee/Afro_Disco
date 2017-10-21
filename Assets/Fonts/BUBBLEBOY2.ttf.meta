@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: d9116d0028bd42f47bf7ec076ec352eb
+timeCreated: 1508558825
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: BubbleBoy2
+  fontNames:
+  - BubbleBoy2
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

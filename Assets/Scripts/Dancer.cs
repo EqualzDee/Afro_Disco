@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Dancer : MonoBehaviour
 {
-    public float moveSpeed = 100;
+    public float moveSpeed;
 
     private bool _selected = false;
     public Vector3 _target { get; private set;} //aka board position
@@ -29,21 +29,27 @@ public class Dancer : MonoBehaviour
     public int rangePoints = 2;
     public int StartrangePoints = 2;
 
-	public CapsuleCollider CapsCollider;
-	public BoxCollider myCollider;
+	private CapsuleCollider myCollider;
+    private float outOfRangeTimer;
+    public float outOfRangeTimeOut = 0.5f;
+
+    private bool KoFlag = false;
+    private Vector2 koLaunchVec;
 
 
-	/// <summary>
-	/// Initalize dancer to board
-	/// </summary>
-	/// <param name="pos">My start pos</param>
-	/// <param name="b">The controlling board</param>
-	public void Initialize(Vector2 pos)
+    /// <summary>
+    /// Initalize dancer to board
+    /// </summary>
+    /// <param name="pos">My start pos</param>
+    /// <param name="b">The controlling board</param>
+    public void Initialize(Vector2 pos)
     {
         StartRoundPos = pos;
         PrevPos = pos;
         _target = new Vector3(pos.x,0,pos.y);
         isDancing = true;
+
+        myCollider = GetComponentInChildren<CapsuleCollider>();
     }
 
 	// Use this for initialization
@@ -58,13 +64,10 @@ public class Dancer : MonoBehaviour
 	    Invoke("animOffset", Random.Range(0f, 0.2f));
 
         //Disable rag doll colliders
-        EnableRagdoll(false);
+        //EnableRagdoll(false);
 
 		//Set random offset for collider to prevent weird collisions    
 		myCollider.transform.position += new Vector3(Random.Range(-0.1f,0.1f),0,
-			Random.Range(-0.1f,0.1f));
-
-		CapsCollider.transform.position += new Vector3(Random.Range(-0.1f,0.1f),0,
 			Random.Range(-0.1f,0.1f));
 
 		//Listen to the beet mon
@@ -75,13 +78,26 @@ public class Dancer : MonoBehaviour
     {
         _myAnimator.enabled = true;
     }
-	
-	// Update is called once per frame
-	void Update ()
+
+    private void Update()
+    {
+        //Scheduled for D E A T H
+        if (KoFlag)
+            if (Board.OnOuterEdge(GetWorldPosition()))
+            {
+                KnockOutInner(koLaunchVec);
+                Invoke("Melt", 5);
+            }
+    }
+
+
+    // Update is called once per frame
+    void FixedUpdate ()
     {
         if (isDancing)
         {
-            _RB.MovePosition(Vector3.Lerp(transform.position, _target + rand, moveSpeed));  
+            Vector3 lerpval = Vector3.Lerp(transform.position, _target, moveSpeed);            
+            transform.position = lerpval;
         }
     }
  
@@ -119,20 +135,14 @@ public class Dancer : MonoBehaviour
 
     /// <summary>
     /// Gets the dancer's board pos from WORLD pos, not board
-    /// only use this if you have to
+    /// Use GetBoardPos() for board pos
     /// </summary>
     /// <returns></returns>
     public Vector2 GetWorldPosition()
     {
-        return new Vector2(_target.x, _target.z);
-    }
-
-    /// <summary>
-    /// Move randomly to the beat
-    /// </summary>
-    private void Groove()
-    {
-        rand = new Vector3(Random.Range(-noiseFactor, noiseFactor), 0, Random.Range(-noiseFactor, noiseFactor));
+        return new Vector2(
+            Mathf.Round(transform.position.x),
+            Mathf.Round(transform.position.z));
     }
 
     /// <summary>
@@ -140,16 +150,27 @@ public class Dancer : MonoBehaviour
     /// </summary>
     public void KnockOut(Vector2 launchVec)
     {
+        KoFlag = true;
+        koLaunchVec = launchVec;
+    }
+
+    private void KnockOutInner(Vector2 launchVec)
+    {
         _RB.constraints = RigidbodyConstraints.None;
-        _RB.AddForce(new Vector3(launchVec.x, 0, launchVec.y)*300);
-        _RB.AddTorque(Random.rotation.eulerAngles*1000);
+        Vector3 forward = new Vector3(launchVec.x, 0, launchVec.y);
+        _RB.AddForce(forward);
+        _RB.AddTorque(Quaternion.LookRotation(forward.normalized).eulerAngles * 500);
 
         isDancing = false;
         //Rag doll!
         //EnableRagdoll(true);
         _myAnimator.StopPlayback();
         //Destroy(gameObject, 3);
+    }
 
+    private void Melt()
+    {
+        myCollider.enabled = false;
     }
 
     /// <summary>
@@ -170,7 +191,7 @@ public class Dancer : MonoBehaviour
 
     //When a dancer brushes this dancer, play shove animation
     void OnCollisionEnter(Collision c)
-    {
+    {        
         if (c.collider.tag == "Dancer" && !_selected)
         {            
             _myAnimator.SetTrigger("Shove");
@@ -189,8 +210,7 @@ public class Dancer : MonoBehaviour
             c.enabled = b;
         }
 
-		myCollider.enabled = !b;
-		CapsCollider.enabled = !b;
+		myCollider.enabled = !b;		
 		_RB.isKinematic = b;
     }
 
