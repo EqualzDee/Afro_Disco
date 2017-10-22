@@ -57,9 +57,7 @@ public class Board : MonoBehaviour
     //Round timer
     private float RoundTime = 60;
     private float roundCountdown = 60;
-    public Text RoundTimerText;
-
-    public bool debugMode;	
+    public Text RoundTimerText;    
 
     //FOR PROTOTYPE
     public Button conga;
@@ -73,6 +71,8 @@ public class Board : MonoBehaviour
 
     List<Move> moveOriginList = new List<Move>();
     public float LaunchForce = 50;
+
+    public bool GameActive { get; private set;}
 
     void Awake()
     {
@@ -91,24 +91,53 @@ public class Board : MonoBehaviour
             }
         }
 
+        //Setup references
+        painter = GetComponent<Painter>();
+        busta = new BustAMove(this);
+    }
+
+    //Gamestate call
+    void OnGameStart()
+    {
         //Player 1 Dancers
-        GenerateDancers(1,5,Player1);
+        GenerateDancers(1, 5, Player1);
         //Player 2 dancers
-        GenerateDancers(9,5,Player2);
-        
+        GenerateDancers(9, 5, Player2);
+
         //Let player 1 move for first move
         EnableMove(Player1, true);
 
-        painter = GetComponent<Painter>();
-        busta = new BustAMove(this);
-
+        //Put the movement pie in the oven
         BakeMovement(turn, false);
-        UI.UpdateStuff(turn);
+        UI.UpdateTurn(turn);
+
+        GameActive = true;
     }
 
-	
-	// Update is called once per frame
-	void Update ()
+    //Gamestate call
+    //Resetti the spaghettis
+    //(Resets the board state)
+    void OnMainMenu()
+    {
+        //Afro genocide
+        foreach (KeyValuePair<Vector2, Dancer> d in _Dancers)
+        {
+            Destroy(d.Value.gameObject);
+        }
+
+        _Dancers.Clear();
+        _validPositions.Clear();
+        painter.ClearLayer(1);
+        painter.ClearLayer(0);
+        moveOriginList.Clear();
+        turn = false;
+        UI.ResetGameUI();
+        GameActive = false;
+    }
+
+
+    // Update is called once per frame
+    void Update ()
     {
         //Select Dancer with mouse via ray
         if (Input.GetKey(KeyCode.Mouse0))
@@ -152,7 +181,7 @@ public class Board : MonoBehaviour
                     _validPositions.TryGetValue(_dancerSelected, out poslist);
                     Debug.Assert(_validPositions.ContainsKey(_dancerSelected));
 
-                    if (poslist.Contains(hitBoardPos) || debugMode)
+                    if (poslist.Contains(hitBoardPos) || GameState.me.debug)
                         Move(_dancerSelected, hitBoardPos);                    
                 }
             }
@@ -170,11 +199,14 @@ public class Board : MonoBehaviour
         }
 
         //Round timer
-        roundCountdown -= Time.deltaTime;
-        RoundTimerText.text = roundCountdown.ToString("00");
-        if (roundCountdown < 0)
+        if (GameActive)
         {
-            EndTurn();
+            roundCountdown -= Time.deltaTime;
+            RoundTimerText.text = roundCountdown.ToString("00");
+            if (roundCountdown < 0)
+            {
+                EndTurn();
+            }
         }
     }
 
@@ -227,6 +259,12 @@ public class Board : MonoBehaviour
         {
             Vector2 dir = (newpos - GetDancerPos(d));
             RemoveDancer(d,  dir * LaunchForce);
+
+            //Win state check
+            if(CountDancers(turn ? Player2 : Player1) < 3 || d.IsLead)
+            {
+                GameState.me.ChangeState(eGameState.GAME_END);
+            } 
         }
         else //All good
         {
@@ -302,11 +340,9 @@ public class Board : MonoBehaviour
         moveOriginList.Sort();
         foreach (Move m in moveOriginList)
         {   
-            if(debugMode) Debug.Log(m.origin);
+            if(GameState.me.debug) Debug.Log(m.origin);
             GlowDancer(m);
-        }
-
-        //PaintLayer(MovePaint);
+        }        
     }
 
     /// <summary>
@@ -381,7 +417,7 @@ public class Board : MonoBehaviour
         MoveCheck();        
         BakeMovement(turn, false);
 
-        UI.UpdateStuff(turn);
+        UI.UpdateTurn(turn);
     }
 
     /// <summary>
@@ -689,5 +725,17 @@ public class Board : MonoBehaviour
     public static bool OnOuterEdge(Vector2 pos)
     {
         return pos.x == 0 || pos.y == 0 || pos.x == BoardW || pos.y == BoardW;
+    }
+
+    public int CountDancers(Player p)
+    {
+        int count = 0;
+
+        foreach (KeyValuePair<Vector2, Dancer> d in _Dancers)
+        {
+            if (d.Value.Player == p) count++;
+        }
+
+        return count;
     }
 }

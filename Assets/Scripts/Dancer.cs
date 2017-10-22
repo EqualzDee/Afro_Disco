@@ -151,14 +151,14 @@ public class Dancer : MonoBehaviour
     public void KnockOut(Vector2 launchVec)
     {
         KoFlag = true;
-        koLaunchVec = launchVec;
+        koLaunchVec = launchVec;        
     }
 
     private void KnockOutInner(Vector2 launchVec)
     {
         _RB.constraints = RigidbodyConstraints.None;
         Vector3 forward = new Vector3(launchVec.x, 0, launchVec.y);
-        _RB.AddForce(forward);
+        if(!IsLead) _RB.AddForce(forward); //Make lead go spinny
         _RB.AddTorque(Quaternion.LookRotation(forward.normalized).eulerAngles * 500);
 
         isDancing = false;
@@ -221,29 +221,10 @@ public class Dancer : MonoBehaviour
     }
 
     public Vector2 GetBoardPos()
-    {
+    {        
         return new Vector2(_target.x, _target.z);
     }
 
     
-    public static Vector3 Vector3Sinerp(Vector3 start, Vector3 end, float value)
-    {
-        return
-            new Vector3(
-            Mathf.Lerp(start.x, end.x, Mathf.Sin(value * Mathf.PI * 0.5f)),
-            Mathf.Lerp(start.y, end.y, Mathf.Sin(value * Mathf.PI * 0.5f)),
-            Mathf.Lerp(start.z, end.z, Mathf.Sin(value * Mathf.PI * 0.5f))
-            );
-    }
-
-    public static Vector3 Vector3SmoothStep(Vector3 start, Vector3 end, float value)
-    {
-        return
-            new Vector3(
-                Mathf.SmoothStep(start.x,end.x,value),
-                Mathf.SmoothStep(start.y, end.y, value),
-                Mathf.SmoothStep(start.z, end.z, value)
-            );
-    }
 
 }

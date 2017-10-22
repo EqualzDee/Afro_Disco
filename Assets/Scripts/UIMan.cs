@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class UIMan : MonoBehaviour {
 
+    public Sprite NotKOd;
     public Sprite KOd;
 
     public Transform Left;
@@ -21,11 +22,11 @@ public class UIMan : MonoBehaviour {
     public Transform P2Score;
 
     // Update is called once per frame
-    void Update () {
-		
+    void Start () {
+        ShowUI(0);
 	}
 
-    public void UpdateStuff(bool turn)
+    public void UpdateTurn(bool turn)
     {       
         var child = turn ? Right : Left;    //Kid that gets turned off
         var other = !turn ? Right : Left;   //Kid that gets turned on
@@ -109,5 +110,48 @@ public class UIMan : MonoBehaviour {
         {
             P2Score.GetChild(i).GetComponent<Image>().sprite = KOd;
         }
+    }
+
+    //Clear sprites and reset counts
+    public void ResetGameUI()
+    {
+        deadCountP1 = 0;
+        deadCountP2 = 0;
+
+        for (int i = 0; i < 3; i++)
+        {
+            P1Score.GetChild(i).GetComponent<Image>().sprite = NotKOd;
+            P2Score.GetChild(i).GetComponent<Image>().sprite = NotKOd;
+        }
+    }
+
+    //for gamestate message
+    private void OnGameStart()
+    {
+        transform.GetChild(0).gameObject.SetActive(false);
+        Invoke("menudelayhack", 0.5f);
+    }
+
+    //Switches between menu and game UI
+    private void ShowUI(int i)
+    {
+        foreach(Transform t in transform)
+        {
+            t.gameObject.SetActive(false);
+        }
+        transform.GetChild(i).gameObject.SetActive(true);
+    }
+
+    private void menudelayhack()
+    {
+        ShowUI(1);
+    }
+
+    //Update UI for state
+    void OnStateChange()
+    {
+        var state = (int)GameState.me.State;
+        if (state != 1)
+            ShowUI(state);
     }
 }

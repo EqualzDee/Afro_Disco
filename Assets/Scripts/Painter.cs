@@ -50,7 +50,7 @@ public class Painter : MonoBehaviour
         }
 
         //like share subscribe
-        AudioMan.OnBeat += ChangeFloorCol;
+        JukeBox.OnBeat += ChangeFloorCol;
         ChangeFloorCol();
     }
 

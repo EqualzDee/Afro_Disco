@@ -2,7 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AudioMan : MonoBehaviour {
+/// <summary>
+/// Jukebox manages audio
+/// TODO: Play another song when current ends
+/// TODO: Fade music on menu
+/// </summary>
+public class JukeBox : MonoBehaviour {
 
     public delegate void Beat();
     public static event Beat OnBeat;
@@ -11,13 +16,15 @@ public class AudioMan : MonoBehaviour {
     private float timeBetweenBeets;
     private float beetTime;
 
+    private AudioSource _myAudio;
+
     private bool isMuting;
 
     // Use this for initialization
-    void Start () {
+    void Awake () {
         timeBetweenBeets = 60f / BPM;
-        GetComponent<AudioSource>().Play();
-        //if (OnBeat != null) OnBeat();
+        _myAudio = GetComponent<AudioSource>();
+        _myAudio.Play();
     }
 	
 	// Update is called once per frame
@@ -35,4 +42,5 @@ public class AudioMan : MonoBehaviour {
         isMuting = !isMuting;
         GetComponent<AudioSource>().mute = isMuting;
     }
+
 }
