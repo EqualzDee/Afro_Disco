@@ -46,6 +46,10 @@ public class GameState : MonoBehaviour
             case eGameState.GAME_END:
                 BroadcastMessage("OnGameEnd", SendMessageOptions.DontRequireReceiver);
                 break;
+
+            case eGameState.TUTORIAL:
+                BroadcastMessage("OnTutorial", SendMessageOptions.DontRequireReceiver);
+                break;
         }
 
         BroadcastMessage("OnStateChange", SendMessageOptions.DontRequireReceiver);
@@ -64,6 +68,7 @@ public enum eGameState
     MENU,
     GAME,
     GAME_END,
+    TUTORIAL,
     PAUSE,
 }
 

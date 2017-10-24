@@ -72,6 +72,17 @@ public class Board : MonoBehaviour
     List<Move> moveOriginList = new List<Move>();
     public float LaunchForce = 50;
 
+    //Undo button
+    struct DanceStep
+    {
+        public Dancer d;
+        public Vector2 pos;
+        public int range;
+    }
+
+    private Stack<DanceStep> _backStack = new Stack<DanceStep>();
+    private Vector2 _dancerStartMovePos; //The position of selected dancer at the start of a drag
+
     public bool GameActive { get; private set;}
 
     void Awake()
@@ -122,7 +133,8 @@ public class Board : MonoBehaviour
         //Afro genocide
         foreach (KeyValuePair<Vector2, Dancer> d in _Dancers)
         {
-            Destroy(d.Value.gameObject);
+            if(d.Value.gameObject)
+                Destroy(d.Value.gameObject);
         }
 
         _Dancers.Clear();
@@ -133,6 +145,13 @@ public class Board : MonoBehaviour
         turn = false;
         UI.ResetGameUI();
         GameActive = false;
+    }
+
+    void OnTutorial()
+    {
+        SpawnDancer(true, new Vector2(3, 1), Player1, "tutorial afro");
+        BakeMovement(turn, false);
+        EnableMove(Player1, true);        
     }
 
 
@@ -160,13 +179,16 @@ public class Board : MonoBehaviour
                         _dancerSelected = GetDancer(boardPos);
                     }
 
+                    //If valid selection
                     if (_dancerSelected && _dancerSelected.canMove)
                     {
-                        //Select and paint selected tiles
-                        _dancerSelected.Select();
-                        //FindValidTiles(_dancerSelected);
-                        //paint selected layer
-                        PaintSelection(_dancerSelected);
+                        _dancerSelected.Select();           //Select and paint selected tiles
+                        PaintSelection(_dancerSelected);    //paint selected layer
+                        _dancerStartMovePos = _dancerSelected.GetBoardPos();
+                    }
+                    else //cancel coz we can't move
+                    {
+                        _dancerSelected = null;
                     }
                 }
             }
@@ -188,14 +210,28 @@ public class Board : MonoBehaviour
         }
         else if(_dancerSelected) //Deselect
         {
+            //Add to back stack &  update its ui
+            if(_dancerStartMovePos != _dancerSelected.GetBoardPos())
+            {
+                var step = new DanceStep();
+                step.d = _dancerSelected;
+                step.pos = _dancerStartMovePos;
+                step.range = _dancerSelected.rangePoints;
+                _backStack.Push(step);
+
+                UI.UpdateInteractable(this);
+            }
+
             //Checky moves!
-            MoveCheck();
-            
+            CheckMoves();
+
+            //Cleanup
             _dancerSelected.DeSelect();
-            //ResetTileCol();
-            _dancerSelected = null;
             painter.ClearLayer(0);
             BakeMovement(turn, false);
+
+            //Laterssss
+            _dancerSelected = null;
         }
 
         //Round timer
@@ -221,30 +257,32 @@ public class Board : MonoBehaviour
         {
             var v = new Vector2(1 + i, yOffset);
 
-            GameObject dancerObj;
-            if (i == 2) //Lead
-            {
-                dancerObj = Instantiate(p == Player1 ? Afro : Rock, new Vector3(v.x, 0, v.y), Quaternion.identity);
-            }
-            else //backup
-            {
-                dancerObj = Instantiate(p == Player1 ? AfroBackup : RockBackup, new Vector3(v.x, 0, v.y), Quaternion.identity);
-            }
-
-            var dancer = dancerObj.GetComponent<Dancer>();
-
-            dancer.Player = p;
-            _Dancers.Add(v, dancer);
-            dancer.Initialize(v);
-            dancerObj.name = "Dancer " + i;
-
-            dancerObj.transform.localRotation = p == Player1 ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
-
-            if (i == 2)
-            {
-                dancer.SetLead(true);
-            }
+            SpawnDancer(i == 2, v, p, "Dancer " + i);
         }
+    }
+
+    void SpawnDancer(bool islead, Vector2 pos, Player p, string objname)
+    {
+        GameObject dancerObj;
+        if (islead) //Lead
+        {
+            dancerObj = Instantiate(p == Player1 ? Afro : Rock, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
+        }
+        else //backup
+        {
+            dancerObj = Instantiate(p == Player1 ? AfroBackup : RockBackup, new Vector3(pos.x, 0, pos.y), Quaternion.identity);
+        }
+
+        var dancer = dancerObj.GetComponent<Dancer>();
+
+        dancer.Player = p;
+        _Dancers.Add(pos, dancer);
+        dancer.Initialize(pos);
+        dancerObj.name = name;
+
+        dancerObj.transform.localRotation = p == Player1 ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
+
+        if (islead) dancer.SetLead(true);
     }
 
     /// <summary>
@@ -322,7 +360,7 @@ public class Board : MonoBehaviour
     /// <summary>
     /// Check dancers for valid moves
     /// </summary>
-    void MoveCheck()
+    void CheckMoves()
     {
         painter.ClearLayer(1); //Clear move layer
 
@@ -340,7 +378,7 @@ public class Board : MonoBehaviour
         moveOriginList.Sort();
         foreach (Move m in moveOriginList)
         {   
-            if(GameState.me.debug) Debug.Log(m.origin);
+            //if(GameState.me.debug) Debug.Log(m.origin);
             GlowDancer(m);
         }        
     }
@@ -414,7 +452,7 @@ public class Board : MonoBehaviour
         moveOriginList.Clear();
 
         //Move check + find all availible tiles
-        MoveCheck();        
+        CheckMoves();        
         BakeMovement(turn, false);
 
         UI.UpdateTurn(turn);
@@ -531,6 +569,8 @@ public class Board : MonoBehaviour
     /// <summary>
     /// Bakes all possible move spaces 
     /// </summary>
+    /// <param name="turn">What player's dancers's moves to bake</param>
+    /// <param name="changeOrigin">This bakes the current movement state of dancers to prevent cheatin</param>
     private void BakeMovement(bool turn, bool changeOrigin)
     {
         _validPositions.Clear();
@@ -542,10 +582,14 @@ public class Board : MonoBehaviour
                 if (!_validPositions.ContainsKey(d))
                     _validPositions.Add(d, new List<Vector2>());
 
-                if (changeOrigin) //Changes origin and points to prevent cheatin
+                if (changeOrigin) //Locks in origin and points to prevent cheatin
                 {
                     d.StartRoundPos = d.GetBoardPos();
                     d.StartrangePoints = d.rangePoints;
+
+                    //Clear backstack
+                    _backStack.Clear();
+                    UI.UpdateInteractable(this);
                 }
                 
                 FindValidTiles(d);
@@ -595,7 +639,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="d">Dancer to remove</param>
     /// <param name="launchVec">How far to launch the dancer using physics</param>
-    private void RemoveDancer(Dancer d, Vector2 launchVec) //CALLED TWICE FOR SOME REASON
+    private void RemoveDancer(Dancer d, Vector2 launchVec)
     {
         var key = GetDancerPos(d);
         d.KnockOut(launchVec);
@@ -679,7 +723,7 @@ public class Board : MonoBehaviour
 				busta.CrowdSurf(m.origin, m.GetFoundMoveFiringPos() ,m.PushPower, m.GetFoundMove(), m.foundMoveCard);
                 UI.ActivateButton(2, turn, false);
                 BakeMovement(turn, true);
-                MoveCheck();
+                CheckMoves();
             }
 		}
 
@@ -695,7 +739,7 @@ public class Board : MonoBehaviour
                 busta.BootyCall(m.origin, m.GetFoundMove(), m.foundMoveCard.normalized);
                 UI.ActivateButton(3, turn, false);
                 BakeMovement(turn, true);
-                MoveCheck();
+                CheckMoves();
             }
         }
 
@@ -706,25 +750,26 @@ public class Board : MonoBehaviour
         return Tiles;
     }
 
-    public void ResetDancers()
+    //Resets dancer positions back one step
+    public void UndoMove()
     {
-        var buffer = new List<Dancer>(_Dancers.Values);
-        foreach (var key in buffer)
-        {
-            if (key.Player == (turn ? Player2 : Player1)) //Only get your homies
-            {
-                Move(key, key.StartRoundPos);
-                key.rangePoints = key.StartrangePoints;
-                key.PrevPos = key.GetBoardPos();
-            }
-        }
-        BakeMovement(turn, false);
-        MoveCheck();
+        if (!CanUndo()) return;
+        DanceStep step = _backStack.Pop();
+        Move(step.d, step.pos);
+        step.d.ResettiTheSpaghetti(step.range);
+        UI.UpdateInteractable(this);
+        BakeMovement(turn,false);
+        CheckMoves();
+    }    
+
+    public bool CanUndo()
+    {
+        return _backStack.Count > 0;
     }
 
     public static bool OnOuterEdge(Vector2 pos)
     {
-        return pos.x == 0 || pos.y == 0 || pos.x == BoardW || pos.y == BoardW;
+        return pos.x == 0 || pos.y == 0 || pos.x == BoardW - 2 || pos.y == BoardH - 2;
     }
 
     public int CountDancers(Player p)

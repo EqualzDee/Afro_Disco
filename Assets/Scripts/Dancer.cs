@@ -6,7 +6,7 @@ public class Dancer : MonoBehaviour
 {
     public float moveSpeed;
 
-    private bool _selected = false;
+    public bool selected { get; private set; }
     public Vector3 _target { get; private set;} //aka board position
     private Rigidbody _RB;
 
@@ -32,8 +32,7 @@ public class Dancer : MonoBehaviour
 	private CapsuleCollider myCollider;
     private float outOfRangeTimer;
     public float outOfRangeTimeOut = 0.5f;
-
-    private bool KoFlag = false;
+    
     private Vector2 koLaunchVec;
 
 
@@ -82,7 +81,7 @@ public class Dancer : MonoBehaviour
     private void Update()
     {
         //Scheduled for D E A T H
-        if (KoFlag)
+        if (!isDancing)
             if (Board.OnOuterEdge(GetWorldPosition()))
             {
                 KnockOutInner(koLaunchVec);
@@ -94,11 +93,8 @@ public class Dancer : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate ()
     {
-        if (isDancing)
-        {
-            Vector3 lerpval = Vector3.Lerp(transform.position, _target, moveSpeed);            
-            transform.position = lerpval;
-        }
+        Vector3 lerpval = Vector3.Lerp(transform.position, _target, moveSpeed);            
+        transform.position = lerpval;     
     }
  
     /// <summary>
@@ -106,7 +102,7 @@ public class Dancer : MonoBehaviour
     /// </summary>
     public void Select()
     {
-        _selected = true;
+        selected = true;
 
         //Change color
         foreach (MeshRenderer m in GetComponentsInChildren<MeshRenderer>())
@@ -125,11 +121,11 @@ public class Dancer : MonoBehaviour
     /// </summary>
     public void DeSelect()
     {
-        _selected = false;
+        selected = false;
         var delta = PrevPos - GetBoardPos();
         var rangeLoss = (int) Mathf.Abs(delta.x) + (int)Mathf.Abs(delta.y);
         rangePoints -= rangeLoss;
-        rangePoints = Mathf.Clamp(rangePoints, 0, 5);
+        rangePoints = Mathf.Clamp(rangePoints, 0, 999);
         PrevPos = GetBoardPos();
     }
 
@@ -150,7 +146,7 @@ public class Dancer : MonoBehaviour
     /// </summary>
     public void KnockOut(Vector2 launchVec)
     {
-        KoFlag = true;
+        isDancing = false;
         koLaunchVec = launchVec;        
     }
 
@@ -159,9 +155,8 @@ public class Dancer : MonoBehaviour
         _RB.constraints = RigidbodyConstraints.None;
         Vector3 forward = new Vector3(launchVec.x, 0, launchVec.y);
         if(!IsLead) _RB.AddForce(forward); //Make lead go spinny
-        _RB.AddTorque(Quaternion.LookRotation(forward.normalized).eulerAngles * 500);
+        _RB.AddTorque(new Vector3(0,5000,0));
 
-        isDancing = false;
         //Rag doll!
         //EnableRagdoll(true);
         _myAnimator.StopPlayback();
@@ -171,6 +166,7 @@ public class Dancer : MonoBehaviour
     private void Melt()
     {
         myCollider.enabled = false;
+        Destroy(gameObject,5);
     }
 
     /// <summary>
@@ -192,7 +188,7 @@ public class Dancer : MonoBehaviour
     //When a dancer brushes this dancer, play shove animation
     void OnCollisionEnter(Collision c)
     {        
-        if (c.collider.tag == "Dancer" && !_selected)
+        if (c.collider.tag == "Dancer" && !selected)
         {            
             _myAnimator.SetTrigger("Shove");
         }

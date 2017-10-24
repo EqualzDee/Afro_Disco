@@ -8,7 +8,7 @@ public class CamAnimController : MonoBehaviour {
     public GameObject Afro;
 
 	// Use this for initialization
-	void Start ()
+	void Awake ()
     {
         anim = GetComponent<Animator>();
     }
@@ -26,6 +26,11 @@ public class CamAnimController : MonoBehaviour {
     void OnMainMenu()
     {
         anim.SetBool("GameActive", false);
+    }
+
+    void OnTutorial()
+    {
+        anim.SetBool("GameActive", true);
     }
 
     //Animation event

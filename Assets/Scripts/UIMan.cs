@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -20,6 +19,8 @@ public class UIMan : MonoBehaviour {
     private int deadCountP2;
     public Transform P1Score;
     public Transform P2Score;
+
+    public Button Undo;
 
     // Update is called once per frame
     void Start () {
@@ -153,5 +154,10 @@ public class UIMan : MonoBehaviour {
         var state = (int)GameState.me.State;
         if (state != 1)
             ShowUI(state);
+    }
+
+    public void UpdateInteractable(Board b)
+    {
+        Undo.interactable = b.CanUndo();
     }
 }
