@@ -33,8 +33,8 @@ public class Board : MonoBehaviour
     public bool turn {get; private set;}
 
     //Player structs
-    Player Player1 = new Player();
-    Player Player2 = new Player();
+    public Player Player1 = new Player();
+    public Player Player2 = new Player();
 
     Dictionary<Vector2, Dancer> _Dancers = new Dictionary<Vector2, Dancer>(); //Big papa
     private Dancer _dancerSelected;
@@ -73,14 +73,14 @@ public class Board : MonoBehaviour
     public float LaunchForce = 50;
 
     //Undo button
-    struct DanceStep
+    public struct DanceStep
     {
         public Dancer d;
         public Vector2 pos;
         public int range;
     }
 
-    private Stack<DanceStep> _backStack = new Stack<DanceStep>();
+    public Stack<DanceStep> _backStack = new Stack<DanceStep>();
     private Vector2 _dancerStartMovePos; //The position of selected dancer at the start of a drag
 
     public bool GameActive { get; private set;}
@@ -133,7 +133,7 @@ public class Board : MonoBehaviour
         //Afro genocide
         foreach (KeyValuePair<Vector2, Dancer> d in _Dancers)
         {
-            if(d.Value.gameObject)
+            if(d.Value)
                 Destroy(d.Value.gameObject);
         }
 
@@ -241,7 +241,7 @@ public class Board : MonoBehaviour
             RoundTimerText.text = roundCountdown.ToString("00");
             if (roundCountdown < 0)
             {
-                EndTurn();
+                EndTurn(true);
             }
         }
     }
@@ -260,8 +260,15 @@ public class Board : MonoBehaviour
             SpawnDancer(i == 2, v, p, "Dancer " + i);
         }
     }
-
-    void SpawnDancer(bool islead, Vector2 pos, Player p, string objname)
+    /// <summary>
+    /// Spawns a dancer
+    /// </summary>
+    /// <param name="islead">if the dancer is the lead</param>
+    /// <param name="pos">position</param>
+    /// <param name="p">what player s</param>
+    /// <param name="objname"></param>
+    /// <returns></returns>
+    public Dancer SpawnDancer(bool islead, Vector2 pos, Player p, string objname)
     {
         GameObject dancerObj;
         if (islead) //Lead
@@ -283,6 +290,8 @@ public class Board : MonoBehaviour
         dancerObj.transform.localRotation = p == Player1 ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
 
         if (islead) dancer.SetLead(true);
+
+        return dancer;
     }
 
     /// <summary>
@@ -304,7 +313,7 @@ public class Board : MonoBehaviour
                 GameState.me.ChangeState(eGameState.GAME_END);
             } 
         }
-        else //All good
+        else if(InBounds(newpos) && d.isDancing) //All good
         {
             //Update Dict
             var oldKey = GetDancerPos(d);
@@ -424,8 +433,10 @@ public class Board : MonoBehaviour
     /// <summary>
     /// Called on move end, called via unity events
     /// </summary>
-    public void EndTurn()
+    public void EndTurn(bool changeUI)
     {
+        if (UI.isMovingUI) return; //don't allow when moving
+
         //Deslect any dancers
         if (_dancerSelected)
         {
@@ -455,7 +466,11 @@ public class Board : MonoBehaviour
         CheckMoves();        
         BakeMovement(turn, false);
 
-        UI.UpdateTurn(turn);
+        //Get rid of back stack
+        _backStack.Clear();
+
+        if(changeUI)
+            UI.UpdateTurn(turn);
     }
 
     /// <summary>
@@ -571,7 +586,7 @@ public class Board : MonoBehaviour
     /// </summary>
     /// <param name="turn">What player's dancers's moves to bake</param>
     /// <param name="changeOrigin">This bakes the current movement state of dancers to prevent cheatin</param>
-    private void BakeMovement(bool turn, bool changeOrigin)
+    public void BakeMovement(bool turn, bool changeOrigin)
     {
         _validPositions.Clear();
         foreach(Dancer d in _Dancers.Values.ToList()) //Get all dancers
@@ -769,7 +784,7 @@ public class Board : MonoBehaviour
 
     public static bool OnOuterEdge(Vector2 pos)
     {
-        return pos.x == 0 || pos.y == 0 || pos.x == BoardW - 2 || pos.y == BoardH - 2;
+        return pos.x == 0 || pos.y == 0 || pos.x == BoardW - 1 || pos.y == BoardH - 1;
     }
 
     public int CountDancers(Player p)

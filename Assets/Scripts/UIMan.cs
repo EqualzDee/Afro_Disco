@@ -20,6 +20,8 @@ public class UIMan : MonoBehaviour {
     public Transform P1Score;
     public Transform P2Score;
 
+    public bool isMovingUI;
+
     public Button Undo;
 
     // Update is called once per frame
@@ -56,6 +58,7 @@ public class UIMan : MonoBehaviour {
     private IEnumerator MovePos(Transform t, Vector3 startPos, int offset, bool isLeft, bool isOn, float time)
     {
         float elapsedTime = 0;
+        isMovingUI = true;
 
         Vector3 offsetVec = new Vector3(offset, 0);
         Vector2 endPos;
@@ -78,6 +81,7 @@ public class UIMan : MonoBehaviour {
             yield return null;
         }
         t.position = endPos;
+        isMovingUI = false; 
     }
 
     //Activate butts
