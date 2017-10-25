@@ -72,6 +72,9 @@ public class Board : MonoBehaviour
     List<Move> moveOriginList = new List<Move>();
     public float LaunchForce = 50;
 
+    //FOR MONKEYS
+    public Toggle disablecolliders;
+
     //Undo button
     public struct DanceStep
     {
@@ -83,6 +86,7 @@ public class Board : MonoBehaviour
     public Stack<DanceStep> _backStack = new Stack<DanceStep>();
     private Vector2 _dancerStartMovePos; //The position of selected dancer at the start of a drag
 
+    //flag to detirmine if a game is currently being played
     public bool GameActive { get; private set;}
 
     void Awake()
@@ -110,6 +114,8 @@ public class Board : MonoBehaviour
     //Gamestate call
     void OnGameStart()
     {
+        if (GameActive) return; 
+
         //Player 1 Dancers
         GenerateDancers(1, 5, Player1);
         //Player 2 dancers
@@ -120,6 +126,9 @@ public class Board : MonoBehaviour
 
         //Put the movement pie in the oven
         BakeMovement(turn, false);
+
+        //UI
+        UI.ResetGameUI();
         UI.UpdateTurn(turn);
 
         GameActive = true;
@@ -235,7 +244,7 @@ public class Board : MonoBehaviour
         }
 
         //Round timer
-        if (GameActive)
+        if (GameActive && GameState.me.State == eGameState.GAME)
         {
             roundCountdown -= Time.deltaTime;
             RoundTimerText.text = roundCountdown.ToString("00");
@@ -290,6 +299,9 @@ public class Board : MonoBehaviour
         dancerObj.transform.localRotation = p == Player1 ? Quaternion.identity : Quaternion.Euler(0, 180, 0);
 
         if (islead) dancer.SetLead(true);
+
+        //FOR MOMKEY
+        dancer.myCollider.enabled = !disablecolliders.isOn;
 
         return dancer;
     }

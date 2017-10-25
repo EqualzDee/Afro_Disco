@@ -594,7 +594,7 @@ PlayerSettings:
     Hub: 0
     UNet: 1
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 3
+  apiCompatibilityLevel: 2
   cloudProjectId: ab7d0c03-08de-482f-964d-4f66210c1827
   projectName: Afro Disco (2)
   organizationId: chikanz

@@ -29,7 +29,7 @@ public class Dancer : MonoBehaviour
     public int rangePoints = 2;
     public int StartrangePoints = 2;
 
-	private CapsuleCollider myCollider;
+	public CapsuleCollider myCollider;
     private float outOfRangeTimer;
     public float outOfRangeTimeOut = 0.5f;
     

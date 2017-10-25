@@ -128,6 +128,17 @@ public class UIMan : MonoBehaviour {
             P1Score.GetChild(i).GetComponent<Image>().sprite = NotKOd;
             P2Score.GetChild(i).GetComponent<Image>().sprite = NotKOd;
         }
+
+        //Turn on all buttons
+        foreach (Button b in Left.GetComponentsInChildren<Button>())
+        {
+            ActivateButton(b.transform, true, true);
+        }
+        foreach (Button b in Right.GetComponentsInChildren<Button>())
+        {
+            ActivateButton(b.transform, false, true);
+        }
+
     }
 
     //for gamestate message
