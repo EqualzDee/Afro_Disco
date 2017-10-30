@@ -10,9 +10,11 @@ body {
 	position: absolute;
 	z-index: 0;
 	
-	left: 10%;
-	right: 10%;
-	top: 50px;
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	
+	margin: 50px 10%;
 	
 	text-align: center;
 }
@@ -24,7 +26,7 @@ body {
 	width: 400px;
 }
 
-#showcaseImg {
+#Screenshots img {
 	border-radius: 10px;
 	
 	height: 175px;
@@ -33,11 +35,34 @@ body {
 	margin-right: 5px;
 }
 
-#profileImg {
+#contactDiv img {
 	border-radius: 10px;
 	
 	height: 50px;
 	width: 50px;
 	
 	margin-top: 10px;
+}
+
+#contactDiv li {
+	list-style: none;
+	margin-top: 10px;
+}
+
+#contactDiv img {
+	margin-left: 10px;
+}
+
+#contactDiv a {
+	text-decoration: none;
+	color: #8b179f;
+	background-color: white;
+	border: solid thin white;
+	border-radius: 5px;
+	padding: 10px;
+}
+
+hr {
+	width: 50%;
+	margin: 50px auto;
 }

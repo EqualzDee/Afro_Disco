@@ -1,1 +1,5 @@
-console.log("JS initialised successfully");
+console.log("Site loaded successfully");
+
+//
+
+console.log("All js complete");
