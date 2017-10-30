@@ -228,7 +228,7 @@ public class Board : MonoBehaviour
                 step.range = _dancerSelected.rangePoints;
                 _backStack.Push(step);
 
-                UI.UpdateInteractable(this);
+                UI.UpdateUndoInteractable(this);
             }
 
             //Checky moves!
@@ -395,9 +395,70 @@ public class Board : MonoBehaviour
 
         moveOriginList = CheckyBoy.CheckForMoves(playerMaskedDancers,BoardW,BoardH + 1);
 
-        //Paint valid moves
-        moveOriginList.Sort();
+
+        //Only paint moves + activate buttons when in range
+        //first make all butts not interactable
+        for (int i = 0; i < 4; i++)
+        {
+            UI.ToggleMoveInteractable(i, turn, false);
+        }
+
+        //OH BOY
+        //A really shitty hack job for now, since I have to redo a lot of the OO heirarchy for it to work nicely
+        //reddit.com/r/codinghorror
+        List<Move> filtered = new List<Move>();
         foreach (Move m in moveOriginList)
+        {
+            if(m.MoveName.Contains("Conga"))
+            {
+                var r = busta.Conga_Range(m.origin, m.Range, m.foundMoveCard);
+                if (r[0] || r[1]) //if one isn't null
+                {
+                    filtered.Add(m);
+                    if (UI.MoveIsEnabled(0, turn)) //enable button
+                    {
+                        UI.ToggleMoveInteractable(0, turn, true);
+                    }
+                }
+            }
+
+            //i just vomited in my mouth a little
+            else if (m.MoveName.Contains("Boogaloo"))
+            {
+                var r = busta.Boogaloo_Range(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
+                if (r) //if isn't null
+                {
+                    filtered.Add(m);
+                    if (UI.MoveIsEnabled(1, turn)) //enable button
+                    {
+                        UI.ToggleMoveInteractable(1, turn, true);
+                    }
+                }
+            }
+            //PLEASE KILL ME
+            else if (m.MoveName.Contains("Crowd Surf"))
+            {
+                filtered.Add(m);
+                if (UI.MoveIsEnabled(2, turn)) //enable button
+                {
+                    UI.ToggleMoveInteractable(2, turn, true);
+                }
+            }
+            //OH GOD JUST END IT NOW
+            else if (m.MoveName.Contains("Booty"))
+            {
+                filtered.Add(m);
+                if (UI.MoveIsEnabled(3, turn)) //enable button
+                {
+                    UI.ToggleMoveInteractable(3, turn, true);
+                }
+            }
+
+        }
+
+        //Paint valid moves
+        //moveOriginList.Sort();
+        foreach (Move m in filtered)
         {   
             //if(GameState.me.debug) Debug.Log(m.origin);
             GlowDancer(m);
@@ -616,7 +677,7 @@ public class Board : MonoBehaviour
 
                     //Clear backstack
                     _backStack.Clear();
-                    UI.UpdateInteractable(this);
+                    UI.UpdateUndoInteractable(this);
                 }
                 
                 FindValidTiles(d);
@@ -709,14 +770,7 @@ public class Board : MonoBehaviour
                 busta.Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
                 UI.ActivateButton(0, turn, false);
                 BakeMovement(turn, true);
-
-                //Create Conga Buttons
-                //moveSelectorButton newButton = GameObject.Instantiate(moveSelectorButton);
-
-                //newButton.transform.SetParent(null);
-                //TODO: Set position
-                //newButton.DanceMoveInstance.index = i;
-                //newButton.SetActive(true);
+                CheckMoves();
             }
         }
 
@@ -736,6 +790,7 @@ public class Board : MonoBehaviour
                 busta.Boogaloo(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
                 UI.ActivateButton(1, turn, false);
                 BakeMovement(turn, true);
+                CheckMoves();
             }
         }
 
@@ -784,7 +839,7 @@ public class Board : MonoBehaviour
         DanceStep step = _backStack.Pop();
         Move(step.d, step.pos);
         step.d.ResettiTheSpaghetti(step.range);
-        UI.UpdateInteractable(this);
+        UI.UpdateUndoInteractable(this);
         BakeMovement(turn,false);
         CheckMoves();
     }    

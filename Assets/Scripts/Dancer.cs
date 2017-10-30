@@ -30,8 +30,6 @@ public class Dancer : MonoBehaviour
     public int StartrangePoints = 2;
 
 	public CapsuleCollider myCollider;
-    private float outOfRangeTimer;
-    public float outOfRangeTimeOut = 0.5f;
     
     private Vector2 koLaunchVec;
 

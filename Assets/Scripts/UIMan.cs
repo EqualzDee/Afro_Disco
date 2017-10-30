@@ -2,6 +2,11 @@
 using UnityEngine.UI;
 using UnityEngine;
 
+/// <summary>
+/// UI controller class
+/// Activated = move hasn't been used this turn
+/// Interactable = move is in range
+/// </summary>
 public class UIMan : MonoBehaviour {
 
     public Sprite NotKOd;
@@ -9,6 +14,9 @@ public class UIMan : MonoBehaviour {
 
     public Transform Left;
     public Transform Right;
+
+    public Transform edgeLeft;
+    public Transform edge;
 
     public int MoveOffset = 34;
     public float buttonMoveSpeed = 0.3f;
@@ -23,11 +31,20 @@ public class UIMan : MonoBehaviour {
     public bool isMovingUI;
 
     public Button Undo;
+    
+    //shows if buttons are activated or not
+    //first side is left, +4 is right
+    private bool[] moveEnabled = new bool[8];
 
     // Update is called once per frame
     void Start () {
         ShowUI(0);
-	}
+
+        //update enabled array
+        for (int i = 0; i < 4; i++)
+            moveEnabled[i] = true;
+
+    }
 
     public void UpdateTurn(bool turn)
     {       
@@ -50,6 +67,7 @@ public class UIMan : MonoBehaviour {
         foreach (Button b in other.GetComponentsInChildren<Button>())
         {
             ActivateButton(b.transform, turn, true);
+            ToggleMoveInteractable(b.transform.GetSiblingIndex(), turn, false); //set all buttons not interactable
         }
 
     }
@@ -87,18 +105,33 @@ public class UIMan : MonoBehaviour {
     //Activate butts
     private void ActivateButton(Transform t, bool isLeft, bool isOn)
     {
-        if (t.GetComponent<Button>().interactable == isOn) return;
+        int i = t.GetSiblingIndex();
+
+        if (MoveIsEnabled(i, isLeft) == isOn) return;
+        //if (t.GetComponent<Button>().interactable == isOn) return;
+
+        
+        moveEnabled[isLeft ? i : i + 4] = isOn;
 
         t.GetComponent<Button>().interactable = isOn;
         StartCoroutine(MovePos(t.transform, t.transform.position, MoveOffset, isLeft, isOn, buttonMoveSpeed));
     }
 
+    //Public overloaded version for toggling move button state
     public void ActivateButton(int i, bool isLeft, bool isOn)
     {
         Transform t = isLeft ? Left : Right;
         ActivateButton(t.GetChild(i), isLeft, isOn);
     }
 
+    public bool MoveIsEnabled(int i, bool isLeft)
+    {
+        return moveEnabled[isLeft ? i : i + 4];
+    }
+
+    /// <summary>
+    /// Update the player ko count UI
+    /// </summary>    
     public void AnotherOneBitesTheDust(bool isPlayerTwo)
     {
         if (isPlayerTwo)
@@ -171,8 +204,14 @@ public class UIMan : MonoBehaviour {
             ShowUI(state);
     }
 
-    public void UpdateInteractable(Board b)
+    public void UpdateUndoInteractable(Board b)
     {
         Undo.interactable = b.CanUndo();
+    }
+
+    public void ToggleMoveInteractable(int index, bool isLeft, bool ison)
+    {
+        Transform t = isLeft ? Left : Right;
+        t.GetChild(index).GetComponent<Button>().interactable = ison;
     }
 }
