@@ -1,7 +1,12 @@
+@font-face {
+	font-family: "Bubbleboy";
+	src: url(Assets/BUBBLEBOY2.ttf);
+}
+
 body {
 	background-color: #8b179f;
 	
-	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif
+	font-family: "Bubbleboy";
 }
 
 #mainWrap {
