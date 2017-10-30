@@ -52,6 +52,8 @@ body {
 #contactDiv li {
 	list-style: none;
 	margin-top: 10px;
+	
+	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif
 }
 
 #contactDiv img {
