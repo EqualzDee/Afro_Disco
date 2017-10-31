@@ -334,6 +334,7 @@ public class MoveChecker
 
         Moves.Add(booty);
 
+        //Crowd Surf
         var surf = new Move("Crowd Surf", new Color(0.992f, 0.847f, 0.208f), 0, 3, 50);
         surf.AddPattern(new string[]
         {

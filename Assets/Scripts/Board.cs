@@ -126,6 +126,7 @@ public class Board : MonoBehaviour
 
         //Put the movement pie in the oven
         BakeMovement(turn, false);
+        CheckMoves();
 
         //UI
         UI.ResetGameUI();
@@ -413,11 +414,11 @@ public class Board : MonoBehaviour
             {
                 var r = busta.Conga_Range(m.origin, m.Range, m.foundMoveCard);
                 if (r[0] || r[1]) //if one isn't null
-                {
-                    filtered.Add(m);
+                {                    
                     if (UI.MoveIsEnabled(0, turn)) //enable button
                     {
                         UI.ToggleMoveInteractable(0, turn, true);
+                        filtered.Add(m);
                     }
                 }
             }
@@ -428,29 +429,29 @@ public class Board : MonoBehaviour
                 var r = busta.Boogaloo_Range(m.origin, m.Range, m.PushPower, m.GetFoundMove(), m.foundMoveCard);
                 if (r) //if isn't null
                 {
-                    filtered.Add(m);
                     if (UI.MoveIsEnabled(1, turn)) //enable button
                     {
                         UI.ToggleMoveInteractable(1, turn, true);
+                        filtered.Add(m);
                     }
                 }
             }
             //PLEASE KILL ME
             else if (m.MoveName.Contains("Crowd Surf"))
             {
-                filtered.Add(m);
                 if (UI.MoveIsEnabled(2, turn)) //enable button
                 {
                     UI.ToggleMoveInteractable(2, turn, true);
+                    filtered.Add(m);
                 }
             }
             //OH GOD JUST END IT NOW
             else if (m.MoveName.Contains("Booty"))
-            {
-                filtered.Add(m);
+            {                
                 if (UI.MoveIsEnabled(3, turn)) //enable button
                 {
                     UI.ToggleMoveInteractable(3, turn, true);
+                    filtered.Add(m);
                 }
             }
 
@@ -535,15 +536,17 @@ public class Board : MonoBehaviour
         painter.ClearLayer(1);
         moveOriginList.Clear();
 
-        //Move check + find all availible tiles
-        CheckMoves();        
+        if (changeUI)
+            UI.UpdateTurn(turn);
+
+        //Move check + find all availible tiles          
         BakeMovement(turn, false);
+        CheckMoves();
 
         //Get rid of back stack
         _backStack.Clear();
 
-        if(changeUI)
-            UI.UpdateTurn(turn);
+
     }
 
     /// <summary>
