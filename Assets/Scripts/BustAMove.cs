@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Move execution and logic happens here
-/// This class is so tightly coupled to Board it's like they're basically conjoined twins
+///Home to all children of Move and their implementation
 /// </summary>
 public class BustAMove
 {
@@ -15,8 +14,9 @@ public class BustAMove
         board = b;
     }
 
-    //Moves here
-    public void Conga(Vector2 pos, int range, int push, Vector2 cardinality)
+    //Returns dancers in range of a conga
+    //0 is top, 1 is bot
+    public List<Dancer> Conga_Range(Vector2 pos, int range, Vector2 cardinality)
     {
         //Get just the tips
         Vector2 top;
@@ -35,6 +35,21 @@ public class BustAMove
                 dBot = board.GetDancer(pos - (cardinality * i), !board.turn);
         }
 
+        List<Dancer> returnList = new List<Dancer>();
+        returnList.Add(dtop);
+        returnList.Add(dBot);
+
+        return returnList;
+    }
+    
+    public void Conga(Vector2 pos, int range, int push, Vector2 cardinality)
+    {
+        //find Dancers range
+        var dlist = Conga_Range(pos, range, cardinality);
+        
+        Dancer dtop = dlist[0];
+        Dancer dBot = dlist[1];
+
         //Push
         for (int i = 0; i < push; i++)
         {
@@ -45,8 +60,7 @@ public class BustAMove
         }
     }
 
-
-    public void Boogaloo(Vector2 pos, int range, int push, string[] move, Vector2 cardinality)
+    public Dancer Boogaloo_Range(Vector2 pos, int range, int push, string[] move, Vector2 cardinality)
     {
         //First we need to find the firing point
         //To do this we subtract the cardinality from the position of A
@@ -81,6 +95,14 @@ public class BustAMove
             d = board.GetDancer(searchPos, !board.turn);
             if (d) break; //if we found dancer
         }
+
+        return d;
+    }
+
+
+    public void Boogaloo(Vector2 pos, int range, int push, string[] move, Vector2 cardinality)
+    {
+        Dancer d = Boogaloo_Range(pos, range, push, move, cardinality);
 
         //Now pushy pushy
         if (d)

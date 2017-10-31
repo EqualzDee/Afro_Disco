@@ -4,9 +4,9 @@ using UnityEngine;
 
 /// <summary>
 /// A move that can be executed
-/// Should be a barebones class that holds move info
+/// Barebones class that holds move info
 /// </summary>
-public class Move : IComparable<Move>
+public class Move : ICloneable
 {
     public Dictionary<Vector2, string[]> Patterns = new Dictionary<Vector2, string[]>();
 	public Dictionary<Vector2, Vector2> FiringPos = new Dictionary<Vector2, Vector2>();
@@ -42,21 +42,8 @@ public class Move : IComparable<Move>
         Priority = priority;
     }
 
-    //constructor for copying the object
-    public Move(Move m)
-    {   
-        Patterns = new Dictionary<Vector2, string[]>(m.Patterns);
-        FiringPos = new Dictionary<Vector2, Vector2>(m.FiringPos);
-        Color = new Color(m.Color.r, m.Color.g, m.Color.b);
-        MoveName = string.Copy(m.MoveName);
-
-        Priority = m.Priority;
-        PushPower = m.PushPower;
-        Range = m.Range;
-    }
-
     /// <summary>
-    /// Call to give this move an origin and specific pattern
+    /// Give this move an origin and specific pattern
     /// </summary>
     /// <param name="v"></param>
     /// <param name="index"></param>
@@ -94,7 +81,7 @@ public class Move : IComparable<Move>
 	}
 
     /// <summary>
-    /// Get the found move from this move instance, returns null if not found
+    /// Get the found move pattern from this move instance, returns null if not found
     /// </summary>
     /// <returns></returns>
     public string[] GetFoundMove()
@@ -111,20 +98,30 @@ public class Move : IComparable<Move>
 		return a;
 	}
 
-    //Implement the comparable interface so we can sort easily in lists
-    public int CompareTo(Move other)
+    //Implement Iclonable so we can make instances from the move checker rencerence
+    public object Clone()
     {
-        //return Priority.CompareTo(other.Priority);
-        return other.Priority.CompareTo(Priority);
+        return this.MemberwiseClone();
+    }
 
-        //var v1 = origin;
-        //var v2 = other.origin;
 
-        //if (v1.x < v2.x && v1.y < v2.y)
-        //    return -1;
-        //if (v1.x == v2.x && v1.y == v2.y)
-        //    return 0;
-        //if (v1.x > v2.x && v1.y > v2.y)
-        //    return 1;
+    //Virtual methods to be implemented by children
+
+    //Executes move logic and updates dancers on the board
+    public virtual void Execute()
+    {
+        throw new Exception("Can't execute reference move, that's wack");
+    }
+
+    //Returns dancers in range
+    public virtual List<Dancer> CheckRange()
+    {
+        throw new Exception("Can't execute reference move, that's wack");
+    }
+
+    //Checks if dancer is in range
+    public virtual bool InRange()
+    {
+        throw new Exception("Can't execute reference move, that's wack");
     }
 }

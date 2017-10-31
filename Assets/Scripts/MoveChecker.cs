@@ -12,6 +12,8 @@ using UnityEngine;
 /// </summary>
 public class MoveChecker
 {
+    //So this is the list of possible moves that can be found in the game
+    //Once one of these moves is found by the checker, a new instance is created 
     private readonly List<Move> Moves = new List<Move>();
 
 
@@ -397,7 +399,8 @@ public class MoveChecker
                 foreach (Vector2 vec in MovesInRow)
                 {
                     //now make a copy of each move and set the origin where we found it
-                    var found = new Move(Moves[i]);
+                    //var found = new Move(Moves[i]);
+                    Move found = (Move)Moves[i].Clone();
                     found.SetFound(vec, pat.Key);
                     MovesFound.Add(found);
                 }
