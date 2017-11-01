@@ -25,6 +25,7 @@ public class Dancer : MonoBehaviour
     public bool isDancing { get; private set; }
 
     private Animator _myAnimator;
+	private int dancingHash = Animator.StringToHash("Dancing");
 
     public int rangePoints = 2;
     public int StartrangePoints = 2;
@@ -85,7 +86,10 @@ public class Dancer : MonoBehaviour
                 KnockOutInner(koLaunchVec);
                 Invoke("Melt", 5);
             }
-    }
+
+		AnimatorCanDance();
+
+	}
 
 
     // Update is called once per frame
@@ -219,6 +223,11 @@ public class Dancer : MonoBehaviour
         return new Vector2(_target.x, _target.z);
     }
 
-    
-
+	void AnimatorCanDance() {
+		if(canMove == false || rangePoints <= 0) {
+			_myAnimator.SetBool(dancingHash, false);
+		} else {
+			_myAnimator.SetBool(dancingHash, true);
+		}
+	}
 }

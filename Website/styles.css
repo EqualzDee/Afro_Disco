@@ -32,7 +32,7 @@ body {
 }
 
 #Screenshots img {
-	border-radius: 10px;
+	border-radius: 5px;
 	
 	height: 175px;
 	
@@ -41,23 +41,23 @@ body {
 }
 
 #contactDiv img {
-	border-radius: 10px;
+	border: solid thin white;
+	border-width: 3px;
+	border-radius: 28px;
 	
 	height: 50px;
 	width: 50px;
 	
 	margin-top: 10px;
+	margin-left: 10px;
 }
 
 #contactDiv li {
 	list-style: none;
-	margin-top: 10px;
+	margin-top: -30px;
+	margin-bottom: 40px;
 	
 	font-family: Gotham, "Helvetica Neue", Helvetica, Arial, sans-serif
-}
-
-#contactDiv img {
-	margin-left: 10px;
 }
 
 #contactDiv a {
