@@ -1827,7 +1827,7 @@ Animator:
   m_GameObject: {fileID: 1386303496533492}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8c7cad0ca35d3744fbd861536ebec8c3, type: 3}
-  m_Controller: {fileID: 9100000, guid: de52c92fbd7b4c64e83a69cf497d7e51, type: 2}
+  m_Controller: {fileID: 9100000, guid: 51dfbb1d8a09f3846b937a75a254ea2f, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -1853,7 +1853,7 @@ MonoBehaviour:
   PrevPos: {x: 0, y: 0}
   rangePoints: 2
   StartrangePoints: 2
-  outOfRangeTimeOut: 0.5
+  myCollider: {fileID: 0}
 --- !u!136 &136466064567031632
 CapsuleCollider:
   m_ObjectHideFlags: 1
