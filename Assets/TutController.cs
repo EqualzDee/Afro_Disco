@@ -41,7 +41,7 @@ public class TutController : MonoBehaviour {
 
     string[] Text =
     {
-        "hey kiddo. it's me. your friendly neighbourhood disco teacher",
+        "hey kiddo. it's me. Fernando. your friendly neighbourhood disco teacher",
         "so i hear you wanna beat that punk, rock mullet in a dance fight huh?", 
         "well you're gunna have to learn how to get down on the d-floor and boogie first",
         "but don't worry. stick with me and you'll be booty callin' and boogalooin' in no time",
@@ -69,10 +69,10 @@ public class TutController : MonoBehaviour {
 
         "nice. that was a good shove",
         "lets get him out of here and knock him off the floor",
-        "end our turn first, though. Since you can only perform one of each move per turn" , //I-22 //UI-4  //weirdly worded?
+        "end our turn first, though. Since you can only use each move once per turn" , //I-22 //UI-4  //weirdly worded?
 
-        "wait.",
-        "now he's too far away now",
+        "let's finish off this fool",
+        "aww, he's too far away now",
         "that's not cool",
         "hey johnny get over here", 
         "", //27
@@ -85,14 +85,30 @@ public class TutController : MonoBehaviour {
         "groovaaaay.",
         "groovay",
         "to win a dance battle knock out three other dudes, or the other lead dancer",
-        "you'll know what the lead dancer looks like when you see them",
-        "uh-oh",
-        "looks like he's calling his boys over to the floor",
-        "there are also a whole bunch of other moves you should check out",
-        "try them out in practice mode, or press the help button for a quick reference",
-        "i gotta bounce",
-        "say hi to Rock Mullet for me",
-        "good luck, kiddo."
+        "the lead dancer's the one with the stylin coloured hair",
+		
+		"now let's run through those other funky moves",
+		"boogaloo's a crazy one, so we'll leave it for last",
+		
+		"crowd surf lets you throw your friends",
+		"make a little T shape, and your dancer at the bottom of the T gets flung over his allies",
+		
+		"booty call pulls your friends in close",
+		"get two dancers on opposite sides of your lead dancer (the one with the hair)",
+		"then those dancer get pulled all the way in to be right beside your lead",
+		"doesn't matter how far away they are, but you can't have anyone in the way",
+		
+		"now to get serious.",
+		"to do a boogaloo, make the shape our friends on the dancefloor are", //45
+		"the two on the right are optional, they give extra range",
+		"when you do the boogaloo, your target gets flung 3 spaces at 90 degrees to your shape",
+		"looks like he's back. perfect timing. show him what you got", //48
+		"the direction is set by where you've got your lead dancer",
+		"see how that fool when down, and the lead dancers on the lower side at the front?",
+		"your lead needs to be in one of those front spots to make the move work",
+		
+		"you all groovay?",
+		"silky smooth my man! head on out to the dancefloor and show Rock Mullet who's boss"
     };
 
 	// Use this for initialization
@@ -184,6 +200,15 @@ public class TutController : MonoBehaviour {
                 if (!enemy.isDancing)
                     NextStep();
                 break;
+			
+			case 45:
+				// TODO: clear board
+				// TODO: spawn a full size boogaloo shape
+				break;
+			
+			case 48:
+				// TODO: spawn in a target for the boogaloo
+				break;
         }
 	}
 
