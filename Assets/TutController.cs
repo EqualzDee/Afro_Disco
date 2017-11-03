@@ -28,6 +28,8 @@ public class TutController : MonoBehaviour {
     private Dancer enemy;
     private Dancer fernando;
     private Dancer johhny;
+	private Dancer zacry;
+	private Dancer maximus;
 
     private Animator _afroanimatior;
     private AudioSource _myAudio;
@@ -36,7 +38,7 @@ public class TutController : MonoBehaviour {
 
     //steps where text won't advance until something happens
     //Array value is the index of the speech line
-    private readonly int[] interaction = { 6, 9, 18, 19, 22, 29, 30};
+    private readonly int[] interaction = { 6, 9, 18, 19, 22, 29, 30}; //, 48};
     private readonly int[] UI = { 9, 18, 19, 22, 29, 30 };
 
     string[] Text =
@@ -95,17 +97,17 @@ public class TutController : MonoBehaviour {
 		
 		"booty call pulls your friends in close",
 		"get two dancers on opposite sides of your lead dancer (the one with the hair)",
-		"then those dancer get pulled all the way in to be right beside your lead",
+		"then those dancers get pulled all the way in to be right beside your lead",
 		"doesn't matter how far away they are, but you can't have anyone in the way",
 		
 		"now to get serious.",
-		"to do a boogaloo, make the shape our friends on the dancefloor are", //45
-		"the two on the right are optional, they give extra range",
-		"when you do the boogaloo, your target gets flung 3 spaces at 90 degrees to your shape",
-		"looks like he's back. perfect timing. show him what you got", //48
+		"to do a boogaloo, make a Y shape, with a lead dancer at the front", //45
+		"you can add more to the stem to get a little extra range",
+		"when you do the boogaloo, your target gets flung 3 spaces at 90 degrees to the stem",
+		//"looks like he's back. perfect timing. show him what you got", //I-48
 		"the direction is set by where you've got your lead dancer",
-		"see how that fool when down, and the lead dancers on the lower side at the front?",
-		"your lead needs to be in one of those front spots to make the move work",
+		//"see how that fool went down, and the lead dancers on the lower side at the front?",
+		//"your lead needs to be in one of those front spots to make the move work",
 		
 		"you all groovay?",
 		"silky smooth my man! head on out to the dancefloor and show Rock Mullet who's boss"
@@ -202,12 +204,19 @@ public class TutController : MonoBehaviour {
                 break;
 			
 			case 45:
-				// TODO: clear board
-				// TODO: spawn a full size boogaloo shape
+				// everyone moves to a boogaloo
+			//	_board.Move(johhny, new Vector2(4, 4));
+			//	_board.Move(lead, new Vector2(4, 2));
+			//	_board.Move(fernando, new Vector2(3, 3));
+			//	zacry = _board.SpawnDancer(false, new Vector2(2, 3), _board.Player1, "Zaccyboy");
+			//	maximus = _board.SpawnDancer(false, new Vector2(1, 3), _board.Player1, "Mr Maxsour");
 				break;
 			
 			case 48:
 				// TODO: spawn in a target for the boogaloo
+			//	enemy = _board.SpawnDancer(false, new Vector2(7, 3), _board.Player2, "Baddy McBadboy");
+			//	if (!enemy.isDancing)
+            //        NextStep();
 				break;
         }
 	}
