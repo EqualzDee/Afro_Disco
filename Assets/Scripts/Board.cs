@@ -778,11 +778,6 @@ public class Board : MonoBehaviour
         }
 
     }
-	
-	public void ApplyConga(DanceMoveInstance indexHolder) {
-		Move m = moveOriginList[indexHolder.index];
-		busta.Conga(m.origin, m.Range, m.PushPower, m.foundMoveCard);
-	}
 
     public void TestBoogaloo()
     {
