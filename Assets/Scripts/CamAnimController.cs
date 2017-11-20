@@ -2,43 +2,57 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CamAnimController : MonoBehaviour {
+public class CamAnimController:MonoBehaviour {
 
-    private Animator anim;
-    public GameObject Afro;
+	private Animator anim;
+	public GameObject Afro;
+
+	public GameObject CreditsBook;
+	private bool CreditsCurrentState = false;
 
 	// Use this for initialization
-	void Awake ()
-    {
-        anim = GetComponent<Animator>();
-    }
-	
-	// Update is called once per frame
-	void Update () {
-		
+	void Awake() {
+		anim = GetComponent<Animator>();
 	}
 
-    private void OnGameStart()
-    {
-        anim.SetBool("GameActive", true);
-    }
+	// Update is called once per frame
+	void Update() {
 
-    void OnMainMenu()
-    {
-        anim.SetBool("GameActive", false);
-    }
+	}
 
-    void OnTutorial()
-    {
-        anim.SetBool("GameActive", true);
-    }
+	private void OnGameStart() {
+		anim.SetBool("GameActive", true);
+		anim.SetBool("MenuCreditsActive", false);
+	}
 
-    //Animation event
-    public void ToggleAfroOff()
-    {
-        Afro.SetActive(!Afro.gameObject.activeSelf);
-    }
+	void OnMainMenu() {
+		anim.SetBool("GameActive", false);
+		anim.SetBool("MenuCreditsActive", false);
+	}
 
+	void OnTutorial() {
+		anim.SetBool("GameActive", true);
+		anim.SetBool("MenuCreditsActive", false);
+	}
 
+	void OnCredits() {
+		anim.SetBool("GameActive", false);
+		anim.SetBool("MenuCreditsActive", true);
+	}
+
+	//Animation event
+	public void ToggleAfroOff() {
+		Afro.SetActive(!Afro.gameObject.activeSelf);
+	}
+
+	public void ToggleCreditsOpen() {
+		if(CreditsCurrentState) {
+			CreditsCurrentState = false;
+		} else {
+			CreditsCurrentState = true;
+		}
+
+		CreditsBook.GetComponent<Animator>().SetBool("CreditsBookOpen", CreditsCurrentState);
+	}
 
 }
