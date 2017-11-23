@@ -1,0 +1,289 @@
+fileFormatVersion: 2
+guid: 54c096e8ff3bf7845964f1a6997417ce
+timeCreated: 1511354071
+licenseType: Free
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: Building
+    100002: Environment
+    100004: PowerLine
+    100006: Road
+    100008: Sidewalk1
+    100010: Sidewalk2
+    100012: Sidewalk3
+    100014: Sidewalk4
+    100016: Sidewalk5
+    100018: Sidewalks
+    100020: //RootNode
+    100022: Crossbar
+    100024: PowerLinePost
+    100026: AirConUnit
+    100028: Building1
+    100030: Building2
+    100032: Buildings
+    100034: Awning
+    100036: group1
+    100038: Aircon
+    100040: AirconUnit
+    100042: Shroud
+    100044: Awning 1
+    100046: Building2 1
+    100048: Building3
+    100050: Building3 1
+    100052: Buildling1
+    100054: LargeSign
+    100056: Sign
+    100058: Building 1
+    100060: Building 2
+    100062: Building 3
+    100064: Building 4
+    100066: Building4
+    100068: Aircon 1
+    100070: Aircon 2
+    100072: Aircon 3
+    100074: AirconUnit 1
+    100076: AirconUnit 2
+    100078: AirconUnit1
+    100080: MainBuilding
+    100082: Shroud 1
+    100084: Shroud 2
+    100086: Shroud 3
+    100088: Building3_Dome
+    100090: Building4 1
+    100092: Building3_Dome_Ribbing1
+    100094: Building3_Dome_Ribbing2
+    100096: Building3_Dome_Ribbing3
+    400000: Building
+    400002: Environment
+    400004: PowerLine
+    400006: Road
+    400008: Sidewalk1
+    400010: Sidewalk2
+    400012: Sidewalk3
+    400014: Sidewalk4
+    400016: Sidewalk5
+    400018: Sidewalks
+    400020: //RootNode
+    400022: Crossbar
+    400024: PowerLinePost
+    400026: AirConUnit
+    400028: Building1
+    400030: Building2
+    400032: Buildings
+    400034: Awning
+    400036: group1
+    400038: Aircon
+    400040: AirconUnit
+    400042: Shroud
+    400044: Awning 1
+    400046: Building2 1
+    400048: Building3
+    400050: Building3 1
+    400052: Buildling1
+    400054: LargeSign
+    400056: Sign
+    400058: Building 1
+    400060: Building 2
+    400062: Building 3
+    400064: Building 4
+    400066: Building4
+    400068: Aircon 1
+    400070: Aircon 2
+    400072: Aircon 3
+    400074: AirconUnit 1
+    400076: AirconUnit 2
+    400078: AirconUnit1
+    400080: MainBuilding
+    400082: Shroud 1
+    400084: Shroud 2
+    400086: Shroud 3
+    400088: Building3_Dome
+    400090: Building4 1
+    400092: Building3_Dome_Ribbing1
+    400094: Building3_Dome_Ribbing2
+    400096: Building3_Dome_Ribbing3
+    2300000: Building
+    2300002: PowerLine
+    2300004: Road
+    2300006: Sidewalk1
+    2300008: Sidewalk2
+    2300010: Sidewalk3
+    2300012: Sidewalk4
+    2300014: Sidewalk5
+    2300016: Crossbar
+    2300018: PowerLinePost
+    2300020: AirConUnit
+    2300022: Building1
+    2300024: Building2
+    2300026: Awning
+    2300028: Aircon
+    2300030: Shroud
+    2300032: Awning 1
+    2300034: Building2 1
+    2300036: Building3 1
+    2300038: LargeSign
+    2300040: Sign
+    2300042: Building 1
+    2300044: Building 2
+    2300046: Building 3
+    2300048: Building 4
+    2300050: Aircon 1
+    2300052: Aircon 2
+    2300054: Aircon 3
+    2300056: Shroud 1
+    2300058: Shroud 2
+    2300060: Shroud 3
+    2300062: Building3_Dome
+    2300064: Building4 1
+    2300066: Building3_Dome_Ribbing1
+    2300068: Building3_Dome_Ribbing2
+    2300070: Building3_Dome_Ribbing3
+    3300000: Building
+    3300002: PowerLine
+    3300004: Road
+    3300006: Sidewalk1
+    3300008: Sidewalk2
+    3300010: Sidewalk3
+    3300012: Sidewalk4
+    3300014: Sidewalk5
+    3300016: Crossbar
+    3300018: PowerLinePost
+    3300020: AirConUnit
+    3300022: Building1
+    3300024: Building2
+    3300026: Awning
+    3300028: Aircon
+    3300030: Shroud
+    3300032: Awning 1
+    3300034: Building2 1
+    3300036: Building3 1
+    3300038: LargeSign
+    3300040: Sign
+    3300042: Building 1
+    3300044: Building 2
+    3300046: Building 3
+    3300048: Building 4
+    3300050: Aircon 1
+    3300052: Aircon 2
+    3300054: Aircon 3
+    3300056: Shroud 1
+    3300058: Shroud 2
+    3300060: Shroud 3
+    3300062: Building3_Dome
+    3300064: Building4 1
+    3300066: Building3_Dome_Ribbing1
+    3300068: Building3_Dome_Ribbing2
+    3300070: Building3_Dome_Ribbing3
+    4300000: Building
+    4300002: Road
+    4300004: Sidewalk1
+    4300006: Sidewalk2
+    4300008: Sidewalk3
+    4300010: Sidewalk4
+    4300012: Sidewalk5
+    4300014: PowerLine
+    4300016: PowerLinePost
+    4300018: Crossbar
+    4300020: AirConUnit
+    4300022: Building1
+    4300024: Building2
+    4300026: Awning
+    4300028: Aircon
+    4300030: Shroud
+    4300032: Awning
+    4300034: Building3
+    4300036: Sign
+    4300038: LargeSign
+    4300040: Building
+    4300042: Building
+    4300044: Building
+    4300046: Building
+    4300048: Aircon
+    4300050: Shroud
+    4300052: Aircon
+    4300054: Shroud
+    4300056: Aircon
+    4300058: Shroud
+    4300060: Building3_Dome
+    4300062: Building4
+    4300064: Building3_Dome_Ribbing1
+    4300066: Building3_Dome_Ribbing2
+    4300068: Building3_Dome_Ribbing3
+    7400000: Take 001
+    9500000: //RootNode
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 100
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
