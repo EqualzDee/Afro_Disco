@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class EnvironmentSwitcher : MonoBehaviour {
+	//Toggle for whether a random environment is selected
+	public bool EnableRandomEnvironment;
+
 	//Array of environment prefabs
 	public GameObject[] Environments;
 
@@ -12,13 +15,15 @@ public class EnvironmentSwitcher : MonoBehaviour {
 	//Current envrionment that is spawnned
 	private int CurrentEnvironment;
 
-
 	// Use this for initialization
 	void Start () {
-		CreateParams();
+		if(EnableRandomEnvironment) {
+			CreateParams();
 
-		//Spawns the selected environment at the right location
-		GameObject SpawnedEnvironment = GameObject.Instantiate(Environments[CurrentEnvironment], Offset, Quaternion.identity) as GameObject;
+			//Spawns the selected environment at the right location
+			GameObject SpawnedEnvironment = GameObject.Instantiate(Environments[CurrentEnvironment], Offset, Quaternion.identity) as GameObject;
+			SpawnedEnvironment.SetActive(true);
+		}
 	}
 	
 	// Update is called once per frame
