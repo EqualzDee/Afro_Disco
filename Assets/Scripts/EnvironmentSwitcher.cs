@@ -8,6 +8,7 @@ public class EnvironmentSwitcher : MonoBehaviour {
 
 	//Array of environment prefabs
 	public GameObject[] Environments;
+	private GameObject SpawnedEnvironment;
 
 	//The offset for spawning
 	private Vector3 Offset = new Vector3(3.0f, -0.5f, 5.0f);
@@ -21,7 +22,7 @@ public class EnvironmentSwitcher : MonoBehaviour {
 			CreateParams();
 
 			//Spawns the selected environment at the right location
-			GameObject SpawnedEnvironment = GameObject.Instantiate(Environments[CurrentEnvironment], Offset, Quaternion.identity) as GameObject;
+			SpawnedEnvironment = Instantiate(Environments[CurrentEnvironment], Offset, Quaternion.identity, transform);
 			SpawnedEnvironment.SetActive(true);
 		}
 	}
