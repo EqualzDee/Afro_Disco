@@ -1,52 +1,24 @@
 fileFormatVersion: 2
-guid: e346af6f77c6f6f4c9f48f2ca1506d00
-timeCreated: 1511558797
+guid: 740b7273e1591024eac8ddb1cd6563a9
+timeCreated: 1511582488
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
     100000: //RootNode
-    100002: Door1
-    100004: Door2
-    100006: Trim
-    100008: Trim1
-    100010: Trim2
-    100012: Window1
-    100014: Window2
-    100016: Interior
+    100002: group1
+    100004: pCube25
     400000: //RootNode
-    400002: Door1
-    400004: Door2
-    400006: Trim
-    400008: Trim1
-    400010: Trim2
-    400012: Window1
-    400014: Window2
-    400016: Interior
-    2300000: //RootNode
-    2300002: Trim
-    2300004: Trim1
-    2300006: Trim2
-    2300008: Window1
-    2300010: Window2
-    2300012: Interior
-    3300000: //RootNode
-    3300002: Trim
-    3300004: Trim1
-    3300006: Trim2
-    3300008: Window1
-    3300010: Window2
-    3300012: Interior
-    4300000: SlidingDoubleDoors
-    4300002: Trim
-    4300004: Trim1
-    4300006: Window1
-    4300008: Trim2
-    4300010: Window2
-    4300012: Interior
-    9500000: //RootNode
+    400002: group1
+    400004: pCube25
+    2300000: group1
+    2300002: pCube25
+    3300000: group1
+    3300002: pCube25
+    4300000: group1
+    4300002: pCube25
   materials:
-    importMaterials: 0
+    importMaterials: 1
     materialName: 0
     materialSearch: 1
   animations:
@@ -72,7 +44,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 100
+    globalScale: 1
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
@@ -114,7 +86,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 2
+  animationType: 0
   humanoidOversampling: 1
   additionalBone: 0
   userData: 
