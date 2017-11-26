@@ -5,8 +5,8 @@ using UnityEngine;
 public class CamAnimController:MonoBehaviour {
 
 	private Animator anim;
-	public GameObject LeadDancerContainer;
-	private GameObject LeadDancer;
+	public MainMenuLeadChanger leadChanger;
+
 
 	public GameObject CreditsBook;
 	private bool CreditsCurrentState = false;
@@ -42,9 +42,10 @@ public class CamAnimController:MonoBehaviour {
 	}
 
 	//Animation event
-	public void ToggleLeadOff() {
-		//LeadDancer = LeadDancerContainer.GetCurrentLead();
-		LeadDancer.SetActive(!LeadDancer.gameObject.activeSelf);
+	public void ToggleAfroOff() {
+
+		var l = leadChanger.GetCurrentLead();
+		l.SetActive(!l.gameObject.activeSelf);
 	}
 
 	public void ToggleCreditsOpen() {

@@ -20,7 +20,10 @@ public class SlidingDoorTrigger:MonoBehaviour {
 
 	}
 
-	void OnTriggerEnter(Collider other) {
+	void OnTriggerEnter(Collider other)
+    {
+        if (!myAnimator) Start();
+
 		if(EnableOpening) {
 			myAnimator.SetBool(OpenHash, true);
 		}
