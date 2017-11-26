@@ -12,7 +12,7 @@ public class MainMenuLeadChanger : MonoBehaviour {
 	public GameObject HiphopLead;
 
 	//The currently selected lead dancer
-	public int CurrentLeadNum = 0;
+	private int CurrentLeadNum = 0;
 
 	//Pointer to the current object
 	private GameObject CurrentLead;
@@ -32,6 +32,17 @@ public class MainMenuLeadChanger : MonoBehaviour {
 
 	public GameObject GetCurrentLead() {
 		return CurrentLead;
+	}
+
+	//Cycles the lead dancer for testing purposes
+	public void CycleLead() {
+		int temp = CurrentLeadNum + 1;
+
+		if(temp >= 5) {
+			temp %= 5;
+		}
+
+		ChangeLead(temp);
 	}
 
 	//Changes the lead dancer

@@ -3,11 +3,14 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class SlidingDoorTrigger:MonoBehaviour {
-
+	//Trigger for openning the door
 	public BoxCollider myTrigger;
+
+	//Pointer to the animator component
 	private Animator myAnimator;
 	private int OpenHash = Animator.StringToHash("OpenDoor");
 
+	//Whether the door is allowed to open
 	public bool EnableOpening = true;
 
 	// Use this for initialization
