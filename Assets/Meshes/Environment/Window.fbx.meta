@@ -1,22 +1,28 @@
 fileFormatVersion: 2
-guid: 740b7273e1591024eac8ddb1cd6563a9
-timeCreated: 1511582488
+guid: 3ac1b8096e8aea843a34d7a048deef26
+timeCreated: 1512077640
 licenseType: Free
 ModelImporter:
   serializedVersion: 21
   fileIDToRecycleName:
     100000: //RootNode
-    100002: group1
-    100004: pCube25
+    100002: Glass
+    100004: Overlay
+    100006: Trim
     400000: //RootNode
-    400002: group1
-    400004: pCube25
-    2300000: group1
-    2300002: pCube25
-    3300000: group1
-    3300002: pCube25
-    4300000: group1
-    4300002: pCube25
+    400002: Glass
+    400004: Overlay
+    400006: Trim
+    2300000: Glass
+    2300002: Overlay
+    2300004: Trim
+    3300000: Glass
+    3300002: Overlay
+    3300004: Trim
+    4300000: Trim
+    4300002: Glass
+    4300004: Overlay
+    9500000: //RootNode
   materials:
     importMaterials: 0
     materialName: 0
@@ -44,7 +50,7 @@ ModelImporter:
     isReadable: 1
   meshes:
     lODScreenPercentages: []
-    globalScale: 1
+    globalScale: 100
     meshCompression: 0
     addColliders: 0
     importVisibility: 1
@@ -86,7 +92,7 @@ ModelImporter:
     hasExtraRoot: 0
     skeletonHasParents: 1
   lastHumanDescriptionAvatarSource: {instanceID: 0}
-  animationType: 0
+  animationType: 2
   humanoidOversampling: 1
   additionalBone: 0
   userData: 

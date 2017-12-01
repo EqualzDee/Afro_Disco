@@ -2,39 +2,40 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DancerSelection : MonoBehaviour {
+public class DancerSelection:MonoBehaviour {
 
 	//Tracks whether the menu is open
 	private bool IsOpen = false;
 
 	//The start and end positions for the menu
-	///Will make this more robust later on, just want to test on android
 	public Vector3 StartPos;
 	public Vector3 EndPos;
 
+	//How long the movement should take
+	public float MovementTime = 1.0f;
+
 	// Use this for initialization
-	void Start () {
+	void Start() {
 		//This is set like this to ensure that it is in the right place
-		///The CloseMenu() method is not called here because that will eventually lerp, this should set it immediately
 		IsOpen = false;
 		transform.localPosition = StartPos;
 	}
-	
+
 	// Update is called once per frame
-	void Update () {
-		
+	void Update() {
+
 	}
 
 	//Opens the menu
 	public void OpenMenu() {
 		IsOpen = true;
-		transform.localPosition = EndPos;
+		StartCoroutine(MoveBetweenPoints(StartPos, EndPos));
 	}
 
 	//Closes the menu
 	public void CloseMenu() {
 		IsOpen = false;
-		transform.localPosition = StartPos;
+		StartCoroutine(MoveBetweenPoints(EndPos, StartPos));
 	}
 
 	//Toggles the state of the menu and moves it appropriately
@@ -46,8 +47,19 @@ public class DancerSelection : MonoBehaviour {
 		}
 	}
 
-	//Lerp function (Not functional atm)
-	private void MoveBetweenPoints(Vector3 v1, Vector3 v2) {
-		transform.localPosition = Vector3.Lerp(v1, v2, Time.deltaTime);
+	//Lerp function
+	private IEnumerator MoveBetweenPoints(Vector3 v1, Vector3 v2) {
+
+		//Tracks total time elapsed
+		float ElapsedTime = 0;
+
+		while(ElapsedTime < MovementTime) {
+			//Moves between two points
+			transform.localPosition = Vector3.Lerp(v1, v2, ElapsedTime / MovementTime);
+
+			ElapsedTime += Time.deltaTime;
+
+			yield return null;
+		}
 	}
 }

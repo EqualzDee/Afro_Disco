@@ -863,4 +863,15 @@ public class Board : MonoBehaviour
 
         return count;
     }
+
+	//Mutators for Lead/Backup dancers
+	public void SetPlayerDancers(int player, GameObject lead, GameObject backup) {
+		if(player == 1) {
+			Afro = lead;
+			AfroBackup = backup;
+		} else {
+			Rock = lead;
+			RockBackup = backup;
+		}
+	}
 }

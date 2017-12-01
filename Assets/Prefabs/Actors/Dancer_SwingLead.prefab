@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 114576524703971186}
   - component: {fileID: 54308924261157630}
   m_Layer: 8
-  m_Name: Dancer_RockMullet
+  m_Name: Dancer_SwingLead
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1880,7 +1880,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 939bb5871ff8f5541897f75797d83847, type: 2}
+  - {fileID: 2100000, guid: 711de8a804736ef459633040cae08595, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
